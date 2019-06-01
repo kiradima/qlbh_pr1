@@ -446,7 +446,7 @@ public class MayTinhChiTiet {
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println(getAll().size());
-    }
+//    public static void main(String[] args) {
+//        System.out.println(getAll().size());
+//    }
 }

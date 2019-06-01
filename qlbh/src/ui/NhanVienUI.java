@@ -12,7 +12,6 @@ import helper.WordHelper;
 import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,17 +65,17 @@ public class NhanVienUI extends javax.swing.JFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
-        rbMNV = new javax.swing.JRadioButton();
+        rbMa = new javax.swing.JRadioButton();
         rbSDT = new javax.swing.JRadioButton();
-        rbTNV = new javax.swing.JRadioButton();
+        rbTen = new javax.swing.JRadioButton();
         rbDC = new javax.swing.JRadioButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        txtMNV = new javax.swing.JTextField();
+        txtMa = new javax.swing.JTextField();
         txtDC = new javax.swing.JTextField();
         txtCMT = new javax.swing.JTextField();
-        txtTK = new javax.swing.JTextField();
+        txtTimKiem = new javax.swing.JTextField();
         btnTimKiem = new javax.swing.JButton();
         btnThem = new javax.swing.JButton();
         btnSua = new javax.swing.JButton();
@@ -92,7 +91,7 @@ public class NhanVienUI extends javax.swing.JFrame {
         rbCMT = new javax.swing.JRadioButton();
         rbNS = new javax.swing.JRadioButton();
         jLabel8 = new javax.swing.JLabel();
-        txtTNV = new javax.swing.JTextField();
+        txtTen = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         txtSDT = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
@@ -114,6 +113,7 @@ public class NhanVienUI extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
+        rbTP = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 204, 255));
@@ -121,20 +121,20 @@ public class NhanVienUI extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("TÌM KIẾM");
 
-        buttonGroup1.add(rbMNV);
-        rbMNV.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        rbMNV.setText("Mã nhân viên");
+        buttonGroup1.add(rbMa);
+        rbMa.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbMa.setText("Mã nhân viên");
 
         buttonGroup1.add(rbSDT);
         rbSDT.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         rbSDT.setText("Số điện thoại");
 
-        buttonGroup1.add(rbTNV);
-        rbTNV.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        rbTNV.setText("Tên nhân viên");
-        rbTNV.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup1.add(rbTen);
+        rbTen.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbTen.setText("Tên nhân viên");
+        rbTen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbTNVActionPerformed(evt);
+                rbTenActionPerformed(evt);
             }
         });
 
@@ -151,10 +151,10 @@ public class NhanVienUI extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("CMT");
 
-        txtMNV.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtMNV.addActionListener(new java.awt.event.ActionListener() {
+        txtMa.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtMa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMNVActionPerformed(evt);
+                txtMaActionPerformed(evt);
             }
         });
 
@@ -162,7 +162,7 @@ public class NhanVienUI extends javax.swing.JFrame {
 
         txtCMT.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        txtTK.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtTimKiem.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         btnTimKiem.setBackground(new java.awt.Color(102, 102, 255));
         btnTimKiem.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -295,7 +295,7 @@ public class NhanVienUI extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel8.setText("Tên nhân viên : ");
 
-        txtTNV.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtTen.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel9.setText("Số điện thoại :");
@@ -402,6 +402,10 @@ public class NhanVienUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        buttonGroup1.add(rbTP);
+        rbTP.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbTP.setText("Tỉnh/Thành phố");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -418,7 +422,7 @@ public class NhanVienUI extends javax.swing.JFrame {
                 .addGap(32, 32, 32))
             .addGroup(layout.createSequentialGroup()
                 .addGap(46, 46, 46)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 860, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -433,36 +437,39 @@ public class NhanVienUI extends javax.swing.JFrame {
                 .addComponent(jScrollPane1)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(64, 64, 64)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(txtTK, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rbCV)
-                            .addComponent(rbGT)
-                            .addComponent(rbCMT)
-                            .addComponent(rbSDT)
-                            .addComponent(rbMNV)
-                            .addComponent(btnTimKiem)
-                            .addComponent(btnImportFile))
+                        .addGap(64, 64, 64)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(21, 21, 21)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(rbTNV)
-                                    .addComponent(rbDC)
-                                    .addComponent(rbNS)
-                                    .addComponent(rbEmail)))
+                                    .addComponent(rbCV)
+                                    .addComponent(rbGT)
+                                    .addComponent(rbCMT)
+                                    .addComponent(rbSDT)
+                                    .addComponent(rbMa)
+                                    .addComponent(btnTimKiem)
+                                    .addComponent(btnImportFile))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(21, 21, 21)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(rbTen)
+                                            .addComponent(rbDC)
+                                            .addComponent(rbNS)
+                                            .addComponent(rbEmail)
+                                            .addComponent(rbTP)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(btnExportFile)
+                                            .addComponent(btnThongKe)))))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnExportFile)
-                                    .addComponent(btnThongKe)))))
+                                .addGap(77, 77, 77)
+                                .addComponent(jLabel1))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(77, 77, 77)
-                        .addComponent(jLabel1)))
+                        .addGap(101, 101, 101)
+                        .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -482,8 +489,8 @@ public class NhanVienUI extends javax.swing.JFrame {
                         .addGap(27, 27, 27)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtCV)
-                            .addComponent(txtMNV)
-                            .addComponent(txtTNV)
+                            .addComponent(txtMa)
+                            .addComponent(txtTen)
                             .addComponent(txtSDT)
                             .addComponent(txtDC)
                             .addComponent(txtCMT)
@@ -506,11 +513,11 @@ public class NhanVienUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jLabel3)
-                            .addComponent(txtMNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtMa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(5, 5, 5)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jLabel8)
-                            .addComponent(txtTNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtTen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(5, 5, 5)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jLabel9)
@@ -550,8 +557,8 @@ public class NhanVienUI extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(rbMNV)
-                            .addComponent(rbTNV))
+                            .addComponent(rbMa)
+                            .addComponent(rbTen))
                         .addGap(5, 5, 5)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(rbSDT)
@@ -565,9 +572,11 @@ public class NhanVienUI extends javax.swing.JFrame {
                             .addComponent(rbGT)
                             .addComponent(rbEmail))
                         .addGap(5, 5, 5)
-                        .addComponent(rbCV)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(rbCV)
+                            .addComponent(rbTP))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtTK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnTimKiem)
@@ -590,32 +599,32 @@ public class NhanVienUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void rbTNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbTNVActionPerformed
+    private void rbTenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbTenActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rbTNVActionPerformed
+    }//GEN-LAST:event_rbTenActionPerformed
 
     private void btnThongKeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThongKeActionPerformed
         // TODO add your handling code here:
         tks = new ArrayList<>();
         try {
-            if (rbMNV.isSelected()) {
-                thuocTinh = "Mã nhân viên";
-            } else if (rbTNV.isSelected()) {
-                thuocTinh = "Tên nhân viên";
+            if (rbMa.isSelected()) {
+                thuocTinh = NhanVien.TT_MA;
+            } else if (rbTen.isSelected()) {
+                thuocTinh = NhanVien.TT_TEN;
             } else if (rbSDT.isSelected()) {
-                thuocTinh = "Số điện thoại";
-            } else if (rbDC.isSelected()) {
-                thuocTinh = "Địa chỉ";
+                thuocTinh = NhanVien.TT_SDT;
+            } else if (rbTP.isSelected()) {
+                thuocTinh = NhanVien.TT_THANH_PHO;
             } else if (rbCMT.isSelected()) {
-                thuocTinh = "Chứng minh thư";
+                thuocTinh = NhanVien.TT_CMT;
             } else if (rbNS.isSelected()) {
-                thuocTinh = "Ngày sinh";
+                thuocTinh = NhanVien.TT_NGAY_SINH;
             } else if (rbGT.isSelected()) {
-                thuocTinh = "Giới tính";
+                thuocTinh = NhanVien.TT_GIOI_TINH;
             } else if (rbEmail.isSelected()) {
-                thuocTinh = "Email";
+                thuocTinh = NhanVien.TT_EMAIL;
             } else if (rbCV.isSelected()) {
-                thuocTinh = "Chức vụ";
+                thuocTinh = NhanVien.TT_CHUC_VU;
             }
             tks = NhanVien.thongKe(thuocTinh);
             loadTableTK(thuocTinh);
@@ -627,29 +636,23 @@ public class NhanVienUI extends javax.swing.JFrame {
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
         //nếu xác nhận là có 
-        if (0 == JOptionPane.showConfirmDialog(null, "Xác nhận", "Thêm", 0)) {
-            if (!txtMNV.getText().equals("")
-                    && !txtTNV.getText().equals("")
-                    && !txtSDT.getText().equals("")
-                    && !txtDC.getText().equals("")
-                    && !txtCMT.getText().equals("")
-                    && !txtEmail.getText().equals("")
-                    && !txtCV.getText().equals("")
-                    && !((JTextField) dateNS.getDateEditor().getUiComponent()).getText().equals("")) {
-                // nếu đảm bảo điền đầy đủ thông tin
-                if (1 == NhanVien.insert(getCurrentObject())) {
-                    //thông báo
-                    JOptionPane.showMessageDialog(null, "Thành công");
-                    // reload table
-                    refresh();
-                    // reset 
-                    reset();
-                } else {
-//                    JOptionPane.showMessageDialog(null, "Thất bại");
-                }
-            } else {//nếu điền chưa đủ thông tin-> yêu cầu điền thêm
-                JOptionPane.showMessageDialog(null, "Thông tin chưa được điền đầy đủ");
+        if (!txtMa.getText().equals("")
+                && !txtTen.getText().equals("")
+                && !txtSDT.getText().equals("")
+                && !txtDC.getText().equals("")
+                && !txtCMT.getText().equals("")
+                && !txtCV.getText().equals("")
+                && !((JTextField) dateNS.getDateEditor().getUiComponent()).getText().equals("")
+                && !((String) cbbGT.getSelectedItem()).equals("")
+                && !txtEmail.getText().equals("")) {
+            // nếu đảm bảo điền đầy đủ thông tin
+            if (1 == NhanVien.insert(getCurrentObject())) {
+                JOptionPane.showMessageDialog(null, "Insert thành công");
+                refresh();
+                reset();
             }
+        } else {//nếu điền chưa đủ thông tin-> yêu cầu điền thêm
+            JOptionPane.showMessageDialog(null, "Thông tin chưa được điền đầy đủ");
         }
     }//GEN-LAST:event_btnThemActionPerformed
 
@@ -661,29 +664,25 @@ public class NhanVienUI extends javax.swing.JFrame {
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
         //nếu xác nhận là có 
-        if (0 == JOptionPane.showConfirmDialog(null, "Xác nhận", "Sửa", 0)) {
-            if (!txtMNV.getText().equals("")
-                    && !txtTNV.getText().equals("")
-                    && !txtSDT.getText().equals("")
-                    && !txtDC.getText().equals("")
-                    && !txtCMT.getText().equals("")
-                    && !txtEmail.getText().equals("")
-                    && !txtCV.getText().equals("")
-                    && !((JTextField) dateNS.getDateEditor().getUiComponent()).getText().equals("")) {
-                // nếu đảm bảo điền đầy đủ thông tin
-                if (1 == NhanVien.update(getCurrentObject())) {
-                    //thông báo
-                    JOptionPane.showMessageDialog(null, "Thành công");
-                    // reload table
-                    refresh();
-                    // reset 
-                    reset();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Thất bại");
-                }
-            } else {//nếu điền chưa đủ thông tin-> yêu cầu điền thêm
-                JOptionPane.showMessageDialog(null, "Thông tin chưa được điền đầy đủ");
+        if (!txtMa.getText().equals("")
+                && !txtTen.getText().equals("")
+                && !txtSDT.getText().equals("")
+                && !txtDC.getText().equals("")
+                && !txtCMT.getText().equals("")
+                && !txtCV.getText().equals("")
+                && !((JTextField) dateNS.getDateEditor().getUiComponent()).getText().equals("")
+                && !((String) cbbGT.getSelectedItem()).equals("")
+                && !txtEmail.getText().equals("")) {
+            // nếu đảm bảo điền đầy đủ thông tin
+            if (1 == NhanVien.update(getCurrentObject())) {
+                JOptionPane.showMessageDialog(null, "Update thành công");
+                refresh();
+                reset();
+            } else {
+                JOptionPane.showMessageDialog(null, "Update thất bại");
             }
+        } else {//nếu điền chưa đủ thông tin-> yêu cầu điền thêm
+            JOptionPane.showMessageDialog(null, "Thông tin chưa được điền đầy đủ");
         }
     }//GEN-LAST:event_btnSuaActionPerformed
 
@@ -691,18 +690,15 @@ public class NhanVienUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         //nếu xác nhận là có 
         if (0 == JOptionPane.showConfirmDialog(null, "Xác nhận", "Xóa", 0)) {
-            if (!txtMNV.getText().equals("")) { // xóa chỉ cần nhập mã
-                if (1 == NhanVien.delete(Integer.parseInt(txtMNV.getText()))) {
-                    //thông báo
-                    JOptionPane.showMessageDialog(null, "Thành công");
-                    // reload table
+            if (!txtMa.getText().equals("")) { // xóa chỉ cần nhập mã
+                if (1 == NhanVien.delete(Integer.parseInt(txtMa.getText()))) {
+                    JOptionPane.showMessageDialog(null, "Delete thành công");
                     refresh();
-                    // reset 
                     reset();
                 } else {
-                    JOptionPane.showMessageDialog(null, "Thất bại");
+                    JOptionPane.showMessageDialog(null, "Delete thất bại");
                 }
-            } else {//nếu điền chưa đủ thông tin-> yêu cầu điền thêm
+            } else {
                 JOptionPane.showMessageDialog(null, "Điền mã để xóa");
             }
         }
@@ -717,32 +713,32 @@ public class NhanVienUI extends javax.swing.JFrame {
         //      3 : tìm kiếm
 
         nhanViens = new ArrayList<>();
-        if (rbMNV.isSelected()) {
-            nhanViens = NhanVien.search(txtTK.getText(), "maNhanVien");
+        if (rbMa.isSelected()) {
+            nhanViens = NhanVien.search(txtTimKiem.getText(), NhanVien.TT_MA);
         }
-        if (rbTNV.isSelected()) {
-            nhanViens = NhanVien.search(txtTK.getText(), "tenNhanVien");
+        if (rbTen.isSelected()) {
+            nhanViens = NhanVien.search(txtTimKiem.getText(), NhanVien.TT_TEN);
         }
         if (rbSDT.isSelected()) {
-            nhanViens = NhanVien.search(txtTK.getText(), "sdtNhanVien");
+            nhanViens = NhanVien.search(txtTimKiem.getText(), NhanVien.TT_SDT);
         }
         if (rbDC.isSelected()) {
-            nhanViens = NhanVien.search(txtTK.getText(), "diaChiNhanVien");
+            nhanViens = NhanVien.search(txtTimKiem.getText(), NhanVien.TT_DIA_CHI);
         }
         if (rbCMT.isSelected()) {
-            nhanViens = NhanVien.search(txtTK.getText(), "soCMT");
+            nhanViens = NhanVien.search(txtTimKiem.getText(), NhanVien.TT_CMT);
         }
         if (rbNS.isSelected()) {
-            nhanViens = NhanVien.search(txtTK.getText(), "ngaySinh");
+            nhanViens = NhanVien.search(txtTimKiem.getText(), NhanVien.TT_NGAY_SINH);
         }
         if (rbGT.isSelected()) {
-            nhanViens = NhanVien.search(txtTK.getText(), "gioiTinh");
+            nhanViens = NhanVien.search(txtTimKiem.getText(), NhanVien.TT_GIOI_TINH);
         }
         if (rbEmail.isSelected()) {
-            nhanViens = NhanVien.search(txtTK.getText(), "emailNhanVien");
+            nhanViens = NhanVien.search(txtTimKiem.getText(), NhanVien.TT_EMAIL);
         }
         if (rbCV.isSelected()) {
-            nhanViens = NhanVien.search(txtTK.getText(), "chucVu");
+            nhanViens = NhanVien.search(txtTimKiem.getText(), NhanVien.TT_CHUC_VU);
         }
         loadTable();
     }//GEN-LAST:event_btnTimKiemActionPerformed
@@ -752,27 +748,11 @@ public class NhanVienUI extends javax.swing.JFrame {
         JFileChooser jFileChooser = new JFileChooser();
         if (jFileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = jFileChooser.getSelectedFile();
-            String type = file.getName().substring(file.getName().lastIndexOf(".") + 1);
-            if (type.equals("xls") || type.equals("xlsx")) {
-                try {
-                    ArrayList<NhanVien> list = ExcelHelper.importNhanVien(file);
-                    int re = -1;
-                    for (NhanVien o : list) {
-                        re = NhanVien.insert(o);
-                        if (re != 1) {
-                            break;
-                        }
-                    }
-                    if (re == 1) {
-                        JOptionPane.showMessageDialog(null, "Thêm thành công");
-                        refresh();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Thêm thất bại");
-                    }
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Thêm thất bại");
-                    Logger.getLogger(NhanVienUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            if (NhanVien.importExcel(file) == 1) {
+                JOptionPane.showMessageDialog(null, "Thêm thành công");
+                refresh();
+            } else {
+                JOptionPane.showMessageDialog(null, "Thêm thất bại");
             }
         }
     }//GEN-LAST:event_btnImportFileActionPerformed
@@ -782,27 +762,10 @@ public class NhanVienUI extends javax.swing.JFrame {
         JFileChooser jFileChooser = new JFileChooser();
         if (jFileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = jFileChooser.getSelectedFile();
-            try {
-                switch (export) {
-                    // @export :
-                    //      1 : tất cả
-                    //      2 : thống kê
-                    //      3 : tìm kiếm
-                    case 1:
-                        WordHelper.writeNV(file, nhanViens, "Thông tin nhân viên");
-                        break;
-                    case 2:
-                        WordHelper.writeTK(file, tks, "Thống kê nhân viên", thuocTinh);
-                        break;
-                    case 3:
-                        WordHelper.writeNV(file, nhanViens, "Tìm kiếm nhân viên");
-                        break;
-                    case 0:
-
-                }
+            if (NhanVien.exportDoc(file, nhanViens, export, tks, thuocTinh) == 1) {
                 JOptionPane.showMessageDialog(null, "Xuất file thành công");
-            } catch (IOException ex) {
-                Logger.getLogger(NhanVienUI.class.getName()).log(Level.SEVERE, null, ex);
+            } else {
+                JOptionPane.showMessageDialog(this, "Xuất file thất bại!");
             }
         }
     }//GEN-LAST:event_btnExportFileActionPerformed
@@ -816,17 +779,17 @@ public class NhanVienUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         TrangChu o = new TrangChu();
         o.setVisible(true);
-        setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_btnQuayLaiActionPerformed
 
-    private void txtMNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMNVActionPerformed
+    private void txtMaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtMNVActionPerformed
+    }//GEN-LAST:event_txtMaActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        this.dispose();
         new DangNhap().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -903,30 +866,36 @@ public class NhanVienUI extends javax.swing.JFrame {
     private javax.swing.JRadioButton rbDC;
     private javax.swing.JRadioButton rbEmail;
     private javax.swing.JRadioButton rbGT;
-    private javax.swing.JRadioButton rbMNV;
+    private javax.swing.JRadioButton rbMa;
     private javax.swing.JRadioButton rbNS;
     private javax.swing.JRadioButton rbSDT;
-    private javax.swing.JRadioButton rbTNV;
+    private javax.swing.JRadioButton rbTP;
+    private javax.swing.JRadioButton rbTen;
     private javax.swing.JTable table;
     private javax.swing.JTextField txtCMT;
     private javax.swing.JTextField txtCV;
     private javax.swing.JTextField txtDC;
     private javax.swing.JTextField txtEmail;
-    private javax.swing.JTextField txtMNV;
+    private javax.swing.JTextField txtMa;
     private javax.swing.JTextField txtSDT;
-    private javax.swing.JTextField txtTK;
-    private javax.swing.JTextField txtTNV;
+    private javax.swing.JTextField txtTen;
+    private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
 
     private void loadTable() {
         table.setEnabled(true);
         table.removeAll();
         if (nhanViens != null) {
-            String[] columns = new String[]{"Mã", "Tên",
-                "SĐT", "Địa chỉ", "CMT", "Ngày sinh", "Giới tính", "Email", "Chức vụ"};
+//            String[] columns = new String[]{"Mã", "Tên",
+//                "SĐT", "Địa chỉ", "CMT", "Ngày sinh", "Giới tính", "Email", "Chức vụ"};
+            String[] columns = new String[]{"TT", NhanVien.TT_MA, NhanVien.TT_TEN,
+                NhanVien.TT_SDT, NhanVien.TT_DIA_CHI, NhanVien.TT_CMT,
+                NhanVien.TT_NGAY_SINH, NhanVien.TT_GIOI_TINH, NhanVien.TT_EMAIL, NhanVien.TT_CHUC_VU};
             DefaultTableModel model = new DefaultTableModel(columns, 0);
-            for (NhanVien o : nhanViens) {
+            for (int i = 0; i < nhanViens.size(); i++) {
+                NhanVien o = nhanViens.get(i);
                 Vector vector = new Vector();
+                vector.add(i + 1);
                 vector.add(o.getMaNhanVien());
                 vector.add(o.getTenNhanVien());
                 vector.add(o.getSdtNhanVien());
@@ -944,8 +913,8 @@ public class NhanVienUI extends javax.swing.JFrame {
                 public void valueChanged(ListSelectionEvent e) {
                     if (table.getSelectedRow() >= 0) {
                         NhanVien o = nhanViens.get(table.getSelectedRow());// lấy đối tượng được chọn
-                        txtMNV.setText(o.getMaNhanVien() + "");
-                        txtTNV.setText(o.getTenNhanVien() + "");
+                        txtMa.setText(o.getMaNhanVien() + "");
+                        txtTen.setText(o.getTenNhanVien() + "");
                         txtSDT.setText(o.getSdtNhanVien() + "");
                         txtDC.setText(o.getDiaChiNhanVien() + "");
                         txtCMT.setText(o.getSoCMT() + "");
@@ -986,34 +955,9 @@ public class NhanVienUI extends javax.swing.JFrame {
         table.setEnabled(false);
     }
 
-//    private void loadTableTKR(String thuocTinh) {
-//        export = 2;
-//        // @export :
-//        //      0 : mặc định
-//        //      1 : tất cả
-//        //      2 : thống kê
-//        //      3 : tìm kiếm
-//        table.removeAll();
-//        if (tkrs != null) {
-//            String[] columns = new String[]{"TT", thuocTinh,
-//                "Tổng tiền", "Số lượng"};
-//            DefaultTableModel model = new DefaultTableModel(columns, 0);
-//            for (int i = 0; i < tkrs.size(); i++) {
-//                TKR tkr = tkrs.get(i);
-//                Vector vector = new Vector();
-//                vector.add(i + 1);
-//                vector.add(tkr.getTk().getThuocTinh());
-//                vector.add(tkr.getTongTien());
-//                vector.add(tkr.getTk().getSoLuong());
-//                model.addRow(vector);
-//            }
-//            table.setModel(model);
-//        }
-//        table.setEnabled(false);
-//    }
     private void reset() {
-        txtMNV.setText("");
-        txtTNV.setText("");
+        txtMa.setText("");
+        txtTen.setText("");
         txtSDT.setText("");
         txtDC.setText("");
         txtCMT.setText("");
@@ -1031,9 +975,9 @@ public class NhanVienUI extends javax.swing.JFrame {
     }
 
     private NhanVien getCurrentObject() {
-        int maNhanVien = (txtMNV.getText().equals(""))
-                ? (-1) : (Integer.parseInt(txtMNV.getText()));
-        String tenNhanVien = txtTNV.getText();
+        int maNhanVien = (txtMa.getText().equals(""))
+                ? (-1) : (Integer.parseInt(txtMa.getText()));
+        String tenNhanVien = txtTen.getText();
         String sdtNhanVien = txtSDT.getText();
         String diaChiNhanVien = txtDC.getText();
         String soCMT = txtCMT.getText();

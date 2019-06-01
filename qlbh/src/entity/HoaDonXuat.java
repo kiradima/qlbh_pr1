@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 public class HoaDonXuat {
 
     final static String COL_MA_KHACH_HANG = "maKhachHang";
+    final static String COL_MA_NHAN_VIEN = "maNhanVien";
 
     private int maXuat;
     private int maKhachHang;

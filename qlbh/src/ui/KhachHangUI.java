@@ -99,7 +99,7 @@ public class KhachHangUI extends javax.swing.JFrame {
         table = new javax.swing.JTable();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
-        dataNS = new com.toedter.calendar.JDateChooser();
+        dateNS = new com.toedter.calendar.JDateChooser();
         jButton11 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
@@ -317,8 +317,8 @@ public class KhachHangUI extends javax.swing.JFrame {
             }
         });
 
-        dataNS.setDateFormatString("dd-MM-yyyy");
-        dataNS.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        dateNS.setDateFormatString("dd-MM-yyyy");
+        dateNS.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jButton11.setBackground(new java.awt.Color(102, 102, 255));
         jButton11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -462,7 +462,7 @@ public class KhachHangUI extends javax.swing.JFrame {
                                 .addComponent(txtCMT)
                                 .addComponent(cbbGT, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(txtEmail)
-                                .addComponent(dataNS, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(dateNS, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(50, 50, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -541,7 +541,7 @@ public class KhachHangUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8)
-                            .addComponent(dataNS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(dateNS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
@@ -621,7 +621,7 @@ public class KhachHangUI extends javax.swing.JFrame {
                 && !txtSDT.getText().equals("")
                 && !txtDC.getText().equals("")
                 && !txtCMT.getText().equals("")
-                && !((JTextField) dataNS.getDateEditor().getUiComponent()).getText().equals("")
+                && !((JTextField) dateNS.getDateEditor().getUiComponent()).getText().equals("")
                 && !((String) cbbGT.getSelectedItem()).equals("")
                 && !txtEmail.getText().equals("")) {
             // nếu đảm bảo điền đầy đủ thông tin
@@ -642,7 +642,7 @@ public class KhachHangUI extends javax.swing.JFrame {
                 && !txtSDT.getText().equals("")
                 && !txtDC.getText().equals("")
                 && !txtCMT.getText().equals("")
-                && !((JTextField) dataNS.getDateEditor().getUiComponent()).getText().equals("")
+                && !((JTextField) dateNS.getDateEditor().getUiComponent()).getText().equals("")
                 && !((String) cbbGT.getSelectedItem()).equals("")
                 && !txtEmail.getText().equals("")) {
             // nếu đảm bảo điền đầy đủ thông tin
@@ -791,7 +791,7 @@ public class KhachHangUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox cbbGT;
-    private com.toedter.calendar.JDateChooser dataNS;
+    private com.toedter.calendar.JDateChooser dateNS;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -882,7 +882,7 @@ public class KhachHangUI extends javax.swing.JFrame {
                         txtSDT.setText(o.getSdtKhachHang() + "");
                         txtDC.setText(o.getDiaChi() + "");
                         txtCMT.setText(o.getSoCMT() + "");
-                        dataNS.setDate(o.getNgaySinh());
+                        dateNS.setDate(o.getNgaySinh());
                         if (o.getGioiTinh().toLowerCase().equals("nam")) {
                             cbbGT.setSelectedIndex(0);
                         } else {
@@ -901,7 +901,7 @@ public class KhachHangUI extends javax.swing.JFrame {
         txtSDT.setText("");
         txtDC.setText("");
         txtCMT.setText("");
-        ((JTextField) dataNS.getDateEditor().getUiComponent()).setText("");
+        ((JTextField) dateNS.getDateEditor().getUiComponent()).setText("");
         cbbGT.setSelectedIndex(0);
         txtEmail.setText("");
     }
@@ -915,7 +915,7 @@ public class KhachHangUI extends javax.swing.JFrame {
         String cmt = txtCMT.getText();
         Date ngaySinh = new Date(0, 1, 0);
         try {
-            ngaySinh = new SimpleDateFormat("dd-MM-yyyy").parse(((JTextField) dataNS.getDateEditor().getUiComponent()).getText());
+            ngaySinh = new SimpleDateFormat("dd-MM-yyyy").parse(((JTextField) dateNS.getDateEditor().getUiComponent()).getText());
         } catch (ParseException ex) {
             Logger.getLogger(KhachHangUI.class.getName()).log(Level.SEVERE, null, ex);
         }
