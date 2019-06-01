@@ -353,7 +353,7 @@ public class WordHelper {
         out.close();
     }
 
-    public static void writeNV(File file, ArrayList<NhanVien> list, String tittle) throws FileNotFoundException, IOException {
+    public static void exportNhanVien(File file, ArrayList<NhanVien> list, String tittle) throws FileNotFoundException, IOException {
         FileOutputStream out;
         try (XWPFDocument document = loadHeader(tittle)) {
             createTableNV(document, list);

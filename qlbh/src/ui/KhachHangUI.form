@@ -132,7 +132,7 @@
                               <Component id="txtCMT" alignment="0" max="32767" attributes="0"/>
                               <Component id="cbbGT" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtEmail" alignment="0" max="32767" attributes="0"/>
-                              <Component id="dataNS" min="-2" pref="224" max="-2" attributes="0"/>
+                              <Component id="dateNS" min="-2" pref="224" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="80" pref="50" max="32767" attributes="0"/>
@@ -235,7 +235,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
-                          <Component id="dataNS" min="-2" max="-2" attributes="0"/>
+                          <Component id="dateNS" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -712,7 +712,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton10ActionPerformed"/>
       </Events>
     </Component>
-    <Component class="com.toedter.calendar.JDateChooser" name="dataNS">
+    <Component class="com.toedter.calendar.JDateChooser" name="dateNS">
       <Properties>
         <Property name="dateFormatString" type="java.lang.String" value="dd-MM-yyyy"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">

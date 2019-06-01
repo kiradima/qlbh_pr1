@@ -331,7 +331,7 @@ public class KhachHang {
                 list = supportThongKe(COL_DIEN_THOAI_KHACH_HANG);
                 break;
             case TT_THANH_PHO:
-                String sql1 = "SELECT diaChi FROM qlbh." + KHACH_HANG;
+                String sql1 = "SELECT " + COL_DIA_CHI_KHACH_HANG + " FROM qlbh." + KHACH_HANG;
                 ArrayList<String> diaChis = new ArrayList();
                 ResultSet resultSet;
                 try {
