@@ -24,6 +24,8 @@ import javax.swing.JOptionPane;
  */
 public class HoaDonNhap {
 
+    final static String COL_MA_NHA_CUNG_CAP = "maNhaCungCap";
+    
     private int maNhap;
     private int maNhanVien;
     private int maNhaCungCap;

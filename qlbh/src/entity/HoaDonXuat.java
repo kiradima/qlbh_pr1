@@ -24,6 +24,8 @@ import javax.swing.JOptionPane;
  */
 public class HoaDonXuat {
 
+    final static String COL_MA_KHACH_HANG = "maKhachHang";
+
     private int maXuat;
     private int maKhachHang;
     private int maNhanVien;
@@ -253,7 +255,7 @@ public class HoaDonXuat {
                         createStatement().executeQuery(sql);
                 while (re.next()) {
                     TK tk = new TK(re.getInt("maKhachHang") + "", re.getInt("count(*)"));
-                    long tongTien = KhachHang.getTongTienXuat(re.getInt("maKhachHang"));
+                    long tongTien = KhachHang.getTongTienGiaoDich(re.getInt("maKhachHang"));
                     list.add(new TKR(tk, tongTien));
                 }
                 connectDatabase.getConnection().close();

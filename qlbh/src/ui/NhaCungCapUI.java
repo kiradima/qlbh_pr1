@@ -6,21 +6,17 @@
 package ui;
 
 import entity.NhaCungCap;
-import entity.NhanVien;
 import entity.TK;
-import helper.ExcelHelper;
-import helper.WordHelper;
+import java.awt.Font;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -45,6 +41,8 @@ public class NhaCungCapUI extends javax.swing.JFrame {
         initComponents();
         refresh();
         this.setLocationRelativeTo(null);
+        JTableHeader header = table.getTableHeader();
+        header.setFont(new Font("Tahoma", Font.BOLD, 14));
     }
 
     /**
@@ -78,7 +76,7 @@ public class NhaCungCapUI extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         txtMa = new javax.swing.JTextField();
         txtTen = new javax.swing.JTextField();
-        txtSdt = new javax.swing.JTextField();
+        txtSDT = new javax.swing.JTextField();
         txtDC = new javax.swing.JTextField();
         txtEmail = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
@@ -210,10 +208,10 @@ public class NhaCungCapUI extends javax.swing.JFrame {
 
         txtTen.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        txtSdt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtSdt.addActionListener(new java.awt.event.ActionListener() {
+        txtSDT.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtSDT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSdtActionPerformed(evt);
+                txtSDTActionPerformed(evt);
             }
         });
 
@@ -403,7 +401,7 @@ public class NhaCungCapUI extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
                             .addComponent(txtDC)
-                            .addComponent(txtSdt)
+                            .addComponent(txtSDT)
                             .addComponent(txtTen)
                             .addComponent(txtMa))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -442,7 +440,7 @@ public class NhaCungCapUI extends javax.swing.JFrame {
                             .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtSdt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -516,7 +514,7 @@ public class NhaCungCapUI extends javax.swing.JFrame {
         // TODO insert your handling code here:
         if (!txtMa.getText().equals("")
                 && !txtTen.getText().equals("")
-                && !txtSdt.getText().equals("")
+                && !txtSDT.getText().equals("")
                 && !txtDC.getText().equals("")
                 && !txtEmail.getText().equals("")) {
             // nếu đảm bảo điền đầy đủ thông tin
@@ -536,7 +534,7 @@ public class NhaCungCapUI extends javax.swing.JFrame {
         // TODO insert your handling code here:
         if (!txtMa.getText().equals("")
                 && !txtTen.getText().equals("")
-                && !txtSdt.getText().equals("")
+                && !txtSDT.getText().equals("")
                 && !txtDC.getText().equals("")
                 && !txtEmail.getText().equals("")) {
             // nếu đảm bảo điền đầy đủ thông tin
@@ -558,9 +556,9 @@ public class NhaCungCapUI extends javax.swing.JFrame {
         // TODO insert your handling code here:
     }//GEN-LAST:event_txtTimKiemActionPerformed
 
-    private void txtSdtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSdtActionPerformed
+    private void txtSDTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSDTActionPerformed
         // TODO insert your handling code here:
-    }//GEN-LAST:event_txtSdtActionPerformed
+    }//GEN-LAST:event_txtSDTActionPerformed
 
     private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
         // TODO insert your handling code here:
@@ -689,15 +687,12 @@ public class NhaCungCapUI extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NhaCungCapUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NhaCungCapUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NhaCungCapUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(NhaCungCapUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+
         //</editor-fold>
         //</editor-fold>
 
@@ -746,7 +741,7 @@ public class NhaCungCapUI extends javax.swing.JFrame {
     private javax.swing.JTextField txtDC;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtMa;
-    private javax.swing.JTextField txtSdt;
+    private javax.swing.JTextField txtSDT;
     private javax.swing.JTextField txtTen;
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
@@ -769,7 +764,7 @@ public class NhaCungCapUI extends javax.swing.JFrame {
             for (int i = 0; i < nhaCungCaps.size(); i++) {
                 NhaCungCap o = nhaCungCaps.get(i);
                 Vector vector = new Vector();
-                vector.add(i + "");
+                vector.add(i + 1);
                 vector.add(o.getMaNhaCungCap());
                 vector.add(o.getTenNhaCungCap());
                 vector.add(o.getDienThoai());
@@ -786,7 +781,7 @@ public class NhaCungCapUI extends javax.swing.JFrame {
                         NhaCungCap o = nhaCungCaps.get(table.getSelectedRow());// lấy đối tượng được chọn
                         txtMa.setText(o.getMaNhaCungCap() + "");
                         txtTen.setText(o.getTenNhaCungCap() + "");
-                        txtSdt.setText(o.getDienThoai() + "");
+                        txtSDT.setText(o.getDienThoai() + "");
                         txtDC.setText(o.getDiaChi() + "");
                         txtEmail.setText(o.getEmail() + "");
                     }
@@ -798,7 +793,7 @@ public class NhaCungCapUI extends javax.swing.JFrame {
     private void reset() {
         txtMa.setText("");
         txtTen.setText("");
-        txtSdt.setText("");
+        txtSDT.setText("");
         txtDC.setText("");
         txtEmail.setText("");
     }
@@ -807,7 +802,7 @@ public class NhaCungCapUI extends javax.swing.JFrame {
         int ma = (txtMa.getText().equals(""))
                 ? (0) : (Integer.parseInt(txtMa.getText()));
         String ten = txtTen.getText();
-        String sdt = txtSdt.getText();
+        String sdt = txtSDT.getText();
         String diaChi = txtDC.getText();
         String email = txtEmail.getText();
 
