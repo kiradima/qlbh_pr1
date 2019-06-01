@@ -342,7 +342,7 @@ public class WordHelper {
         }
     }
 
-    public static void writeHDN(File file, ArrayList<HoaDonNhap> list, String tittle) throws FileNotFoundException, IOException {
+    public static void exportHoaDonNhap(File file, ArrayList<HoaDonNhap> list, String tittle) throws FileNotFoundException, IOException {
         FileOutputStream out;
         try (XWPFDocument document = loadHeader(tittle)) {
             createTableHDN(document, list);

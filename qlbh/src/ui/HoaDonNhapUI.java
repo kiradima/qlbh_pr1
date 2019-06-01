@@ -56,6 +56,7 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
         initComponents();
         setTitle("Hóa đơn nhập");
         setLocation(200, 0);
+        refresh();
 
         nhanViens = NhanVien.getAll();
         loadCbbNV(nhanViens);
@@ -630,15 +631,9 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
                 thuocTinh = "Năm";
                 tkrs = HoaDonNhap.thongKeRieng(thuocTinh);
                 loadTableTKR(thuocTinh);
-            } //            else if (rbTT.isSelected()) {
-            //                thuocTinh = "Tổng tiền";
-            //                tks = HoaDonNhap.thongKe(thuocTinh);
-            //                loadTableTK(thuocTinh);
-            //            } 
-            else {
+            } else {
                 thuocTinh = "";
                 txtTongTien.setVisible(false);
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -680,7 +675,7 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
         // TODO insert your handling code here:
         export = 1;
         hoaDonNhaps = HoaDonNhap.getAll();
-        loadTableHDN();
+        loadTable();
         txtTongTien.setVisible(false);
     }//GEN-LAST:event_btnRefreshActionPerformed
 
@@ -747,10 +742,7 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
             if (rbNgay.isSelected()) {
                 hoaDonNhaps = HoaDonNhap.search(txtTK.getText(), "thoiGian");
             }
-//            if (rbTT.isSelected()) {
-//                hoaDonNhaps = HoaDonNhap.search(txtTK.getText(), "tongTien");
-//            }
-            loadTableHDN();
+            loadTable();
         } catch (ParseException e) {
 
         }
@@ -761,27 +753,11 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
         JFileChooser jFileChooser = new JFileChooser();
         if (jFileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = jFileChooser.getSelectedFile();
-            String type = file.getName().substring(file.getName().lastIndexOf(".") + 1);
-            if (type.equals("xls") || type.equals("xlsx")) {
-                try {
-                    ArrayList<HoaDonNhap> list = ExcelHelper.importHoaDonNhap(file);
-                    int re = -1;
-                    for (HoaDonNhap o : list) {
-                        re = HoaDonNhap.insert(o);
-                        if (re != 1) {
-                            break;
-                        }
-                    }
-                    if (re == 1) {
-                        JOptionPane.showMessageDialog(null, "Thêm thành công");
-                        refresh();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Thêm thất bại");
-                    }
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Thêm thất bại");
-                    Logger.getLogger(HoaDonNhapUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            if (HoaDonNhap.importExcel(file) == 1) {
+                JOptionPane.showMessageDialog(null, "Thêm thành công");
+                refresh();
+            } else {
+                JOptionPane.showMessageDialog(null, "Thêm thất bại");
             }
         }
     }//GEN-LAST:event_btnImportFileActionPerformed
@@ -791,31 +767,10 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
         JFileChooser jFileChooser = new JFileChooser();
         if (jFileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = jFileChooser.getSelectedFile();
-            try {
-                switch (export) {
-                    // @export :
-                    //      1 : tất cả
-                    //      2 : thống kê
-                    //      3 : tìm kiếm
-                    case 1:
-                        WordHelper.writeHDN(file, hoaDonNhaps, "Thông tin hóa đơn nhập");
-                        break;
-                    case 2:
-                        if (thuocTinh.equals("Tổng tiền")) {
-                            WordHelper.writeTK(file, tks, "Thống kê hóa đơn nhập", thuocTinh);
-                        } else {
-                            WordHelper.writeTKR(file, tkrs, "Thống kê hóa đơn nhập", thuocTinh);
-                        }
-                        break;
-                    case 3:
-                        WordHelper.writeHDN(file, hoaDonNhaps, "Tìm kiếm hóa đơn nhập");
-                        break;
-                    case 0:
-
-                }
+            if (HoaDonNhap.exportDoc(file, hoaDonNhaps, export, tks, thuocTinh) == 1) {
                 JOptionPane.showMessageDialog(null, "Xuất file thành công");
-            } catch (IOException ex) {
-                Logger.getLogger(HoaDonNhapUI.class.getName()).log(Level.SEVERE, null, ex);
+            } else {
+                JOptionPane.showMessageDialog(this, "Xuất file thất bại!");
             }
         }
     }//GEN-LAST:event_btnExportFileActionPerformed
@@ -837,7 +792,7 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
         // TODO insert your handling code here:
         TrangChu o = new TrangChu();
         o.setVisible(true);
-        setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_btnQuayLaiActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -937,19 +892,19 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
     private javax.swing.JLabel txtTongTien;
     // End of variables declaration//GEN-END:variables
 
-    private void loadTableHDN() {
+    private void loadTable() {
         table.setEnabled(true);
         table.removeAll();
         if (hoaDonNhaps != null) {
-            String[] columns = new String[]{"Mã", "Nhân viên",
-                "Nhà cung cấp", "Thời gian", "Tổng tiền"};
+            String[] columns = new String[]{"TT", HoaDonNhap.TT_MA_NHAP, "Nhân viên",
+                "Nhà cung cấp", HoaDonNhap.TT_THOI_GIAN, HoaDonNhap.TT_TONG_TIEN};
             DefaultTableModel model = new DefaultTableModel(columns, 0);
-            for (HoaDonNhap o : hoaDonNhaps) {
+            for (int i = 0; i < hoaDonNhaps.size(); i++) {
+                HoaDonNhap o = hoaDonNhaps.get(i);
                 Vector vector = new Vector();
+                vector.add(i + 1);
                 vector.add(o.getMaNhap() + "");
                 vector.add(NhanVien.get(o.getMaNhanVien()).getTenNhanVien());
-//                JOptionPane.showMessageDialog(null, o.getMaNhanVien() + "");
-//                vector.insert(NhaCungCap.get(o.getMaNhaCungCap()).getTenNhaCungCap());
                 vector.add(NhaCungCap.get(o.getMaNhaCungCap()).getTenNhaCungCap());
                 vector.add(new SimpleDateFormat("dd-MM-yyyy").format(o.getThoiGian()));
                 vector.add(new DecimalFormat("###.#").format(o.getTongTien()));
@@ -960,10 +915,8 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
                 @Override
                 public void valueChanged(ListSelectionEvent e) {
                     if (table.getSelectedRow() >= 0) {
-                        HoaDonNhap o = hoaDonNhaps.get(table.getSelectedRow());// lấy đối tượng được chọn
-                        // set mã hóa đơn nhập
+                        HoaDonNhap o = hoaDonNhaps.get(table.getSelectedRow());
                         txtMHDN.setText(o.getMaNhap() + "");
-                        //set cbb Mã nhân viên, tên nhân viên
                         for (int i = 0; i < nhanViens.size(); i++) {
                             if (nhanViens.get(i).getMaNhanVien() == o.getMaNhanVien()) {
                                 cbbMNV.setSelectedIndex(i);
@@ -971,7 +924,6 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
                                 break;
                             }
                         }
-                        //set nhà cung cấp
                         for (int i = 0; i < nhaCungCaps.size(); i++) {
                             if (nhaCungCaps.get(i).getMaNhaCungCap() == o.getMaNhaCungCap()) {
                                 cbbMNCC.setSelectedIndex(i);
@@ -979,9 +931,7 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
                                 break;
                             }
                         }
-                        //set thời gian
                         dateTG.setDate(o.getThoiGian());
-                        //set tổng tiền
                         txtTT.setText(new DecimalFormat("###.#").format(o.getTongTien()) + "");
                     }
                 }
@@ -1067,7 +1017,7 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
         hoaDonNhaps = new ArrayList();
         hoaDonNhaps = HoaDonNhap.getAll();
         export = 1;
-        loadTableHDN();
+        loadTable();
 
     }
 

@@ -5,18 +5,25 @@
  */
 package entity;
 
+import static entity.KhachHang.COL_NGAY_SINH_KHACH_HANG;
 import java.sql.ResultSet;
 import helper.ConnectDatabase;
+import helper.ExcelHelper;
+import helper.TinhThanhPho;
+import helper.WordHelper;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import ui.HoaDonNhapUI;
 
 /**
  *
@@ -24,9 +31,22 @@ import javax.swing.JOptionPane;
  */
 public class HoaDonNhap {
 
-    final static String COL_MA_NHA_CUNG_CAP = "maNhaCungCap";
+//    maNhap, maNhanVien, maNhaCungCap, thoiGian, tongTien
+    final static String HOA_DON_NHAP = "hoadonnhap";
+
+    final static String COL_MA_NHAP = "maNhap";
     final static String COL_MA_NHAN_VIEN = "maNhanVien";
-    
+    final static String COL_MA_NHA_CUNG_CAP = "maNhaCungCap";
+    final static String COL_THOI_GIAN = "thoiGian";
+    final static String COL_TONG_TIEN = "tongTien";
+
+    public final static String TT_MA_NHAP = "Mã nhập";
+    public final static String TT_MA_NHAN_VIEN = "Mã nhân viên";
+    public final static String TT_MA_NHA_CUNG_CAP = "Mã nhà cung cấp";
+    public final static String TT_THOI_GIAN = "Thời gian";
+    public final static String TT_TONG_TIEN = "Tổng tiền";
+
+//    public final static String TT_THANH_PHO = "Thành phố";
     private int maNhap;
     private int maNhanVien;
     private int maNhaCungCap;
@@ -64,7 +84,7 @@ public class HoaDonNhap {
         return maNhaCungCap;
     }
 
-    public void setMaNhaCungCap(int maNhaCungCap) {
+    public void setMaHoaDonNhap(int maNhaCungCap) {
         this.maNhaCungCap = maNhaCungCap;
     }
 
@@ -84,40 +104,72 @@ public class HoaDonNhap {
         this.tongTien = tongTien;
     }
 
-    
-
     public static ArrayList<HoaDonNhap> getAll() {
         ArrayList<HoaDonNhap> list = new ArrayList<>();
-        ConnectDatabase connectDatabase = new ConnectDatabase();
         try {
-            ResultSet re = connectDatabase.getConnection().
-                    createStatement().executeQuery("select * from hoadonnhap");
-            while (re.next()) {
-                list.add(new HoaDonNhap(re.getInt("maNhap"),
-                        re.getInt("maNhanVien"),
-                        re.getInt("maNhaCungCap"),
-                        re.getDate("thoiGian"),
-                        re.getDouble("tongTien")));
+
+            String sql = "select * from " + HOA_DON_NHAP;
+            ConnectDatabase connectDatabase = new ConnectDatabase();
+            Connection connection = connectDatabase.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                list.add(new HoaDonNhap(
+                        resultSet.getInt(COL_MA_NHAP),
+                        resultSet.getInt(COL_MA_NHAN_VIEN),
+                        resultSet.getInt(COL_MA_NHA_CUNG_CAP),
+                        new SimpleDateFormat("yyyy-MM-dd").parse(resultSet.getString(COL_THOI_GIAN)),
+                        resultSet.getDouble(COL_TONG_TIEN)
+                ));
             }
-            connectDatabase.close();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Lỗi truy vấn CSDL");
+        } catch (SQLException | ParseException ex) {
             Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
+    }
+
+    /**
+     *
+     * @param ma
+     * @return HoaDonNhap
+     */
+    public static HoaDonNhap get(int ma) {
+        HoaDonNhap o = null;
+        ConnectDatabase connectDatabase = new ConnectDatabase();
+        try {
+            ResultSet resultSet = connectDatabase.getConnection().
+                    createStatement().executeQuery("select * from " + HOA_DON_NHAP + " where "
+                            + COL_MA_NHAP + " = " + ma);
+            while (resultSet.next()) {
+                o = new HoaDonNhap(
+                        resultSet.getInt(COL_MA_NHAP),
+                        resultSet.getInt(COL_MA_NHAN_VIEN),
+                        resultSet.getInt(COL_MA_NHA_CUNG_CAP),
+                        new SimpleDateFormat("yyyy-MM-dd").parse(resultSet.getString(COL_THOI_GIAN)),
+                        resultSet.getDouble(COL_TONG_TIEN)
+                );
+            }
+            connectDatabase.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return o;
     }
 
     public static int insert(HoaDonNhap o) {
         ConnectDatabase connectDatabase = new ConnectDatabase();
         try {
             // nếu trả về 1 là thành công
-            return connectDatabase.getConnection().createStatement().executeUpdate(
-                    "insert into hoadonnhap values("
-                    + o.getMaNhap() + ", "
-                    + o.getMaNhanVien() + ", '"
-                    + o.getMaNhaCungCap()+ "', '"
-                    + new SimpleDateFormat("yyyy-MM-dd").format(o.getThoiGian()) + "', NULL"
-                    + ")");
+            return connectDatabase.getConnection().createStatement().executeUpdate("insert into "
+                    + HOA_DON_NHAP + " values('"
+                    + o.getMaNhap() + "','"
+                    + o.getMaNhanVien() + "','"
+                    + o.getMaNhaCungCap() + "','"
+                    + new SimpleDateFormat("yyyy-MM-dd").format(o.getThoiGian()) + "','"
+                    + o.getTongTien() + "')"
+            );
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Lỗi insert CSDL");
             Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
@@ -129,12 +181,14 @@ public class HoaDonNhap {
         ConnectDatabase connectDatabase = new ConnectDatabase();
         try {
             // nếu trả về 1 là thành công
-            return connectDatabase.getConnection().createStatement().executeUpdate(
-                    "update hoadonnhap set maNhanVien = " + o.getMaNhanVien()
-                    + ", maNhaCungCap = '" + o.getMaNhaCungCap()
-                    + "', thoiGian = '" + new SimpleDateFormat("yyyy-MM-dd").format(o.getThoiGian())
-                    + "', tongTien = " + o.getTongTien()
-                    + "where maNhap = " + o.getMaNhap());
+            return connectDatabase.getConnection().createStatement().executeUpdate("update "
+                    + HOA_DON_NHAP + " set " + COL_MA_NHAN_VIEN + " = '"
+                    + o.getMaNhanVien() + "'," + COL_MA_NHA_CUNG_CAP + " = '"
+                    + o.getMaNhaCungCap() + "'," + COL_THOI_GIAN + " = '"
+                    + new SimpleDateFormat("yyyy-MM-dd").format(o.getThoiGian()) + "'," + COL_TONG_TIEN + " = '"
+                    + o.getTongTien() + "'where " + COL_MA_NHAP + " = '"
+                    + o.getMaNhap() + "'"
+            );
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Lỗi update CSDL");
             Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
@@ -146,8 +200,9 @@ public class HoaDonNhap {
         ConnectDatabase connectDatabase = new ConnectDatabase();
         try {
             // nếu trả về 1 là thành công
-            return connectDatabase.getConnection().createStatement().executeUpdate(
-                    "delete from hoadonnhap where maNhap = " + ma);
+            return connectDatabase.getConnection().createStatement().executeUpdate("delete from "
+                    + HOA_DON_NHAP + " where "
+                    + COL_MA_NHAP + " = " + ma);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Lỗi delete CSDL");
             Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
@@ -155,231 +210,151 @@ public class HoaDonNhap {
         return -1;
     }
 
-    public static ArrayList<HoaDonNhap> search(String search, String type) throws ParseException {
+    public static ArrayList<HoaDonNhap> search(String search, String type) {
         ArrayList<HoaDonNhap> list = new ArrayList<>();
         ConnectDatabase connectDatabase = new ConnectDatabase();
-        String sql = "select * from hoadonnhap where ";
+        String sql = "select * from qlbh." + HOA_DON_NHAP + " where ";
         switch (type) {
-            case "maNhanVien":
-                sql += "maNhanVien = " + Integer.parseInt(search);
+            case TT_MA_NHAP:
+                sql += COL_MA_NHAP + " like '%" + search + "%'";
                 break;
-            case "maNhaCungCap":
-                sql += "maNhaCungCap = '" + search + "'";
+            case TT_MA_NHAN_VIEN:
+                sql += COL_MA_NHAN_VIEN + " like '%" + search + "%'";
                 break;
-            case "thoiGian":
-                sql += "thoiGian = '" + new SimpleDateFormat("yyyy-MM-dd")
-                        .format(new SimpleDateFormat("dd-MM-yyyy").parse(search)) + "'";
+            case TT_MA_NHA_CUNG_CAP:
+                sql += COL_MA_NHA_CUNG_CAP + " like '%" + search + "%'";
                 break;
-            case "tongTien":
-                sql += "tongTien = " + Double.parseDouble(search);
+            case TT_THOI_GIAN:
+                sql += COL_THOI_GIAN + " like '%" + search + "%'";
+                break;
+            case TT_TONG_TIEN:
+                sql += COL_TONG_TIEN + " like '%" + search + "%'";
                 break;
         }
+        System.out.println(sql);
+
         try {
-            ResultSet re = connectDatabase.getConnection().
+            ResultSet resultSet = connectDatabase.getConnection().
                     createStatement().executeQuery(sql);
-            while (re.next()) {
-                list.add(new HoaDonNhap(re.getInt("maNhap"),
-                        re.getInt("maNhanVien"),
-                        re.getInt("maNhaCungCap"),
-                        re.getDate("thoiGian"),
-                        re.getDouble("tongTien")));
+            while (resultSet.next()) {
+                list.add(new HoaDonNhap(
+                        resultSet.getInt(COL_MA_NHAP),
+                        resultSet.getInt(COL_MA_NHAN_VIEN),
+                        resultSet.getInt(COL_MA_NHA_CUNG_CAP),
+                        new SimpleDateFormat("yyyy-MM-dd").parse(resultSet.getString(COL_THOI_GIAN)),
+                        resultSet.getDouble(COL_TONG_TIEN)
+                ));
             }
             connectDatabase.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Lỗi truy vấn CSDL");
+            Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
             Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
 
     public static ArrayList<TK> thongKe(String thuocTinh) {
-        ConnectDatabase connectDatabase = new ConnectDatabase();
         ArrayList<TK> list = new ArrayList<>();
-        String sql;
-        ResultSet re;
-        try {
-            switch (thuocTinh) {
-                case "Mã nhân viên":
-                    sql = "select maNhanVien,count(*) from hoadonnhap group by maNhanVien";
-                    re = connectDatabase.getConnection().
-                            createStatement().executeQuery(sql);
-                    while (re.next()) {
-                        list.add(new TK(re.getInt("maNhanVien") + "",
-                                re.getInt("count(*)")));
-                    }
-                    connectDatabase.close();
-                    break;
-                case "Nhà cung cấp":
-                    sql = "select nhaCungCap,count(*) from hoadonnhap group by nhaCungCap";
-                    re = connectDatabase.getConnection().
-                            createStatement().executeQuery(sql);
-                    while (re.next()) {
-                        list.add(new TK(re.getString("nhaCungCap") + "",
-                                re.getInt("count(*)")));
-                    }
-                    connectDatabase.close();
-                    break;
-                case "Thời gian":
-                    sql = "select thoiGian,count(*) from hoadonnhap group by thoiGian";
-                    re = connectDatabase.getConnection().
-                            createStatement().executeQuery(sql);
-                    while (re.next()) {
-                        list.add(new TK(re.getDate("thoiGian") + "",
-                                re.getInt("count(*)")));
-                    }
-                    connectDatabase.close();
-                    break;
-                case "Tổng tiền":
-                    sql = "select tongTien,count(*) from hoadonnhap group by tongTien";
-                    re = connectDatabase.getConnection().
-                            createStatement().executeQuery(sql);
-                    while (re.next()) {
-                        list.add(new TK(new DecimalFormat("###.#").format(re.getDouble("tongTien")) + "",
-                                re.getInt("count(*)")));
-                    }
-                    connectDatabase.close();
-                    break;
-            }
-        } catch (SQLException e) {
-        }
-        return list;
-    }
-
-    public static ArrayList<TKR> thongKeRieng(String thuocTinh) throws SQLException {
-        ConnectDatabase connectDatabase = new ConnectDatabase();
-        ArrayList<TKR> list = new ArrayList<>();
-
-        String sql;
-        ResultSet re;
         switch (thuocTinh) {
-            case "Mã nhà cung cấp":
-                sql = "select maNhaCungCap,count(*) from qlbh.hoadonnhap group by maNhaCungCap";
-                re = connectDatabase.getConnection().
-                        createStatement().executeQuery(sql);
-                while (re.next()) {
-                    TK tk = new TK(re.getInt("maNhaCungCap") + "", re.getInt("count(*)"));
-                    long tongTien = HoaDonNhap.getTongNCC(re.getInt("maNhaCungCap") + "");
-                    list.add(new TKR(tk, tongTien));
-                }
-                connectDatabase.getConnection().close();
+            case TT_MA_NHAP:
+                list = supportThongKe(COL_MA_NHAP);
                 break;
-            case "Mã nhân viên":
-                sql = "select maNhanVien,count(*) from qlbh.hoadonnhap group by maNhanVien";
-                re = connectDatabase.getConnection().
-                        createStatement().executeQuery(sql);
-                while (re.next()) {
-                    TK tk = new TK(re.getInt("maNhanVien") + "", re.getInt("count(*)"));
-                    long tongTien = NhanVien.getTongTienXuat(re.getInt("maNhanVien"));
-                    list.add(new TKR(tk, tongTien));
-                }
-                connectDatabase.getConnection().close();
+            case TT_MA_NHAN_VIEN:
+                list = supportThongKe(COL_MA_NHAN_VIEN);
                 break;
-
-            case "Ngày":
-                sql = "select thoiGian, count(*), sum(tongTien) from qlbh.hoadonnhap group by thoiGian";
-                re = connectDatabase.getConnection().
-                        createStatement().executeQuery(sql);
-                while (re.next()) {
-                    Date date = re.getDate("thoiGian");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(date);
-                    TK tk = new TK(new SimpleDateFormat("dd-MM-yyyy").
-                            format(date), re.getInt("count(*)"));
-                    long tongTien = re.getLong("sum(tongTien)");
-                    list.add(new TKR(tk, tongTien));
-                }
-                connectDatabase.getConnection().close();
+            case TT_MA_NHA_CUNG_CAP:
+                list = supportThongKe(COL_MA_NHA_CUNG_CAP);
                 break;
-            case "Tháng":
-                // phương án là : lấy ra các tháng(cả năm) có trong csdl, 
-                //sau đó trả về các ngày trong mỗi tháng cùng với thống kê của nó
-                ArrayList<ThangNam> thangNams = new ArrayList<>();
-                sql = "select distinct month(thoiGian),year(thoiGian) from qlbh.hoadonnhap;";
-                re = connectDatabase.getConnection().
-                        createStatement().executeQuery(sql);
-                while (re.next()) {
-                    thangNams.add(new ThangNam(re.getInt("month(thoiGian)"),
-                            re.getInt("year(thoiGian)")));
-                }
-                for (ThangNam thangNam : thangNams) {
-                    //liệt kê tất cả thuộc tính cần thiết tháng xx, năm xxxx
-                    sql = "select count(*), sum(tongTien) from qlbh.hoadonnhap \n"
-                            + "where month(thoiGian) = '" + thangNam.getThang() + "' \n"
-                            + "and year(thoiGian) = '" + thangNam.getNam() + "'";
-                    re = connectDatabase.getConnection().
-                            createStatement().executeQuery(sql);
-                    while (re.next()) {
-                        TK tk = new TK(thangNam.getThang() + "-"
-                                + thangNam.getNam(), re.getInt("count(*)"));
-                        long tongTien = re.getLong("sum(tongTien)");
-                        list.add(new TKR(tk, tongTien));
-                    }
-                }
-
-                connectDatabase.getConnection().close();
+            case TT_THOI_GIAN:
+                list = supportThongKe(COL_THOI_GIAN);
                 break;
-            case "Năm":
-
-                ArrayList<Integer> nams = new ArrayList<>();
-                // phương án là : lấy ra các năm có trong csdl, 
-                //sau đó trả về các ngày trong mỗi năm cùng với thống kê của nó
-                sql = "select distinct year(thoiGian) from qlbh.hoadonnhap";
-                re = connectDatabase.getConnection().
-                        createStatement().executeQuery(sql);
-                while (re.next()) {
-                    nams.add(re.getInt("year(thoiGian)"));
-                }
-                for (Integer nam : nams) {
-                    //liệt kê tất cả thuộc tính cần thiết tháng xx, năm xxxx
-                    sql = "select count(*), sum(tongTien) from qlbh.hoadonnhap"
-                            + " where year(thoiGian) = '" + nam + "'";
-                    re = connectDatabase.getConnection().
-                            createStatement().executeQuery(sql);
-                    while (re.next()) {
-                        TK tk = new TK(nam + "", re.getInt("count(*)"));
-                        long tongTien = re.getLong("sum(tongTien)");
-                        list.add(new TKR(tk, tongTien));
-                    }
-                }
-                connectDatabase.getConnection().close();
+            case TT_TONG_TIEN:
+                list = supportThongKe(COL_TONG_TIEN);
                 break;
         }
         return list;
     }
 
-    public static long getTongNCC(String mncc) {
-        ConnectDatabase connectDatabase = new ConnectDatabase();
+    private static ArrayList<TK> supportThongKe(String column) {
+        ArrayList<TK> list = new ArrayList<>();
         try {
+            String sql = "select " + column + ",count(*) from qlbh."
+                    + HOA_DON_NHAP + " group by " + column;
+            ConnectDatabase connectDatabase = new ConnectDatabase();
             ResultSet re = connectDatabase.getConnection().
-                    createStatement().executeQuery("select sum(tongTien) "
-                            + "from qlbh.hoadonnhap where maNhaCungCap = '" + mncc + "'");
+                    createStatement().executeQuery(sql);
             while (re.next()) {
-                return re.getLong("sum(tongTien)");
+                list.add(new TK(re.getString(column) + "",
+                        re.getInt("count(*)")));
             }
             connectDatabase.close();
         } catch (SQLException ex) {
-            Logger.getLogger(NhanVien.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(KhachHang.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return -1;
+        return list;
     }
 
-    public static HoaDonNhap get(int ma) {
-        HoaDonNhap o = null;
-        ConnectDatabase connectDatabase = new ConnectDatabase();
-        try {
-            ResultSet re = connectDatabase.getConnection().
-                    createStatement().executeQuery("select * from qlbh.hoadonnhap where maNhap = " + ma);
-            while (re.next()) {
-                o = new HoaDonNhap(re.getInt("maNhap"),
-                        re.getInt("maNhanVien"),
-                        re.getInt("maNhaCungCap"),
-                        re.getDate("thoiGian"),
-                        re.getDouble("tongTien"));
+//    public static long getTongTienGiaoDich(int ma) {
+//        ConnectDatabase connectDatabase = new ConnectDatabase();
+//        try {
+//            ResultSet re = connectDatabase.getConnection().
+//                    createStatement().executeQuery("select sum(tongTien) "
+//                            + "from qlbh." + HOA_DON_NHAP
+//                            + " where " + HoaDonNhap.COL_MA_NHAP + " = '" + ma + "'");
+//            while (re.next()) {
+//                return re.getLong("sum(tongTien)");
+//            }
+//            connectDatabase.close();
+//        } catch (SQLException ex) {
+//            Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return -1;
+//    }
+    public static int importExcel(File file) {
+        int re = -1;
+        String type = file.getName().substring(file.getName().lastIndexOf(".") + 1);
+        if (type.equals("xls") || type.equals("xlsx")) {
+            ArrayList<HoaDonNhap> list = new ArrayList<>();
+            try {
+                list = ExcelHelper.importHoaDonNhap(file);
+            } catch (Exception ex) {
+                Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
             }
-            connectDatabase.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
+            for (HoaDonNhap o : list) {
+                re = HoaDonNhap.insert(o);
+                if (re != 1) {
+                    break;
+                }
+            }
         }
-        return o;
+        return re;
+    }
+
+    public static int exportDoc(File file, ArrayList<HoaDonNhap> hoaDonNhaps, int export,
+            ArrayList<TK> tks, String thuocTinh) {
+        try {
+            switch (export) {
+                // @export :
+                //      1 : tất cả
+                //      2 : thống kê
+                //      3 : tìm kiếm
+                case 1:
+                    WordHelper.exportHoaDonNhap(file, hoaDonNhaps, "THÔNG TIN HÓA ĐƠN NHẬP");
+                    break;
+                case 2:
+                    WordHelper.writeTK(file, tks, "THỐNG KÊ HÓA ĐƠN NHẬP", thuocTinh);
+                    break;
+                case 3:
+                    WordHelper.exportHoaDonNhap(file, hoaDonNhaps, "TÌM KIẾM HÓA ĐƠN NHẬP");
+                    break;
+                case 0:
+            }
+            return 1;
+        } catch (IOException ex) {
+            Logger.getLogger(HoaDonNhapUI.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
     }
 }

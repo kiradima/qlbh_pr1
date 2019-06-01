@@ -194,9 +194,7 @@ public class KhachHang {
                 );
             }
             connectDatabase.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(KhachHang.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
+        } catch (SQLException | ParseException ex) {
             Logger.getLogger(KhachHang.class.getName()).log(Level.SEVERE, null, ex);
         }
         return o;
