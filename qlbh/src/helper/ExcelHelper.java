@@ -498,7 +498,7 @@ public class ExcelHelper {
         return list;
     }
 
-    public static ArrayList<NhaCungCap> readNhaCC(File file) throws Exception {
+    public static ArrayList<NhaCungCap> importNhaCungCap(File file) throws Exception {
         ArrayList<NhaCungCap> list = new ArrayList<>();
         // Đọc một file XSL.
         FileInputStream inputStream = new FileInputStream(file);

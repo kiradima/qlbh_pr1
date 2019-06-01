@@ -598,15 +598,15 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtTNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTNVActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
     }//GEN-LAST:event_txtTNVActionPerformed
 
     private void rbMNCCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbMNCCActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
     }//GEN-LAST:event_rbMNCCActionPerformed
 
     private void btnThongKeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThongKeActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
         txtTongTien.setVisible(true);
         tks = new ArrayList<>();
         try {
@@ -647,13 +647,13 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnThongKeActionPerformed
 
     private void cbbMNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbMNVActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
         // chọn mã -> show tên
         txtTNV.setText(nhanViens.get(cbbMNV.getSelectedIndex()).getTenNhanVien());
     }//GEN-LAST:event_cbbMNVActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
         //nếu xác nhận là có 
         if (0 == JOptionPane.showConfirmDialog(null, "Xác nhận", "Thêm", 0)) {
             if (!txtMHDN.getText().equals("")
@@ -677,7 +677,7 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
         export = 1;
         hoaDonNhaps = HoaDonNhap.getAll();
         loadTableHDN();
@@ -685,7 +685,7 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
         //nếu xác nhận là có 
         if (0 == JOptionPane.showConfirmDialog(null, "Xác nhận", "Sửa", 0)) {
             if (!txtMHDN.getText().equals("")
@@ -709,7 +709,7 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
         //nếu xác nhận là có 
         if (0 == JOptionPane.showConfirmDialog(null, "Xác nhận", "Xóa", 0)) {
             if (!txtMHDN.getText().equals("")) { // xóa chỉ cần nhập mã
@@ -730,7 +730,7 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnTKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTKActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
         export = 3;
         // @export :
         //      1 : tất cả
@@ -757,7 +757,7 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTKActionPerformed
 
     private void btnImportFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportFileActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
         JFileChooser jFileChooser = new JFileChooser();
         if (jFileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = jFileChooser.getSelectedFile();
@@ -787,7 +787,7 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnImportFileActionPerformed
 
     private void btnExportFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportFileActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
         JFileChooser jFileChooser = new JFileChooser();
         if (jFileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = jFileChooser.getSelectedFile();
@@ -821,7 +821,7 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExportFileActionPerformed
 
     private void btnCTHDNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCTHDNActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
         HoaDonNhap o = getCurrentO();
         HoaDonNhapChiTietUI frame = new HoaDonNhapChiTietUI(o.getMaNhap());
         frame.show();
@@ -829,30 +829,30 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCTHDNActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
         reset();
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnQuayLaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuayLaiActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
         TrangChu o = new TrangChu();
         o.setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_btnQuayLaiActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
         new DangNhap().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void cbbMNCCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbMNCCActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
         txtTNCC.setText(nhaCungCaps.get(cbbMNCC.getSelectedIndex()).getTenNhaCungCap());
     }//GEN-LAST:event_cbbMNCCActionPerformed
 
     private void txtTNCCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTNCCActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
     }//GEN-LAST:event_txtTNCCActionPerformed
 
     /**
@@ -949,7 +949,7 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
                 vector.add(o.getMaNhap() + "");
                 vector.add(NhanVien.get(o.getMaNhanVien()).getTenNhanVien());
 //                JOptionPane.showMessageDialog(null, o.getMaNhanVien() + "");
-//                vector.add(NhaCungCap.get(o.getMaNhaCungCap()).getTenNhaCungCap());
+//                vector.insert(NhaCungCap.get(o.getMaNhaCungCap()).getTenNhaCungCap());
                 vector.add(NhaCungCap.get(o.getMaNhaCungCap()).getTenNhaCungCap());
                 vector.add(new SimpleDateFormat("dd-MM-yyyy").format(o.getThoiGian()));
                 vector.add(new DecimalFormat("###.#").format(o.getTongTien()));

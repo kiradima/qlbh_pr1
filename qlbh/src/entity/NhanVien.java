@@ -8,7 +8,6 @@ package entity;
 import helper.ConnectDatabase;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -363,7 +362,7 @@ public class NhanVien {
         return -1;
     }
 
-    public static ArrayList<NhanVien> search(String search, String type) throws ParseException {
+    public static ArrayList<NhanVien> search(String search, String type) {
         ArrayList<NhanVien> list = new ArrayList<>();
         ConnectDatabase connectDatabase = new ConnectDatabase();
         String sql = "select * from qlbh.nhanvien where ";
@@ -383,10 +382,15 @@ public class NhanVien {
             case "soCMT":
                 sql += "soCMT like '%" + search + "%'";
                 break;
-            case "ngaySinh":
-                sql += "ngaySinh = '" + new SimpleDateFormat("yyyy-MM-dd")
-                        .format(new SimpleDateFormat("dd-MM-yyyy").parse(search)) + "'";
-                break;
+            case "ngaySinh": {
+                try {
+                    sql += "ngaySinh = '" + new SimpleDateFormat("yyyy-MM-dd")
+                            .format(new SimpleDateFormat("dd-MM-yyyy").parse(search)) + "'";
+                } catch (ParseException ex) {
+                    Logger.getLogger(NhanVien.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            break;
             case "gioiTinh":
                 sql += "lower(gioiTinh) like '" + search.toLowerCase() + "'";
                 break;
