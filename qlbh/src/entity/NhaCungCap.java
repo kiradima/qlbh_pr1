@@ -331,7 +331,7 @@ public class NhaCungCap {
             ResultSet re = connectDatabase.getConnection().
                     createStatement().executeQuery("select sum(tongTien) "
                             + "from qlbh." + HOA_DON_NHAP
-                            + " where " + HoaDonNhap.COL_MA_NHA_CUNG_CAP + " = '" + ma + "'");
+                            + " where " + HoaDonNhap.COL_MA_NHAP + " = '" + ma + "'");
             while (re.next()) {
                 return re.getLong("sum(tongTien)");
             }
@@ -391,7 +391,7 @@ public class NhaCungCap {
 //    public static void main(String[] args) {
 //
 //        @test thongKe
-//        ArrayList<TK> tks = thongKe(TT_EMAIL);
+//        ArrayList<TK> tks = thongKe(TT_TONG_TIEN);
 //        for (TK tk : tks) {
 //            System.out.println(tk.getThuocTinh() + " - " + tk.getSoLuong());
 //        }

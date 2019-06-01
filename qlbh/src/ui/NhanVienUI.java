@@ -7,17 +7,12 @@ package ui;
 
 import entity.NhanVien;
 import entity.TK;
-import helper.ExcelHelper;
-import helper.WordHelper;
 import java.awt.Font;
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -886,8 +881,6 @@ public class NhanVienUI extends javax.swing.JFrame {
         table.setEnabled(true);
         table.removeAll();
         if (nhanViens != null) {
-//            String[] columns = new String[]{"Mã", "Tên",
-//                "SĐT", "Địa chỉ", "CMT", "Ngày sinh", "Giới tính", "Email", "Chức vụ"};
             String[] columns = new String[]{"TT", NhanVien.TT_MA, NhanVien.TT_TEN,
                 NhanVien.TT_SDT, NhanVien.TT_DIA_CHI, NhanVien.TT_CMT,
                 NhanVien.TT_NGAY_SINH, NhanVien.TT_GIOI_TINH, NhanVien.TT_EMAIL, NhanVien.TT_CHUC_VU};
