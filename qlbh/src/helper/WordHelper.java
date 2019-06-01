@@ -57,7 +57,7 @@ public class WordHelper {
         out.close();
     }
 
-    public static void writeMayTinh(File file, ArrayList<MayTinh> list, String tittle) throws FileNotFoundException, IOException {
+    public static void exportMayTinh(File file, ArrayList<MayTinh> list, String tittle) throws FileNotFoundException, IOException {
         FileOutputStream out;
         try (XWPFDocument document = loadHeader(tittle)) {
             createTableMayTinh(document, list);

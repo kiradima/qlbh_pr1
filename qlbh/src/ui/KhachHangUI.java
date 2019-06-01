@@ -6,8 +6,6 @@
 package ui;
 
 import entity.KhachHang;
-import entity.KhachHang;
-import entity.NhaCungCap;
 import entity.TK;
 import java.awt.Font;
 import java.io.File;
@@ -572,15 +570,7 @@ public class KhachHangUI extends javax.swing.JFrame {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
-
-        txtMa.setText("");
-        txtTen.setText("");
-        txtSDT.setText("");
-        txtDC.setText("");
-        txtCMT.setText("");
-        dataNS.setDate(null);
-        cbbGT.setSelectedIndex(0);
-        txtEmail.setText("");
+        reset();
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -864,7 +854,7 @@ public class KhachHangUI extends javax.swing.JFrame {
         if (khachHangs != null) {
             String[] columns = new String[]{"TT", KhachHang.TT_MA, KhachHang.TT_TEN,
                 KhachHang.TT_SDT, KhachHang.TT_DIA_CHI, KhachHang.TT_CMT,
-                KhachHang.TT_NGAY_SINH, KhachHang.TT_GIOI_TINH, KhachHang.TT_EMAIL,};
+                KhachHang.TT_NGAY_SINH, KhachHang.TT_GIOI_TINH, KhachHang.TT_EMAIL};
             DefaultTableModel model = new DefaultTableModel(columns, 0);
             for (int i = 0; i < khachHangs.size(); i++) {
                 KhachHang o = khachHangs.get(i);

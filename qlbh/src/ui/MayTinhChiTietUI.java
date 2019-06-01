@@ -33,17 +33,17 @@ import javax.swing.table.JTableHeader;
  *
  * @author hantr
  */
-public class MayTinhChiTietF extends javax.swing.JFrame {
+public class MayTinhChiTietUI extends javax.swing.JFrame {
 
     ConnectDatabase ketNoiQLlBH = null;
     Connection connection = null;
     /**
-     * Creates new form MayTinhChiTietF
+     * Creates new form MayTinhChiTietUI
      */
 
     ArrayList<MayTinhChiTiet> listMayTinhChiTiets = MayTinhChiTiet.getAll();
 
-    public MayTinhChiTietF() throws ClassNotFoundException, SQLException {
+    public MayTinhChiTietUI() {
         ketNoiQLlBH = new ConnectDatabase();
         connection = ketNoiQLlBH.getConnection();
         initComponents();
@@ -54,7 +54,7 @@ public class MayTinhChiTietF extends javax.swing.JFrame {
         comboboxGiaBan();
         comboboxGiaNhap();
         comboboxMauSac();
-        mamaytinhtt.setText("" + MayTinhF.docMaMayTinh());
+        mamaytinhtt.setText("" + MayTinhUI.docMaMayTinh());
         loadData();
         JTableHeader header = bangmaytinhchitiet.getTableHeader();
         header.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -563,7 +563,7 @@ public class MayTinhChiTietF extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.dispose();
-        new MayTinhF().setVisible(true);
+        new MayTinhUI().setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -587,7 +587,7 @@ public class MayTinhChiTietF extends javax.swing.JFrame {
             // TODO add your handling code here:
             themMayTinhChiTiet();
         } catch (SQLException ex) {
-            Logger.getLogger(MayTinhChiTietF.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MayTinhChiTietUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         loadData();
         JOptionPane.showMessageDialog(this, "Thêm máy tính chi tiết thành công!");
@@ -598,7 +598,7 @@ public class MayTinhChiTietF extends javax.swing.JFrame {
         try {
             suaMayTinhChiTiet();
         } catch (SQLException ex) {
-            Logger.getLogger(MayTinhF.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MayTinhUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         loadData();
         JOptionPane.showMessageDialog(this, "Sửa máy tính thành công!");
@@ -611,7 +611,7 @@ public class MayTinhChiTietF extends javax.swing.JFrame {
             try {
                 xoaMayTinhChiTiet();
             } catch (SQLException ex) {
-                Logger.getLogger(MayTinhF.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MayTinhUI.class.getName()).log(Level.SEVERE, null, ex);
             }
             loadData();
             JOptionPane.showMessageDialog(this, "Xóa máy tính thành công!");
@@ -678,14 +678,16 @@ public class MayTinhChiTietF extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MayTinhChiTietF.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MayTinhChiTietUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MayTinhChiTietF.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MayTinhChiTietUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MayTinhChiTietF.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MayTinhChiTietUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MayTinhChiTietF.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MayTinhChiTietUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -693,11 +695,11 @@ public class MayTinhChiTietF extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new MayTinhChiTietF().setVisible(true);
+                    new MayTinhChiTietUI().setVisible(true);
                 } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(MayTinhChiTietF.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(MayTinhChiTietUI.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (SQLException ex) {
-                    Logger.getLogger(MayTinhChiTietF.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(MayTinhChiTietUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -758,7 +760,7 @@ public class MayTinhChiTietF extends javax.swing.JFrame {
         bangmaytinhchitiet.removeAll();
         String[] columns = new String[]{"Mã máy tính chi tiết", "Mã máy tính", "Mô tả", "Giá nhập", "Giá bán", "Cấu hình", "Màu sắc", "Số lượng tồn kho"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
-        String sql = "select * from maytinhchitiet where maMayTinh = '" + MayTinhF.docMaMayTinh() + "'; ";
+        String sql = "select * from maytinhchitiet where maMayTinh = '" + MayTinhUI.docMaMayTinh() + "'; ";
         System.out.println(sql);
         Statement statement = null;
         ResultSet resultSet = null;
@@ -820,7 +822,7 @@ public class MayTinhChiTietF extends javax.swing.JFrame {
 
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         for (int i = 0; i < listMayTinhChiTiets.size(); i++) {
-            if (listMayTinhChiTiets.get(i).getMaMayTinh() == MayTinhF.docMaMayTinh()) {
+            if (listMayTinhChiTiets.get(i).getMaMayTinh() == MayTinhUI.docMaMayTinh()) {
                 model.addElement(listMayTinhChiTiets.get(i).getMaMayTinhChiTiet());
             }
         }
@@ -832,7 +834,7 @@ public class MayTinhChiTietF extends javax.swing.JFrame {
 
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         for (int i = 0; i < listMayTinhChiTiets.size(); i++) {
-            if (listMayTinhChiTiets.get(i).getMaMayTinh() == MayTinhF.docMaMayTinh()) {
+            if (listMayTinhChiTiets.get(i).getMaMayTinh() == MayTinhUI.docMaMayTinh()) {
                 model.addElement(new DecimalFormat("##").format(listMayTinhChiTiets.get(i).getGiaNhap()));
             }
         }
@@ -844,7 +846,7 @@ public class MayTinhChiTietF extends javax.swing.JFrame {
 
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         for (int i = 0; i < listMayTinhChiTiets.size(); i++) {
-            if (listMayTinhChiTiets.get(i).getMaMayTinh() == MayTinhF.docMaMayTinh()) {
+            if (listMayTinhChiTiets.get(i).getMaMayTinh() == MayTinhUI.docMaMayTinh()) {
                 model.addElement(new DecimalFormat("##").format(listMayTinhChiTiets.get(i).getGiaBan()));
             }
         }
@@ -856,7 +858,7 @@ public class MayTinhChiTietF extends javax.swing.JFrame {
 
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         for (int i = 0; i < listMayTinhChiTiets.size(); i++) {
-            if (listMayTinhChiTiets.get(i).getMaMayTinh() == MayTinhF.docMaMayTinh()) {
+            if (listMayTinhChiTiets.get(i).getMaMayTinh() == MayTinhUI.docMaMayTinh()) {
                 model.addElement(listMayTinhChiTiets.get(i).getMauSac());
             }
         }
@@ -868,29 +870,29 @@ public class MayTinhChiTietF extends javax.swing.JFrame {
         String sql = "select * from maytinhchitiet where maMayTinhChiTiet = " + mamaytinhchitietI.getSelectedItem();
         System.out.println(sql);
         thucThiSqlTimKiem(sql);
-        
+
     }
 
     private void timKiemTheoGiaNhap() {
-        String sql = "select * from maytinhchitiet where giaNhap = " + gianhapcbb.getSelectedItem() + " and maMayTinh=" + MayTinhF.docMaMayTinh() + ";";
+        String sql = "select * from maytinhchitiet where giaNhap = " + gianhapcbb.getSelectedItem() + " and maMayTinh=" + MayTinhUI.docMaMayTinh() + ";";
         System.out.println(sql);
         thucThiSqlTimKiem(sql);
     }
 
     private void timKiemTheoGiaBan() {
-        String sql = "select * from maytinhchitiet where giaBan = " + giabancbb.getSelectedItem() + " and maMayTinh=" + MayTinhF.docMaMayTinh() + ";";
+        String sql = "select * from maytinhchitiet where giaBan = " + giabancbb.getSelectedItem() + " and maMayTinh=" + MayTinhUI.docMaMayTinh() + ";";
         System.out.println(sql);
         thucThiSqlTimKiem(sql);
     }
 
     private void timKiemTheoMauSac() {
-        String sql = "select * from maytinhchitiet where mauSac ='" + maucbb.getSelectedItem() + "' and maMayTinh=" + MayTinhF.docMaMayTinh() + ";";
+        String sql = "select * from maytinhchitiet where mauSac ='" + maucbb.getSelectedItem() + "' and maMayTinh=" + MayTinhUI.docMaMayTinh() + ";";
         System.out.println(sql);
         thucThiSqlTimKiem(sql);
     }
 
     private void thucThiSqlTimKiem(String sql) {
-        
+
         String[] columns = new String[]{"Mã máy tính chi tiết", "Mã máy tính", "Mô tả", "Giá nhập", "Giá bán", "Cấu hình", "Màu sắc", "Số lượng tồn kho"};
 
         DefaultTableModel model = new DefaultTableModel(columns, 0);
@@ -955,7 +957,7 @@ public class MayTinhChiTietF extends javax.swing.JFrame {
         String cauHinh = cauhinhtt.getText();
         //
         String mauSac = mausactt.getText();
-        int maMayTinh = MayTinhF.docMaMayTinh();
+        int maMayTinh = MayTinhUI.docMaMayTinh();
 
         //
         String soluongtonkho = tonkhott.getText();
@@ -986,7 +988,7 @@ public class MayTinhChiTietF extends javax.swing.JFrame {
         String cauHinh = cauhinhtt.getText();
         //
         String mauSac = mausactt.getText();
-        int maMayTinh = MayTinhF.docMaMayTinh();
+        int maMayTinh = MayTinhUI.docMaMayTinh();
 
         //
         String soluongtonkho = tonkhott.getText();
