@@ -295,7 +295,7 @@ public class ExcelHelper {
         return list;
     }
 
-    public static ArrayList<MayTinh> readMayTinh(File file) throws Exception {
+    public static ArrayList<MayTinh> importMayTinh(File file) throws Exception {
         ArrayList<MayTinh> list = new ArrayList<>();
         // Đọc một file XSL.
         FileInputStream inputStream = new FileInputStream(file);

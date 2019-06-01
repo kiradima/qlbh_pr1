@@ -53,25 +53,6 @@ public class KhachHang {
 
     public final static String TT_THANH_PHO = "Thành phố";
 
-    private static ArrayList<TK> thongK(String column) {
-        ArrayList<TK> list = new ArrayList<>();
-        try {
-            String sql = "select " + column + ",count(*) from qlbh."
-                    + KHACH_HANG + " group by " + column;
-            ConnectDatabase connectDatabase = new ConnectDatabase();
-            ResultSet re = connectDatabase.getConnection().
-                    createStatement().executeQuery(sql);
-            while (re.next()) {
-                list.add(new TK(re.getString(column) + "",
-                        re.getInt("count(*)")));
-            }
-            connectDatabase.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(KhachHang.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return list;
-    }
-
     private int maKhachHang;
     private String tenKhachHang;
     private String sdtKhachHang;
@@ -339,17 +320,15 @@ public class KhachHang {
     public static ArrayList<TK> thongKe(String thuocTinh) {
         ConnectDatabase connectDatabase = new ConnectDatabase();
         ArrayList<TK> list = new ArrayList<>();
-        String sql;
-        ResultSet re;
         switch (thuocTinh) {
             case TT_MA:
-                list = thongK(COL_MA_KHACH_HANG);
+                list = supportThongKe(COL_MA_KHACH_HANG);
                 break;
             case TT_TEN:
-                list = thongK(COL_TEN_KHACH_HANG);
+                list = supportThongKe(COL_TEN_KHACH_HANG);
                 break;
             case TT_SDT:
-                list = thongK(COL_DIEN_THOAI_KHACH_HANG);
+                list = supportThongKe(COL_DIEN_THOAI_KHACH_HANG);
                 break;
             case TT_THANH_PHO:
                 String sql1 = "SELECT diaChi FROM qlbh." + KHACH_HANG;
@@ -380,21 +359,40 @@ public class KhachHang {
                 }
                 break;
             case TT_CMT:
-                list = thongK(COL_CMT_KHACH_HANG);
+                list = supportThongKe(COL_CMT_KHACH_HANG);
                 break;
             case TT_NGAY_SINH:
-                list = thongK(COL_NGAY_SINH_KHACH_HANG);
+                list = supportThongKe(COL_NGAY_SINH_KHACH_HANG);
                 break;
             case TT_GIOI_TINH:
-                list = thongK(COL_GIOI_TINH_KHACH_HANG);
+                list = supportThongKe(COL_GIOI_TINH_KHACH_HANG);
                 break;
             case TT_EMAIL:
-                list = thongK(COL_EMAIL_KHACH_HANG);
+                list = supportThongKe(COL_EMAIL_KHACH_HANG);
                 break;
 
         }
         return list;
 
+    }
+
+    private static ArrayList<TK> supportThongKe(String column) {
+        ArrayList<TK> list = new ArrayList<>();
+        try {
+            String sql = "select " + column + ",count(*) from qlbh."
+                    + KHACH_HANG + " group by " + column;
+            ConnectDatabase connectDatabase = new ConnectDatabase();
+            ResultSet re = connectDatabase.getConnection().
+                    createStatement().executeQuery(sql);
+            while (re.next()) {
+                list.add(new TK(re.getString(column) + "",
+                        re.getInt("count(*)")));
+            }
+            connectDatabase.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(KhachHang.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
 
     public static long getTongTienGiaoDich(int ma) {
