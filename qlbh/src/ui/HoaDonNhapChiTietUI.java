@@ -7,6 +7,7 @@ package ui;
 
 import entity.HoaDonNhap;
 import entity.HoaDonNhapChiTiet;
+import entity.MayTinh;
 import entity.MayTinhChiTiet;
 import entity.TK;
 import helper.ExcelHelper;
@@ -61,7 +62,7 @@ public class HoaDonNhapChiTietUI extends javax.swing.JFrame {
         loadCbbMMTCT();
 
         loadListHoaDonNhapChiTiet(inputMaHDN);
-        loadDataTable();
+        loadTable();
 //        table.setOpaque(true);
 //        table.setFillsViewportHeight(true);
 //        table.setBackground(new Color(232, 245, 233));
@@ -186,7 +187,7 @@ public class HoaDonNhapChiTietUI extends javax.swing.JFrame {
 
         buttonGroup1.add(rbTT);
         rbTT.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        rbTT.setText("Tổng tiền");
+        rbTT.setText("Thành tiền");
 
         btnSua.setBackground(new java.awt.Color(102, 102, 255));
         btnSua.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -287,7 +288,7 @@ public class HoaDonNhapChiTietUI extends javax.swing.JFrame {
         });
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel6.setText("Tổng tiền : ");
+        jLabel6.setText("Thành tiền : ");
 
         btnImportFile.setBackground(new java.awt.Color(102, 102, 255));
         btnImportFile.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -558,61 +559,54 @@ public class HoaDonNhapChiTietUI extends javax.swing.JFrame {
         if (rbTT.isSelected()) {
             hoaDonNhapChiTiets = HoaDonNhapChiTiet.search(txtTK.getText(), "Tổng tiền", maHDN);
         }
-        loadDataTable();
+        loadTable();
     }//GEN-LAST:event_btnTimKiemActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
         //        JOptionPane.showMessageDialog(null, timeTG.);
-        //nếu xác nhận là có
-        if (0 == JOptionPane.showConfirmDialog(null, "Xác nhận", "Thêm", 0)) {
-            if (!txtMHDN.getText().equals("-1")
-                    && !txtSL.getText().equals("")
-                    && !txtTT.getText().equals("")) {
-                // nếu đảm bảo điền đầy đủ thông tin
-                if (1 == HoaDonNhapChiTiet.insert(new HoaDonNhapChiTiet(Integer.parseInt(txtMHDN.getText()),
-                        Integer.parseInt((String) cbbMMTCT.getSelectedItem()),
-                        Integer.parseInt(txtSL.getText()),
-                        Double.parseDouble(txtTT.getText())))) {
-                    //thông báo
-                    JOptionPane.showMessageDialog(null, "Thành công");
-                    // reload table
-                    refresh();
-                    // reset
-                    reset();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Thất bại");
-                }
-            } else {//nếu điền chưa đủ thông tin-> yêu cầu điền thêm
-                JOptionPane.showMessageDialog(null, "Thông tin chưa được điền đầy đủ");
+        if (!txtMHDN.getText().equals("-1")
+                && !txtSL.getText().equals("")
+                && !txtTT.getText().equals("")) {
+            // nếu đảm bảo điền đầy đủ thông tin
+            if (1 == HoaDonNhapChiTiet.insert(new HoaDonNhapChiTiet(Integer.parseInt(txtMHDN.getText()),
+                    Integer.parseInt((String) cbbMMTCT.getSelectedItem()),
+                    Integer.parseInt(txtSL.getText()),
+                    Integer.parseInt(txtSL.getText())
+                    * MayTinhChiTiet.get(Integer.parseInt((String) cbbMMTCT.getSelectedItem()))
+                            .getGiaNhap()))) {
+                JOptionPane.showMessageDialog(null, "Thành công");
+                refresh();
+                reset();
+            } else {
+                JOptionPane.showMessageDialog(null, "Thất bại");
             }
+        } else {//nếu điền chưa đủ thông tin-> yêu cầu điền thêm
+            JOptionPane.showMessageDialog(null, "Thông tin chưa được điền đầy đủ");
         }
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
         //nếu xác nhận là có
-        if (0 == JOptionPane.showConfirmDialog(null, "Xác nhận", "Sửa", 0)) {
-            if (!txtMHDN.getText().equals("-1")
-                    && !txtSL.getText().equals("")
-                    && !txtTT.getText().equals("")) {
-                // nếu đảm bảo điền đầy đủ thông tin
-                if (1 == HoaDonNhapChiTiet.update(new HoaDonNhapChiTiet(Integer.parseInt(txtMHDN.getText()),
-                        Integer.parseInt((String) cbbMMTCT.getSelectedItem()),
-                        Integer.parseInt(txtSL.getText()),
-                        Double.parseDouble(txtTT.getText())))) {
-                    //thông báo
-                    JOptionPane.showMessageDialog(null, "Thành công");
-                    // reload table
-                    refresh();
-                    // reset
-                    reset();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Thất bại");
-                }
-            } else {//nếu điền chưa đủ thông tin-> yêu cầu điền thêm
-                JOptionPane.showMessageDialog(null, "Thông tin chưa được điền đầy đủ");
+        if (!txtMHDN.getText().equals("-1")
+                && !txtSL.getText().equals("")
+                && !txtTT.getText().equals("")) {
+            // nếu đảm bảo điền đầy đủ thông tin
+            if (1 == HoaDonNhapChiTiet.update(new HoaDonNhapChiTiet(Integer.parseInt(txtMHDN.getText()),
+                    Integer.parseInt((String) cbbMMTCT.getSelectedItem()),
+                    Integer.parseInt(txtSL.getText()),
+                    Integer.parseInt(txtSL.getText())
+                    * MayTinhChiTiet.get(Integer.parseInt((String) cbbMMTCT.getSelectedItem()))
+                            .getGiaNhap()))) {
+                JOptionPane.showMessageDialog(null, "Thành công");
+                refresh();
+                reset();
+            } else {
+                JOptionPane.showMessageDialog(null, "Thất bại");
             }
+        } else {//nếu điền chưa đủ thông tin-> yêu cầu điền thêm
+            JOptionPane.showMessageDialog(null, "Thông tin chưa được điền đầy đủ");
         }
     }//GEN-LAST:event_btnSuaActionPerformed
 
@@ -627,11 +621,8 @@ public class HoaDonNhapChiTietUI extends javax.swing.JFrame {
             if (!txtMHDN.getText().equals("-1")) { // xóa chỉ cần nhập mã
                 if (1 == HoaDonNhapChiTiet.delete(maHDN,
                         Integer.parseInt((String) cbbMMTCT.getSelectedItem()))) {
-                    //thông báo
                     JOptionPane.showMessageDialog(null, "Thành công");
-                    // reload table
                     refresh();
-                    // reset
                     reset();
                 } else {
                     JOptionPane.showMessageDialog(null, "Thất bại");
@@ -648,19 +639,13 @@ public class HoaDonNhapChiTietUI extends javax.swing.JFrame {
         try {
             if (rbMMTCT.isSelected()) {
                 thuocTinh = "Mã máy tính chi tiết";
-                listTks = HoaDonNhapChiTiet.thongKe(thuocTinh, maHDN);
-                loadTableTK(thuocTinh);
             } else if (rbSL.isSelected()) {
                 thuocTinh = "Số lượng";
-                listTks = HoaDonNhapChiTiet.thongKe(thuocTinh, maHDN);
-                loadTableTK(thuocTinh);
             } else if (rbTT.isSelected()) {
                 thuocTinh = "Tổng tiền";
-                listTks = HoaDonNhapChiTiet.thongKe(thuocTinh, maHDN);
-                loadTableTK(thuocTinh);
-            } else {
-                thuocTinh = "";
             }
+            listTks = HoaDonNhapChiTiet.thongKe(thuocTinh, maHDN);
+            loadTableTK(thuocTinh);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -669,7 +654,7 @@ public class HoaDonNhapChiTietUI extends javax.swing.JFrame {
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         // TODO add your handling code here:
         loadListHoaDonNhapChiTiet(maHDN);
-        loadDataTable();
+        loadTable();
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void btnImportFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportFileActionPerformed
@@ -714,14 +699,14 @@ public class HoaDonNhapChiTietUI extends javax.swing.JFrame {
                     //      3 : tìm kiếm
                     case 1:
                         WordHelper.writeHDNCT(file, hoaDonNhapChiTiets,
-                                "Thông tin hóa đơn nhập " + maHDN, maHDN);
+                                "Thông tin hóa đơn nhập " + maHDN, maHDN, true);
                         break;
                     case 2:
                         WordHelper.writeTK(file, listTks, "Thống kê hóa đơn nhập " + maHDN, thuocTinh);
                         break;
                     case 3:
                         WordHelper.writeHDNCT(file, hoaDonNhapChiTiets,
-                                "Tìm kiếm hóa đơn nhập " + maHDN, maHDN);
+                                "Tìm kiếm hóa đơn nhập " + maHDN, maHDN, false);
                         break;
                 }
                 JOptionPane.showMessageDialog(null, "Xuất file thành công");
@@ -866,7 +851,7 @@ public class HoaDonNhapChiTietUI extends javax.swing.JFrame {
 
     private void refresh() {
         loadListHoaDonNhapChiTiet(maHDN);
-        loadDataTable();
+        loadTable();
         export = 1;
 
     }
@@ -883,19 +868,25 @@ public class HoaDonNhapChiTietUI extends javax.swing.JFrame {
         }
     }
 
-    private void loadDataTable() {
-
+    private void loadTable() {
         table.setEnabled(true);
         table.removeAll();
-        String[] columns = new String[]{"Mã hóa đơn nhập",
-            "Mã máy tính chi tiết", "Số lượng", "Tổng tiền"};
+        String[] columns = new String[]{"TT", "Mã HĐN",
+            "Mã MTCT", "Tên máy tính", "Đơn giá", "Số lượng", "Thành tiền"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);
-        for (HoaDonNhapChiTiet o : hoaDonNhapChiTiets) {
+        for (int i = 0; i < hoaDonNhapChiTiets.size(); i++) {
+            HoaDonNhapChiTiet o = hoaDonNhapChiTiets.get(i);
             Vector vector = new Vector();
+            vector.add(i + 1);
             vector.add(o.getMaNhap() + "");
             vector.add(o.getMaMayTinhChiTiet() + "");
+            vector.add(MayTinh.get(MayTinhChiTiet.get(o.getMaMayTinhChiTiet())
+                    .getMaMayTinh()).getTenMayTinh());
+            vector.add(new DecimalFormat("###.###")
+                    .format(MayTinhChiTiet.get(o.getMaMayTinhChiTiet())
+                            .getGiaNhap()));
             vector.add(o.getSoLuong());
-            vector.add(new DecimalFormat("###.#").format(o.getTongTien()) + "");
+            vector.add(new DecimalFormat("###.###").format(o.getTongTien()) + "");
             model.addRow(vector);
         }
         table.setModel(model);

@@ -3,8 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Kira/Documents/Git%20-%20QLBH%20-%20PR1/qlbh_pr1/qlbh/src/ui/NhanVienUI.java</file>
-            <file>file:/C:/Users/Kira/Documents/Git%20-%20QLBH%20-%20PR1/qlbh_pr1/qlbh/src/ui/KhachHangUI.java</file>
+            <file>file:/C:/Users/Kira/Documents/Git%20-%20QLBH%20-%20PR1/qlbh_pr1/qlbh/src/ui/HoaDonNhapChiTietUI.java</file>
+            <file>file:/C:/Users/Kira/Documents/Git%20-%20QLBH%20-%20PR1/qlbh_pr1/qlbh/src/helper/WordHelper.java</file>
+            <file>file:/C:/Users/Kira/Documents/Git%20-%20QLBH%20-%20PR1/qlbh_pr1/qlbh/src/entity/HoaDonNhapChiTiet.java</file>
+            <file>file:/C:/Users/Kira/Documents/Git%20-%20QLBH%20-%20PR1/qlbh_pr1/qlbh/src/ui/HoaDonNhapUI.java</file>
+            <file>file:/C:/Users/Kira/Documents/Git%20-%20QLBH%20-%20PR1/qlbh_pr1/qlbh/src/entity/HoaDonNhap.java</file>
         </group>
     </open-files>
 </project-private>
