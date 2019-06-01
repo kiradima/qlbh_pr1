@@ -795,10 +795,20 @@ public class WordHelper {
         //get first row - viết tittle
         XWPFTableRow tittleRow = table.getRow(0);
         format(tittleRow.getCell(0), "TT", true);
-        tittleRow.getCell(0).getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(3000)); // set chiều rộng
-        createNewCell(tittleRow, thuocTinh, 3000, 1);
-        createNewCell(tittleRow, "Tổng tiền", 3000, 2);
-        createNewCell(tittleRow, "Số lượng", 2000, 3);
+        tittleRow.getCell(0).getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1000)); // set chiều rộng
+        createNewCell(tittleRow, thuocTinh, 2000, 1);
+        if (thuocTinh.equals(HoaDonNhap.TT_MA_NHAN_VIEN)) {
+            createNewCell(tittleRow, "Tên nhân viên", 2500, 2);
+            createNewCell(tittleRow, "Số lượng", 2000, 3);
+            createNewCell(tittleRow, "Tổng tiền", 2000, 4);
+        } else if (thuocTinh.equals(HoaDonNhap.TT_MA_NHA_CUNG_CAP)) {
+            createNewCell(tittleRow, "Tên nhà cung cấp", 2500, 2);
+            createNewCell(tittleRow, "Số lượng", 2000, 3);
+            createNewCell(tittleRow, "Tổng tiền", 2000, 4);
+        } else {
+            createNewCell(tittleRow, "Số lượng", 2500, 2);
+            createNewCell(tittleRow, "Tổng tiền", 2500, 3);
+        }
 
         // đọc dữ liệu
         for (int i = 0; i < list.size(); i++) {
@@ -806,8 +816,21 @@ public class WordHelper {
             XWPFTableRow row = table.createRow();// tạo dòng mới
             format(row.getCell(0), (i + 1) + "", false);
             format(row.getCell(1), o.getTk().getThuocTinh() + "", false);
-            format(row.getCell(2), o.getTongTien() + "", false);
-            format(row.getCell(3), o.getTk().getSoLuong() + "", false);
+            if (thuocTinh.equals(HoaDonNhap.TT_MA_NHAN_VIEN)) {
+                format(row.getCell(2), NhanVien.get(Integer.parseInt(o.getTk().getThuocTinh()))
+                        .getTenNhanVien() + "", false);
+                format(row.getCell(3), o.getTk().getSoLuong() + "", false);
+                format(row.getCell(4), o.getTongTien() + "", false);
+            } else if (thuocTinh.equals(HoaDonNhap.TT_MA_NHA_CUNG_CAP)) {
+                format(row.getCell(2), NhaCungCap.get(Integer.parseInt(o.getTk().getThuocTinh()))
+                        .getTenNhaCungCap() + "", false);
+                format(row.getCell(3), o.getTk().getSoLuong() + "", false);
+                format(row.getCell(4), o.getTongTien() + "", false);
+            } else {
+                format(row.getCell(2), o.getTk().getSoLuong() + "", false);
+                format(row.getCell(3), o.getTongTien() + "", false);
+            }
+
         }
     }
 
