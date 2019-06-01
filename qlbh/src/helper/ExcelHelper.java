@@ -16,7 +16,6 @@ import entity.NhaCungCap;
 import entity.NhanVien;
 import java.io.File;
 import java.io.FileInputStream;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -355,7 +354,7 @@ public class ExcelHelper {
         return list;
     }
 
-    public static ArrayList<KhachHang> readKhachHang(File file) throws Exception {
+    public static ArrayList<KhachHang> importKhachHang(File file) throws Exception {
         ArrayList<KhachHang> list = new ArrayList<>();
         // Đọc một file XSL.
         FileInputStream inputStream = new FileInputStream(file);

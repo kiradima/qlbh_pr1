@@ -286,7 +286,7 @@ public class NhaCungCap {
                     connectDatabase.close();
                     break;
                 case TT_THANH_PHO:
-                    String sql1 = "SELECT diaChi FROM qlbh.nhacungcap;";
+                    String sql1 = "SELECT diaChi FROM qlbh." + NHA_CUNG_CAP;
                     ArrayList<String> diaChis = new ArrayList();
                     ResultSet resultSet = connectDatabase.getConnection().createStatement().executeQuery(sql1);
                     while (resultSet.next()) {
@@ -331,7 +331,7 @@ public class NhaCungCap {
             ResultSet re = connectDatabase.getConnection().
                     createStatement().executeQuery("select sum(tongTien) "
                             + "from qlbh." + HOA_DON_NHAP
-                            + " where " + COL_MA_NHA_CUNG_CAP + " = '" + ma + "'");
+                            + " where " + HoaDonNhap.COL_MA_NHA_CUNG_CAP + " = '" + ma + "'");
             while (re.next()) {
                 return re.getLong("sum(tongTien)");
             }
