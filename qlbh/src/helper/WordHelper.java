@@ -46,7 +46,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
  */
 public class WordHelper {
 
-    public static void writeNhaCC(File file, ArrayList<NhaCungCap> list, String tittle) throws FileNotFoundException, IOException {
+    public static void exportNhaCungCap(File file, ArrayList<NhaCungCap> list, String tittle) throws FileNotFoundException, IOException {
         FileOutputStream out;
         try (XWPFDocument document = loadHeader(tittle)) {
             createTableNhaCC(document, list);

@@ -600,45 +600,26 @@ public class NhanVienUI extends javax.swing.JFrame {
         try {
             if (rbMNV.isSelected()) {
                 thuocTinh = "Mã nhân viên";
-//                tks = NhanVien.thongKe(thuocTinh);
-//                loadTableTK(thuocTinh);
             } else if (rbTNV.isSelected()) {
                 thuocTinh = "Tên nhân viên";
-//                tkrs = HoaDonNhap.thongKeRieng(thuocTinh);
-//                loadTableTKR(thuocTinh);
             } else if (rbSDT.isSelected()) {
                 thuocTinh = "Số điện thoại";
-//                tkrs = HoaDonNhap.thongKeRieng(thuocTinh);
-//                loadTableTKR(thuocTinh);
             } else if (rbDC.isSelected()) {
                 thuocTinh = "Địa chỉ";
-//                tkrs = HoaDonNhap.thongKeRieng(thuocTinh);
-//                loadTableTKR(thuocTinh);
             } else if (rbCMT.isSelected()) {
                 thuocTinh = "Chứng minh thư";
-//                tkrs = HoaDonNhap.thongKeRieng(thuocTinh);
-//                loadTableTKR(thuocTinh);
             } else if (rbNS.isSelected()) {
                 thuocTinh = "Ngày sinh";
-//                tks = HoaDonNhap.thongKe(thuocTinh);
-//                loadTableTK(thuocTinh);
             } else if (rbGT.isSelected()) {
                 thuocTinh = "Giới tính";
-//                tks = HoaDonNhap.thongKe(thuocTinh);
-//                loadTableTK(thuocTinh);
             } else if (rbEmail.isSelected()) {
                 thuocTinh = "Email";
-//                tks = HoaDonNhap.thongKe(thuocTinh);
-//                loadTableTK(thuocTinh);
             } else if (rbCV.isSelected()) {
                 thuocTinh = "Chức vụ";
-//                tks = HoaDonNhap.thongKe(thuocTinh);
-//                loadTableTK(thuocTinh);
             }
             tks = NhanVien.thongKe(thuocTinh);
             loadTableTK(thuocTinh);
         } catch (Exception e) {
-            e.printStackTrace();
         }
 
     }//GEN-LAST:event_btnThongKeActionPerformed
@@ -656,7 +637,7 @@ public class NhanVienUI extends javax.swing.JFrame {
                     && !txtCV.getText().equals("")
                     && !((JTextField) dateNS.getDateEditor().getUiComponent()).getText().equals("")) {
                 // nếu đảm bảo điền đầy đủ thông tin
-                if (1 == NhanVien.insert(getCurrentO())) {
+                if (1 == NhanVien.insert(getCurrentObject())) {
                     //thông báo
                     JOptionPane.showMessageDialog(null, "Thành công");
                     // reload table
@@ -674,9 +655,7 @@ public class NhanVienUI extends javax.swing.JFrame {
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         // TODO add your handling code here:
-        export = 1;
-        nhanViens = NhanVien.getAll();
-        loadTable();
+        refresh();
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
@@ -692,7 +671,7 @@ public class NhanVienUI extends javax.swing.JFrame {
                     && !txtCV.getText().equals("")
                     && !((JTextField) dateNS.getDateEditor().getUiComponent()).getText().equals("")) {
                 // nếu đảm bảo điền đầy đủ thông tin
-                if (1 == NhanVien.update(getCurrentO())) {
+                if (1 == NhanVien.update(getCurrentObject())) {
                     //thông báo
                     JOptionPane.showMessageDialog(null, "Thành công");
                     // reload table
@@ -737,48 +716,35 @@ public class NhanVienUI extends javax.swing.JFrame {
         //      2 : thống kê
         //      3 : tìm kiếm
 
-//        tenNhanVien = '"
-//                    + o.getTenNhanVien() + "',sdtNhanVien = '"
-//                    + o.getSdtNhanVien() + "',diaChiNhanVien = '"
-//                    + o.getDiaChiNhanVien() + "',soCMT = '"
-//                    + o.getSoCMT() + "',ngaySinh = '"
-//                    + o.getNgaySinh() + "',gioiTinh = '"
-//                    + o.getGioiTinh() + "', emailNhanVien = '"
-//                    + o.getEmailNhanVien() + "', chucVu = '"
-//                    + o.getChucVu() + "'where maNhanVien = '"
-        try {
-            nhanViens = new ArrayList<>();
-            if (rbMNV.isSelected()) {
-                nhanViens = NhanVien.search(txtTK.getText(), "maNhanVien");
-            }
-            if (rbTNV.isSelected()) {
-                nhanViens = NhanVien.search(txtTK.getText(), "tenNhanVien");
-            }
-            if (rbSDT.isSelected()) {
-                nhanViens = NhanVien.search(txtTK.getText(), "sdtNhanVien");
-            }
-            if (rbDC.isSelected()) {
-                nhanViens = NhanVien.search(txtTK.getText(), "diaChiNhanVien");
-            }
-            if (rbCMT.isSelected()) {
-                nhanViens = NhanVien.search(txtTK.getText(), "soCMT");
-            }
-            if (rbNS.isSelected()) {
-                nhanViens = NhanVien.search(txtTK.getText(), "ngaySinh");
-            }
-            if (rbGT.isSelected()) {
-                nhanViens = NhanVien.search(txtTK.getText(), "gioiTinh");
-            }
-            if (rbEmail.isSelected()) {
-                nhanViens = NhanVien.search(txtTK.getText(), "emailNhanVien");
-            }
-            if (rbCV.isSelected()) {
-                nhanViens = NhanVien.search(txtTK.getText(), "chucVu");
-            }
-            loadTable();
-        } catch (ParseException e) {
-
+        nhanViens = new ArrayList<>();
+        if (rbMNV.isSelected()) {
+            nhanViens = NhanVien.search(txtTK.getText(), "maNhanVien");
         }
+        if (rbTNV.isSelected()) {
+            nhanViens = NhanVien.search(txtTK.getText(), "tenNhanVien");
+        }
+        if (rbSDT.isSelected()) {
+            nhanViens = NhanVien.search(txtTK.getText(), "sdtNhanVien");
+        }
+        if (rbDC.isSelected()) {
+            nhanViens = NhanVien.search(txtTK.getText(), "diaChiNhanVien");
+        }
+        if (rbCMT.isSelected()) {
+            nhanViens = NhanVien.search(txtTK.getText(), "soCMT");
+        }
+        if (rbNS.isSelected()) {
+            nhanViens = NhanVien.search(txtTK.getText(), "ngaySinh");
+        }
+        if (rbGT.isSelected()) {
+            nhanViens = NhanVien.search(txtTK.getText(), "gioiTinh");
+        }
+        if (rbEmail.isSelected()) {
+            nhanViens = NhanVien.search(txtTK.getText(), "emailNhanVien");
+        }
+        if (rbCV.isSelected()) {
+            nhanViens = NhanVien.search(txtTK.getText(), "chucVu");
+        }
+        loadTable();
     }//GEN-LAST:event_btnTimKiemActionPerformed
 
     private void btnImportFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportFileActionPerformed
@@ -1062,10 +1028,9 @@ public class NhanVienUI extends javax.swing.JFrame {
         nhanViens = NhanVien.getAll();
         export = 1;
         loadTable();
-
     }
 
-    private NhanVien getCurrentO() {
+    private NhanVien getCurrentObject() {
         int maNhanVien = (txtMNV.getText().equals(""))
                 ? (-1) : (Integer.parseInt(txtMNV.getText()));
         String tenNhanVien = txtTNV.getText();
