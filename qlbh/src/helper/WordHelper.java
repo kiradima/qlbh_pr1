@@ -68,7 +68,7 @@ public class WordHelper {
         out.close();
     }
 
-    public static void writeKhachHang(File file, ArrayList<KhachHang> list, String tittle) throws FileNotFoundException, IOException {
+    public static void exportKhachHang(File file, ArrayList<KhachHang> list, String tittle) throws FileNotFoundException, IOException {
         FileOutputStream out;
         try (XWPFDocument document = loadHeader(tittle)) {
             createTableKhachHang(document, list);
@@ -391,7 +391,7 @@ public class WordHelper {
         createNewCell(tittleRow, "CMT", 500, 5);
         createNewCell(tittleRow, "Ngày sinh ", 500, 6);
         createNewCell(tittleRow, "GT", 500, 7);
-//        createNewCell(tittleRow, "Email", 500, 8);
+        createNewCell(tittleRow, "Email", 500, 8);
 
         // đọc dữ liệu
         for (int i = 0; i < list.size(); i++) {
@@ -405,7 +405,7 @@ public class WordHelper {
             format(row.getCell(5), o.getSoCMT() + "", false);
             format(row.getCell(6), o.getNgaySinh() + "", false);
             format(row.getCell(7), o.getGioiTinh() + "", false);
-//            format(row.getCell(8), o.getEmailKhachHang() + "", false);
+            format(row.getCell(8), o.getEmailKhachHang() + "", false);
 
         }
     }
