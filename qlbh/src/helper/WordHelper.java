@@ -285,20 +285,22 @@ public class WordHelper {
     }
 
     public static void writeHDNCT(File file, ArrayList<HoaDonNhapChiTiet> list, String tittle,
-            int maHDN) throws FileNotFoundException, IOException {
+            int maHDN, boolean isAll) throws FileNotFoundException, IOException {
         FileOutputStream out;
         try (XWPFDocument document = loadHeader(tittle)) {
-            HoaDonNhap hoaDonNhap = HoaDonNhap.get(maHDN);
-            XWPFParagraph paragraph = document.createParagraph();
-            loadContentHDCT(paragraph, "Mã hóa đơn nhập: " + hoaDonNhap.getMaNhap());
-            loadContentHDCT(paragraph, "Mã nhân viên : " + hoaDonNhap.getMaNhanVien()
-                    + "    -    Tên nhân viên : " + NhanVien.get(hoaDonNhap.getMaNhanVien()).getTenNhanVien());
-            loadContentHDCT(paragraph, "Mã nhà cung cấp : " + hoaDonNhap.getMaNhaCungCap()
-                    + "    -    Tên nhà cung cấp : "
-                    + NhaCungCap.get(hoaDonNhap.getMaNhaCungCap()).getTenNhaCungCap());
-            loadContentHDCT(paragraph, "Ngày nhập : "
-                    + new SimpleDateFormat("dd-MM-yyyy").format(hoaDonNhap.getThoiGian()));
-            loadContentHDCT(paragraph, "Tổng tiền : " + new DecimalFormat("#").format(hoaDonNhap.getTongTien()));
+            if (isAll) {
+                HoaDonNhap hoaDonNhap = HoaDonNhap.get(maHDN);
+                XWPFParagraph paragraph = document.createParagraph();
+                loadContentHDCT(paragraph, "Mã hóa đơn nhập: " + hoaDonNhap.getMaNhap());
+                loadContentHDCT(paragraph, "Mã nhân viên : " + hoaDonNhap.getMaNhanVien()
+                        + "    -    Tên nhân viên : " + NhanVien.get(hoaDonNhap.getMaNhanVien()).getTenNhanVien());
+                loadContentHDCT(paragraph, "Mã nhà cung cấp : " + hoaDonNhap.getMaNhaCungCap()
+                        + "    -    Tên nhà cung cấp : "
+                        + NhaCungCap.get(hoaDonNhap.getMaNhaCungCap()).getTenNhaCungCap());
+                loadContentHDCT(paragraph, "Ngày nhập : "
+                        + new SimpleDateFormat("dd-MM-yyyy").format(hoaDonNhap.getThoiGian()));
+                loadContentHDCT(paragraph, "Tổng tiền : " + new DecimalFormat("#").format(hoaDonNhap.getTongTien()));
+            }
             //vẽ bảng
             createTableHDNCT(document, list);
             loadFooter(document);
@@ -323,7 +325,7 @@ public class WordHelper {
         createNewCell(tittleRow, "Tên máy tính", 2500, 3);
         createNewCell(tittleRow, "Đơn giá", 2500, 4);
         createNewCell(tittleRow, "Số lượng", 2000, 5);
-        createNewCell(tittleRow, "Tổng tiền", 2500, 6);
+        createNewCell(tittleRow, "Thành tiền", 2500, 6);
 
         // đọc dữ liệu
         for (int i = 0; i < list.size(); i++) {
@@ -336,7 +338,7 @@ public class WordHelper {
             format(row.getCell(3), MayTinh.get(MayTinhChiTiet.get(o.getMaMayTinhChiTiet())
                     .getMaMayTinh()).getTenMayTinh() + "", false);
             format(row.getCell(4), new DecimalFormat("###")
-                    .format(MayTinhChiTiet.get(o.getMaMayTinhChiTiet()).getGiaBan()) + "", false);
+                    .format(MayTinhChiTiet.get(o.getMaMayTinhChiTiet()).getGiaNhap()) + "", false);
             format(row.getCell(5), o.getSoLuong() + "", false);
             format(row.getCell(6), new DecimalFormat("###.#").format(o.getTongTien()) + "", false);
         }
