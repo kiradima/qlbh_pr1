@@ -611,9 +611,13 @@ public class MayTinhUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        if (!txtMa.getText().equals("")) {
+            new MayTinhChiTietUI(Integer.parseInt(txtMa.getText())).setVisible(true);
+            this.dispose();
+        }else{
+            JOptionPane.showMessageDialog(null, "Điền mã máy tính");
+        }
 
-        new MayTinhChiTietUI().setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
