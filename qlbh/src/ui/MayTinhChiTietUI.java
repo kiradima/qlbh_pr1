@@ -5,23 +5,13 @@
  */
 package ui;
 
-import entity.MayTinh;
 import entity.MayTinhChiTiet;
-import helper.ConnectDatabase;
-import helper.ExcelHelper;
-import java.awt.Color;
+import entity.TK;
 import java.awt.Font;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
@@ -35,28 +25,27 @@ import javax.swing.table.JTableHeader;
  */
 public class MayTinhChiTietUI extends javax.swing.JFrame {
 
-    ConnectDatabase ketNoiQLlBH = null;
-    Connection connection = null;
+    ArrayList<MayTinhChiTiet> mayTinhChiTiets;
+    ArrayList<TK> tks;
+    int export = 1;
+    // @export :
+    //      1 : tất cả
+    //      2 : thống kê
+    //      3 : tìm kiếm
+    String thuocTinh = "";
+    static int maMT = 0;
+
     /**
      * Creates new form MayTinhChiTietUI
      */
-
-    ArrayList<MayTinhChiTiet> listMayTinhChiTiets = MayTinhChiTiet.getAll();
-
-    public MayTinhChiTietUI() {
-        ketNoiQLlBH = new ConnectDatabase();
-        connection = ketNoiQLlBH.getConnection();
+    public MayTinhChiTietUI(int MaMayTinh) {
         initComponents();
+        this.maMT = MaMayTinh;
+        refresh();
         this.setLocationRelativeTo(null);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
 
-        comboboxMaMayTinhChiTiet();
-        comboboxGiaBan();
-        comboboxGiaNhap();
-        comboboxMauSac();
-        mamaytinhtt.setText("" + MayTinhUI.docMaMayTinh());
-        loadData();
-        JTableHeader header = bangmaytinhchitiet.getTableHeader();
+        JTableHeader header = table.getTableHeader();
         header.setFont(new Font("Tahoma", Font.BOLD, 14));
 
     }
@@ -75,7 +64,7 @@ public class MayTinhChiTietUI extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        bangmaytinhchitiet = new javax.swing.JTable();
+        table = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -84,27 +73,22 @@ public class MayTinhChiTietUI extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        mamaytinhtt = new javax.swing.JTextField();
-        machitiettt = new javax.swing.JTextField();
-        motatt = new javax.swing.JTextField();
-        gianhaptt = new javax.swing.JTextField();
-        giabantt = new javax.swing.JTextField();
-        cauhinhtt = new javax.swing.JTextField();
-        mausactt = new javax.swing.JTextField();
-        tonkhott = new javax.swing.JTextField();
+        txtTimKiem = new javax.swing.JTextField();
+        txtMa = new javax.swing.JTextField();
+        txtMoTa = new javax.swing.JTextField();
+        txtGN = new javax.swing.JTextField();
+        txtGB = new javax.swing.JTextField();
+        txtCH = new javax.swing.JTextField();
+        txtMS = new javax.swing.JTextField();
+        txtSLTK = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
-        mamaytinhchitietR = new javax.swing.JRadioButton();
-        gianhapR = new javax.swing.JRadioButton();
-        giabanR = new javax.swing.JRadioButton();
-        mausacR = new javax.swing.JRadioButton();
-        mamaytinhchitietI = new javax.swing.JComboBox();
-        gianhapcbb = new javax.swing.JComboBox();
-        giabancbb = new javax.swing.JComboBox();
-        maucbb = new javax.swing.JComboBox();
+        rbMa = new javax.swing.JRadioButton();
+        rbGN = new javax.swing.JRadioButton();
+        rbGB = new javax.swing.JRadioButton();
+        rbSLTK = new javax.swing.JRadioButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
@@ -118,6 +102,10 @@ public class MayTinhChiTietUI extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        jButton12 = new javax.swing.JButton();
+        rbMoTa = new javax.swing.JRadioButton();
+        rbCH = new javax.swing.JRadioButton();
+        rbMS = new javax.swing.JRadioButton();
 
         jButton3.setText("jButton3");
 
@@ -147,8 +135,8 @@ public class MayTinhChiTietUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 204, 255));
 
-        bangmaytinhchitiet.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        bangmaytinhchitiet.setModel(new javax.swing.table.DefaultTableModel(
+        table.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -159,7 +147,7 @@ public class MayTinhChiTietUI extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(bangmaytinhchitiet);
+        jScrollPane1.setViewportView(table);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("NHẬP THÔNG TIN MÁY TÍNH CHI TIẾT");
@@ -185,24 +173,21 @@ public class MayTinhChiTietUI extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel8.setText("Số lượng tồn kho: ");
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel9.setText("Danh sách máy tính chi tiết của mã máy tính: ");
+        txtTimKiem.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        mamaytinhtt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtMa.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        machitiettt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtMoTa.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        motatt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtGN.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        gianhaptt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtGB.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        giabantt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCH.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        cauhinhtt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtMS.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        mausactt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-
-        tonkhott.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtSLTK.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jButton1.setBackground(new java.awt.Color(102, 102, 255));
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -237,21 +222,21 @@ public class MayTinhChiTietUI extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel10.setText("TÌM KIẾM");
 
-        buttonGroup1.add(mamaytinhchitietR);
-        mamaytinhchitietR.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        mamaytinhchitietR.setText("Mã máy tính chi tiết ");
+        buttonGroup1.add(rbMa);
+        rbMa.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbMa.setText("Mã máy tính chi tiết ");
 
-        buttonGroup1.add(gianhapR);
-        gianhapR.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        gianhapR.setText("Giá nhập ");
+        buttonGroup1.add(rbGN);
+        rbGN.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbGN.setText("Giá nhập ");
 
-        buttonGroup1.add(giabanR);
-        giabanR.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        giabanR.setText("Giá bán ");
+        buttonGroup1.add(rbGB);
+        rbGB.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbGB.setText("Giá bán ");
 
-        buttonGroup1.add(mausacR);
-        mausacR.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        mausacR.setText("Màu sắc");
+        buttonGroup1.add(rbSLTK);
+        rbSLTK.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbSLTK.setText("Số lương tồn kho");
 
         jButton5.setBackground(new java.awt.Color(102, 102, 255));
         jButton5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -377,183 +362,188 @@ public class MayTinhChiTietUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jButton12.setBackground(new java.awt.Color(102, 102, 255));
+        jButton12.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton12.setForeground(new java.awt.Color(51, 51, 51));
+        jButton12.setText("Thống kê");
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(rbMoTa);
+        rbMoTa.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbMoTa.setText("Mô tả");
+
+        buttonGroup1.add(rbCH);
+        rbCH.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbCH.setText("Cấu hình");
+
+        buttonGroup1.add(rbMS);
+        rbMS.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbMS.setText("Màu sắc");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(jButton2)
+                .addGap(303, 303, 303)
+                .addComponent(jButton4)
+                .addGap(293, 293, 293)
+                .addComponent(jButton11))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 837, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton6)
+                        .addGap(50, 50, 50)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(78, 78, 78)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(machitiettt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
-                                    .addComponent(motatt, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(gianhaptt, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(giabantt, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cauhinhtt, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(mausactt, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(tonkhott, javax.swing.GroupLayout.Alignment.LEADING)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton5)
+                                    .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(43, 43, 43)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton12)
+                                    .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel10)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(rbMa)
+                                        .addComponent(rbGN)
+                                        .addComponent(rbCH)
+                                        .addComponent(rbSLTK)))
+                                .addGap(31, 31, 31)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(rbMoTa)
+                                    .addComponent(rbGB)
+                                    .addComponent(rbMS)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(96, 96, 96)
+                        .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(108, 108, 108)
+                                .addComponent(jButton6)
                                 .addGap(44, 44, 44)
                                 .addComponent(jButton7)
                                 .addGap(45, 45, 45)
                                 .addComponent(jButton8)
                                 .addGap(43, 43, 43)
-                                .addComponent(jButton1))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jButton1))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(35, 35, 35)
-                                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(27, 27, 27)
+                                .addGap(96, 96, 96)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(79, 79, 79)
-                                        .addComponent(jButton5))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(mamaytinhchitietR)
-                                            .addComponent(gianhapR)
-                                            .addComponent(giabanR)
-                                            .addComponent(mausacR))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(gianhapcbb, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(giabancbb, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(maucbb, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(mamaytinhchitietI, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                        .addGap(134, 134, 134)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel1))
-                        .addGap(28, 28, 28)))
-                .addGap(72, 72, 72))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jButton2)
-                .addGap(303, 303, 303)
-                .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton11))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel9)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtMa, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtMoTa, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtGN, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtGB, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCH, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtMS, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtSLTK, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(mamaytinhtt, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(111, 111, 111)
-                .addComponent(jLabel10)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel1)
+                        .addGap(20, 20, 20))))
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {giabancbb, gianhapcbb, mamaytinhchitietI, maucbb});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jLabel2)
-                            .addComponent(machitiettt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtMa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jLabel3)
-                            .addComponent(motatt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtMoTa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jLabel4)
-                            .addComponent(gianhaptt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtGN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jLabel5)
-                            .addComponent(giabantt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(4, 4, 4)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(cauhinhtt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtGB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel6)
+                            .addComponent(txtCH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jLabel7)
-                            .addComponent(mausactt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel10)
-                        .addGap(18, 18, 18)
+                            .addComponent(txtMS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel8)
+                            .addComponent(txtSLTK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(3, 3, 3)
-                                .addComponent(mamaytinhchitietI, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(mamaytinhchitietR)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(gianhapR)
-                                    .addComponent(gianhapcbb, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(giabanR)
-                                    .addComponent(giabancbb, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(maucbb, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(mausacR))))
+                            .addComponent(jButton6)
+                            .addComponent(jButton7)
+                            .addComponent(jButton8)
+                            .addComponent(jButton1)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel1))
+                        .addGap(19, 19, 19)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(rbMa)
+                            .addComponent(rbMoTa))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(rbGN)
+                            .addComponent(rbGB))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(rbCH)
+                            .addComponent(rbMS))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(rbSLTK)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton5)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton5)
+                            .addComponent(jButton12))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jButton9)
+                            .addComponent(jButton10))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(tonkhott, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton9)
-                    .addComponent(jButton10))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton6)
-                    .addComponent(jButton7)
-                    .addComponent(jButton8)
-                    .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(mamaytinhtt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton2)
                     .addComponent(jButton4)
-                    .addComponent(jButton11)))
+                    .addComponent(jButton11))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        loadData();
-    }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -562,59 +552,110 @@ public class MayTinhChiTietUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        this.dispose();
         new MayTinhUI().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        if (mamaytinhchitietR.isSelected()) {
+        export = 3;
+        // @export :
+        //      1 : tất cả
+        //      2 : thống kê
+        //      3 : tìm kiếm
 
-            timKiemTheoMaMayTinhChiTiet();
-        } else if (gianhapR.isSelected()) {
-
-            timKiemTheoGiaNhap();
-        } else if (giabanR.isSelected()) {
-
-            timKiemTheoGiaBan();
-        } else if (mausacR.isSelected()) {
-            timKiemTheoMauSac();
+        mayTinhChiTiets = new ArrayList<>();
+        if (rbMa.isSelected()) {
+            mayTinhChiTiets = MayTinhChiTiet.search(txtTimKiem.getText(),
+                    MayTinhChiTiet.TT_MA_MAY_TINH_CHI_TIET, maMT);
         }
+        if (rbMoTa.isSelected()) {
+            mayTinhChiTiets = MayTinhChiTiet.search(txtTimKiem.getText(), MayTinhChiTiet.TT_MO_TA, maMT);
+        }
+        if (rbGN.isSelected()) {
+            mayTinhChiTiets = MayTinhChiTiet.search(txtTimKiem.getText(), MayTinhChiTiet.TT_GIA_NHAP, maMT);
+        }
+        if (rbGB.isSelected()) {
+            mayTinhChiTiets = MayTinhChiTiet.search(txtTimKiem.getText(), MayTinhChiTiet.TT_GIA_BAN, maMT);
+        }
+        if (rbCH.isSelected()) {
+            mayTinhChiTiets = MayTinhChiTiet.search(txtTimKiem.getText(), MayTinhChiTiet.TT_CAU_HINH, maMT);
+        }
+        if (rbMS.isSelected()) {
+            mayTinhChiTiets = MayTinhChiTiet.search(txtTimKiem.getText(), MayTinhChiTiet.TT_MAU_SAC, maMT);
+        }
+        if (rbSLTK.isSelected()) {
+            mayTinhChiTiets = MayTinhChiTiet.search(txtTimKiem.getText(),
+                    MayTinhChiTiet.TT_SO_LUONG_TON_KHO, maMT);
+        }
+        loadTable();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        try {
-            // TODO add your handling code here:
-            themMayTinhChiTiet();
-        } catch (SQLException ex) {
-            Logger.getLogger(MayTinhChiTietUI.class.getName()).log(Level.SEVERE, null, ex);
+        if (!txtMa.getText().equals("")
+                && !txtMoTa.getText().equals("")
+                && !txtGN.getText().equals("")
+                && !txtGB.getText().equals("")
+                && !txtCH.getText().equals("")
+                && !txtMS.getText().equals("")
+                && !txtSLTK.getText().equals("")) {
+            // nếu đảm bảo điền đầy đủ thông tin
+            ArrayList<Integer> mas = MayTinhChiTiet.getAllMaMayTinhChiTiets();
+            for (Integer ma : mas) {
+                System.out.println(ma);
+            }
+            if (mas.contains(getCurrentObject().getMaMayTinhChiTiet())) {
+                JOptionPane.showMessageDialog(null, "Trùng mã máy tính chi tiết");
+            } else {
+                if (1 == MayTinhChiTiet.insert(getCurrentObject())) {
+                    JOptionPane.showMessageDialog(null, "Insert thành công");
+                    refresh();
+                    reset();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Insert thất bại");
+                }
+            }
+        } else {//nếu điền chưa đủ thông tin-> yêu cầu điền thêm
+            JOptionPane.showMessageDialog(null, "Thông tin chưa được điền đầy đủ");
         }
-        loadData();
-        JOptionPane.showMessageDialog(this, "Thêm máy tính chi tiết thành công!");
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        try {
-            suaMayTinhChiTiet();
-        } catch (SQLException ex) {
-            Logger.getLogger(MayTinhUI.class.getName()).log(Level.SEVERE, null, ex);
+        if (!txtMa.getText().equals("")
+                && !txtMoTa.getText().equals("")
+                && !txtGN.getText().equals("")
+                && !txtGB.getText().equals("")
+                && !txtCH.getText().equals("")
+                && !txtMS.getText().equals("")
+                && !txtSLTK.getText().equals("")) {
+            // nếu đảm bảo điền đầy đủ thông tin
+            if (1 == MayTinhChiTiet.update(getCurrentObject())) {
+                JOptionPane.showMessageDialog(null, "Update thành công");
+                refresh();
+                reset();
+            } else {
+                JOptionPane.showMessageDialog(null, "Update thất bại");
+            }
+        } else {//nếu điền chưa đủ thông tin-> yêu cầu điền thêm
+            JOptionPane.showMessageDialog(null, "Thông tin chưa được điền đầy đủ");
         }
-        loadData();
-        JOptionPane.showMessageDialog(this, "Sửa máy tính thành công!");
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
-        int chose = JOptionPane.showConfirmDialog(null, "Xác nhận", "Thêm", 0);
-        if (chose == 0) {
-            try {
-                xoaMayTinhChiTiet();
-            } catch (SQLException ex) {
-                Logger.getLogger(MayTinhUI.class.getName()).log(Level.SEVERE, null, ex);
+        if (0 == JOptionPane.showConfirmDialog(null, "Xác nhận", "Xóa", 0)) {
+            if (!txtMa.getText().equals("")) { // xóa chỉ cần nhập mã
+                if (1 == MayTinhChiTiet.delete(Integer.parseInt(txtMa.getText()))) {
+                    JOptionPane.showMessageDialog(null, "Delete thành công");
+                    refresh();
+                    reset();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Delete thất bại");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Điền mã để xóa");
             }
-            loadData();
-            JOptionPane.showMessageDialog(this, "Xóa máy tính thành công!");
         }
     }//GEN-LAST:event_jButton8ActionPerformed
 
@@ -623,43 +664,63 @@ public class MayTinhChiTietUI extends javax.swing.JFrame {
         JFileChooser jFileChooser = new JFileChooser();
         if (jFileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = jFileChooser.getSelectedFile();
-            String type = file.getName().substring(file.getName().lastIndexOf(".") + 1);
-            System.out.println(type);
-
-            if (type.equals("xls") || type.equals("xlsx")) {
-                try {
-                    ArrayList<MayTinhChiTiet> list = ExcelHelper.readMayTinhChiTiet(file);
-                    System.out.println(list.size() + "");
-                    int re = -1;
-                    for (MayTinhChiTiet o : list) {
-                        re = MayTinhChiTiet.add(o);
-                        if (re != 1) {
-                            break;
-                        }
-                    }
-                    if (re == 1) {
-                        loadData();
-                        JOptionPane.showMessageDialog(null, "Thêm thành công");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Thêm thất bại");
-                    }
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Thêm thất bại");
-                    Logger.getLogger(MayTinh.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            if (MayTinhChiTiet.importExcel(file) == 1) {
+                JOptionPane.showMessageDialog(null, "Thêm thành công");
+                refresh();
+            } else {
+                JOptionPane.showMessageDialog(null, "Thêm thất bại");
             }
         }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         // TODO add your handling code here:
-        this.dispose();
         new DangNhap().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
+        JFileChooser jFileChooser = new JFileChooser();
+        if (jFileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File file = jFileChooser.getSelectedFile();
+            if (MayTinhChiTiet.exportDoc(file, mayTinhChiTiets, export, tks, thuocTinh) == 1) {
+                JOptionPane.showMessageDialog(null, "Xuất file thành công");
+            } else {
+                JOptionPane.showMessageDialog(this, "Xuất file thất bại!");
+            }
+        }
     }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        // TODO add your handling code here:
+        tks = new ArrayList<>();
+        try {
+            if (rbMa.isSelected()) {
+                thuocTinh = MayTinhChiTiet.TT_MA_MAY_TINH_CHI_TIET;
+            } else if (rbMoTa.isSelected()) {
+                thuocTinh = MayTinhChiTiet.TT_MO_TA;
+            } else if (rbGN.isSelected()) {
+                thuocTinh = MayTinhChiTiet.TT_GIA_NHAP;
+            } else if (rbGB.isSelected()) {
+                thuocTinh = MayTinhChiTiet.TT_GIA_BAN;
+            } else if (rbCH.isSelected()) {
+                thuocTinh = MayTinhChiTiet.TT_CAU_HINH;
+            } else if (rbMS.isSelected()) {
+                thuocTinh = MayTinhChiTiet.TT_MAU_SAC;
+            } else if (rbSLTK.isSelected()) {
+                thuocTinh = MayTinhChiTiet.TT_SO_LUONG_TON_KHO;
+            }
+            tks = MayTinhChiTiet.thongKe(thuocTinh, maMT);
+            loadTableTK(thuocTinh);
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        refresh();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -694,30 +755,17 @@ public class MayTinhChiTietUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                try {
-                    new MayTinhChiTietUI().setVisible(true);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(MayTinhChiTietUI.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SQLException ex) {
-                    Logger.getLogger(MayTinhChiTietUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                new MayTinhChiTietUI(maMT).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable bangmaytinhchitiet;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JTextField cauhinhtt;
-    private javax.swing.JRadioButton giabanR;
-    private javax.swing.JComboBox giabancbb;
-    private javax.swing.JTextField giabantt;
-    private javax.swing.JRadioButton gianhapR;
-    private javax.swing.JComboBox gianhapcbb;
-    private javax.swing.JTextField gianhaptt;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -741,277 +789,121 @@ public class MayTinhChiTietUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField machitiettt;
-    private javax.swing.JComboBox mamaytinhchitietI;
-    private javax.swing.JRadioButton mamaytinhchitietR;
-    private javax.swing.JTextField mamaytinhtt;
-    private javax.swing.JComboBox maucbb;
-    private javax.swing.JRadioButton mausacR;
-    private javax.swing.JTextField mausactt;
-    private javax.swing.JTextField motatt;
-    private javax.swing.JTextField tonkhott;
+    private javax.swing.JRadioButton rbCH;
+    private javax.swing.JRadioButton rbGB;
+    private javax.swing.JRadioButton rbGN;
+    private javax.swing.JRadioButton rbMS;
+    private javax.swing.JRadioButton rbMa;
+    private javax.swing.JRadioButton rbMoTa;
+    private javax.swing.JRadioButton rbSLTK;
+    private javax.swing.JTable table;
+    private javax.swing.JTextField txtCH;
+    private javax.swing.JTextField txtGB;
+    private javax.swing.JTextField txtGN;
+    private javax.swing.JTextField txtMS;
+    private javax.swing.JTextField txtMa;
+    private javax.swing.JTextField txtMoTa;
+    private javax.swing.JTextField txtSLTK;
+    private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
 
-    private void loadData() {
-        bangmaytinhchitiet.removeAll();
-        String[] columns = new String[]{"Mã máy tính chi tiết", "Mã máy tính", "Mô tả", "Giá nhập", "Giá bán", "Cấu hình", "Màu sắc", "Số lượng tồn kho"};
-        DefaultTableModel model = new DefaultTableModel(columns, 0);
-        String sql = "select * from maytinhchitiet where maMayTinh = '" + MayTinhUI.docMaMayTinh() + "'; ";
-        System.out.println(sql);
-        Statement statement = null;
-        ResultSet resultSet = null;
-        try {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {
-//                JOptionPane.showMessageDialog(null, resultSet.getDouble("giaTien"));
-                Vector vector = new Vector();
-                vector.add(resultSet.getInt("maMayTinhChiTiet"));
-                vector.add(resultSet.getInt("maMayTinh"));
-                vector.add(resultSet.getString("moTa"));
-//                vector.add(resultSet.getDouble("giaNhap"));
-                vector.add(new DecimalFormat("##").format(resultSet.getDouble("giaNhap")));
-                vector.add(new DecimalFormat("##").format(resultSet.getDouble("giaBan")));
-                vector.add(resultSet.getString("cauHinh"));
-                vector.add(resultSet.getString("mauSac"));
-                vector.add(resultSet.getInt("soLuongTonKho"));
+    private void refresh() {
+        mayTinhChiTiets = new ArrayList();
+        mayTinhChiTiets = MayTinhChiTiet.getAll(maMT);
+        export = 1;
+        loadTable();
+    }
 
+    private void loadTable() {
+        table.setEnabled(true);
+        table.removeAll();
+        if (mayTinhChiTiets != null) {
+            String[] columns = new String[]{"TT", MayTinhChiTiet.TT_MA_MAY_TINH_CHI_TIET,
+                MayTinhChiTiet.TT_MO_TA, MayTinhChiTiet.TT_GIA_NHAP, MayTinhChiTiet.TT_GIA_BAN,
+                MayTinhChiTiet.TT_CAU_HINH, MayTinhChiTiet.TT_MAU_SAC, MayTinhChiTiet.TT_SO_LUONG_TON_KHO};
+
+            DefaultTableModel model = new DefaultTableModel(columns, 0);
+            for (int i = 0; i < mayTinhChiTiets.size(); i++) {
+                MayTinhChiTiet o = mayTinhChiTiets.get(i);
+                Vector vector = new Vector();
+                vector.add(i + 1);
+                vector.add(o.getMaMayTinhChiTiet());
+                vector.add(o.getMoTa());
+                vector.add(new DecimalFormat("#").format(o.getGiaNhap()));
+                vector.add(new DecimalFormat("#").format(o.getGiaBan()));
+                vector.add(o.getCauHinh());
+                vector.add(o.getMauSac());
+                vector.add(o.getSoLuongTonKho());
                 model.addRow(vector);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-        bangmaytinhchitiet.setModel(model);
-
-        bangmaytinhchitiet.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (bangmaytinhchitiet.getSelectedRow() >= 0) {
-                    machitiettt.setText(bangmaytinhchitiet.getValueAt(bangmaytinhchitiet.getSelectedRow(), 0).toString());
-                    mamaytinhtt.setText(bangmaytinhchitiet.getValueAt(bangmaytinhchitiet.getSelectedRow(), 1).toString());
-                    motatt.setText(bangmaytinhchitiet.getValueAt(bangmaytinhchitiet.getSelectedRow(), 2).toString());
-                    gianhaptt.setText(bangmaytinhchitiet.getValueAt(bangmaytinhchitiet.getSelectedRow(), 3).toString());
-                    giabantt.setText(bangmaytinhchitiet.getValueAt(bangmaytinhchitiet.getSelectedRow(), 4).toString());
-                    cauhinhtt.setText(bangmaytinhchitiet.getValueAt(bangmaytinhchitiet.getSelectedRow(), 5).toString());
-                    mausactt.setText(bangmaytinhchitiet.getValueAt(bangmaytinhchitiet.getSelectedRow(), 6).toString());
-                    tonkhott.setText(bangmaytinhchitiet.getValueAt(bangmaytinhchitiet.getSelectedRow(), 7).toString());
-
+            table.setModel(model);
+            //setOnClickItem
+            table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                    if (table.getSelectedRow() >= 0) {
+                        MayTinhChiTiet o = mayTinhChiTiets.get(table.getSelectedRow());// lấy đối tượng được chọn
+                        txtMa.setText(o.getMaMayTinhChiTiet() + "");
+                        txtMoTa.setText(o.getMoTa() + "");
+                        txtGN.setText(new DecimalFormat("#").format(o.getGiaNhap()) + "");
+                        txtGB.setText(new DecimalFormat("#").format(o.getGiaBan()) + "");
+                        txtCH.setText(o.getCauHinh() + "");
+                        txtMS.setText(o.getMauSac() + "");
+                        txtSLTK.setText(o.getSoLuongTonKho() + "");
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private void reset() {
-        machitiettt.setText("");
-        motatt.setText("");
-        gianhaptt.setText("");
-        giabantt.setText("");
-        cauhinhtt.setText("");
-        mausactt.setText("");
-        tonkhott.setText("");
-
+        txtMa.setText("");
+        txtMoTa.setText("");
+        txtGN.setText("");
+        txtGB.setText("");
+        txtCH.setText("");
+        txtMS.setText("");
+        txtSLTK.setText("");
     }
 
-    public void comboboxMaMayTinhChiTiet() {
-
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
-        for (int i = 0; i < listMayTinhChiTiets.size(); i++) {
-            if (listMayTinhChiTiets.get(i).getMaMayTinh() == MayTinhUI.docMaMayTinh()) {
-                model.addElement(listMayTinhChiTiets.get(i).getMaMayTinhChiTiet());
-            }
-        }
-        mamaytinhchitietI.setModel(model);
-
+    private MayTinhChiTiet getCurrentObject() {
+        int ma = (txtMa.getText().equals(""))
+                ? (0) : (Integer.parseInt(txtMa.getText()));
+        String moTa = txtMoTa.getText();
+        double giaNhap = (txtGN.getText().equals(""))
+                ? (0) : (Double.parseDouble(txtGN.getText()));
+        double giaBan = (txtGB.getText().equals(""))
+                ? (0) : (Double.parseDouble(txtGB.getText()));
+        String cauHinh = txtCH.getText();
+        String mauSac = txtMS.getText();
+        int tonKho = (txtSLTK.getText().equals(""))
+                ? (0) : (Integer.parseInt(txtSLTK.getText()));
+        return new MayTinhChiTiet(ma, maMT, moTa, giaNhap, giaBan, cauHinh, mauSac, tonKho);
     }
 
-    public void comboboxGiaNhap() {
-
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
-        for (int i = 0; i < listMayTinhChiTiets.size(); i++) {
-            if (listMayTinhChiTiets.get(i).getMaMayTinh() == MayTinhUI.docMaMayTinh()) {
-                model.addElement(new DecimalFormat("##").format(listMayTinhChiTiets.get(i).getGiaNhap()));
-            }
-        }
-        gianhapcbb.setModel(model);
-
-    }
-
-    public void comboboxGiaBan() {
-
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
-        for (int i = 0; i < listMayTinhChiTiets.size(); i++) {
-            if (listMayTinhChiTiets.get(i).getMaMayTinh() == MayTinhUI.docMaMayTinh()) {
-                model.addElement(new DecimalFormat("##").format(listMayTinhChiTiets.get(i).getGiaBan()));
-            }
-        }
-        giabancbb.setModel(model);
-
-    }
-
-    public void comboboxMauSac() {
-
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
-        for (int i = 0; i < listMayTinhChiTiets.size(); i++) {
-            if (listMayTinhChiTiets.get(i).getMaMayTinh() == MayTinhUI.docMaMayTinh()) {
-                model.addElement(listMayTinhChiTiets.get(i).getMauSac());
-            }
-        }
-        maucbb.setModel(model);
-
-    }
-
-    private void timKiemTheoMaMayTinhChiTiet() {
-        String sql = "select * from maytinhchitiet where maMayTinhChiTiet = " + mamaytinhchitietI.getSelectedItem();
-        System.out.println(sql);
-        thucThiSqlTimKiem(sql);
-
-    }
-
-    private void timKiemTheoGiaNhap() {
-        String sql = "select * from maytinhchitiet where giaNhap = " + gianhapcbb.getSelectedItem() + " and maMayTinh=" + MayTinhUI.docMaMayTinh() + ";";
-        System.out.println(sql);
-        thucThiSqlTimKiem(sql);
-    }
-
-    private void timKiemTheoGiaBan() {
-        String sql = "select * from maytinhchitiet where giaBan = " + giabancbb.getSelectedItem() + " and maMayTinh=" + MayTinhUI.docMaMayTinh() + ";";
-        System.out.println(sql);
-        thucThiSqlTimKiem(sql);
-    }
-
-    private void timKiemTheoMauSac() {
-        String sql = "select * from maytinhchitiet where mauSac ='" + maucbb.getSelectedItem() + "' and maMayTinh=" + MayTinhUI.docMaMayTinh() + ";";
-        System.out.println(sql);
-        thucThiSqlTimKiem(sql);
-    }
-
-    private void thucThiSqlTimKiem(String sql) {
-
-        String[] columns = new String[]{"Mã máy tính chi tiết", "Mã máy tính", "Mô tả", "Giá nhập", "Giá bán", "Cấu hình", "Màu sắc", "Số lượng tồn kho"};
-
-        DefaultTableModel model = new DefaultTableModel(columns, 0);
-
-        Statement statement = null;
-        ResultSet resultSet = null;
-        try {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {
-//                JOptionPane.showMessageDialog(null, resultSet.getDouble("giaTien"));
+    private void loadTableTK(String thuocTinh) {
+        export = 2;
+        // @export :
+        //      0 : mặc định
+        //      1 : tất cả
+        //      2 : thống kê
+        //      3 : tìm kiếm
+        table.removeAll();
+        if (tks != null) {
+            String[] columns = new String[]{"TT", thuocTinh, "Số lượng"};
+            DefaultTableModel model = new DefaultTableModel(columns, 0);
+            for (int i = 0; i < tks.size(); i++) {
                 Vector vector = new Vector();
-                vector.add(resultSet.getInt("maMayTinhChiTiet"));
-                vector.add(resultSet.getInt("maMayTinh"));
-                vector.add(resultSet.getString("moTa"));
-                vector.add(resultSet.getDouble("giaNhap"));
-                vector.add(resultSet.getDouble("giaBan"));
-                vector.add(resultSet.getString("cauHinh"));
-                vector.add(resultSet.getString("mauSac"));
-                vector.add(resultSet.getInt("soLuongTonKho"));
-
+                vector.add(i + 1);
+                vector.add(tks.get(i).getThuocTinh());
+                vector.add(tks.get(i).getSoLuong());
                 model.addRow(vector);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-
+            table.setModel(model);
         }
-        bangmaytinhchitiet.setModel(model);
-        bangmaytinhchitiet.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (bangmaytinhchitiet.getSelectedRow() >= 0) {
-                    machitiettt.setText(bangmaytinhchitiet.getValueAt(bangmaytinhchitiet.getSelectedRow(), 0).toString());
-                    mamaytinhtt.setText(bangmaytinhchitiet.getValueAt(bangmaytinhchitiet.getSelectedRow(), 1).toString());
-                    motatt.setText(bangmaytinhchitiet.getValueAt(bangmaytinhchitiet.getSelectedRow(), 2).toString());
-                    gianhaptt.setText(bangmaytinhchitiet.getValueAt(bangmaytinhchitiet.getSelectedRow(), 3).toString());
-                    giabantt.setText(bangmaytinhchitiet.getValueAt(bangmaytinhchitiet.getSelectedRow(), 4).toString());
-                    cauhinhtt.setText(bangmaytinhchitiet.getValueAt(bangmaytinhchitiet.getSelectedRow(), 5).toString());
-                    mausactt.setText(bangmaytinhchitiet.getValueAt(bangmaytinhchitiet.getSelectedRow(), 6).toString());
-                    tonkhott.setText(bangmaytinhchitiet.getValueAt(bangmaytinhchitiet.getSelectedRow(), 7).toString());
-
-                }
-            }
-        });
-    }
-
-    private void themMayTinhChiTiet() throws SQLException {
-        //doc id
-        String ma = machitiettt.getText();
-        int maMayTinhChiTiet = Integer.parseInt(ma);
-
-        //doc ten 
-        String moTa = motatt.getText();
-        //
-        String gianhap = gianhaptt.getText();
-        Double giaNhap = Double.parseDouble(gianhap);
-        //
-        String giaban = giabantt.getText();
-        Double giaBan = Double.parseDouble(giaban);
-        //
-        String cauHinh = cauhinhtt.getText();
-        //
-        String mauSac = mausactt.getText();
-        int maMayTinh = MayTinhUI.docMaMayTinh();
-
-        //
-        String soluongtonkho = tonkhott.getText();
-        int soLuongTonKho = Integer.parseInt(soluongtonkho);
-
-        String sql = "insert into maytinhchitiet (maMayTinhChiTiet, maMayTinh,moTa, giaNhap, giaBan, cauHinh,mauSac , soLuongTonKho ) values ('" + maMayTinhChiTiet + "','" + maMayTinh + "', '" + moTa + "', '" + giaNhap + "', '" + giaBan + "', '" + cauHinh + "', '" + mauSac + "', '" + soLuongTonKho + "');";
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-        statement = connection.createStatement();
-        statement.executeUpdate(sql);
-    }
-
-    private void suaMayTinhChiTiet() throws SQLException {
-        //doc id
-        String ma = machitiettt.getText();
-        int maMayTinhChiTiet = Integer.parseInt(ma);
-
-        //doc ten 
-        String moTa = motatt.getText();
-        //
-        String gianhap = gianhaptt.getText();
-        Double giaNhap = Double.parseDouble(gianhap);
-        //
-        String giaban = giabantt.getText();
-        Double giaBan = Double.parseDouble(giaban);
-        //
-        String cauHinh = cauhinhtt.getText();
-        //
-        String mauSac = mausactt.getText();
-        int maMayTinh = MayTinhUI.docMaMayTinh();
-
-        //
-        String soluongtonkho = tonkhott.getText();
-        int soLuongTonKho = Integer.parseInt(soluongtonkho);
-
-        String sql = "update  maytinhchitiet set   moTa='" + moTa + "', giaNhap='" + giaNhap + "',giaBan='" + giaBan + "',cauHinh='" + cauHinh + "',mauSac='" + mauSac + "',soLuongTonKho='" + soLuongTonKho + "'   where maMayTinhChiTiet='" + maMayTinhChiTiet + "';";
-
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-        statement = connection.createStatement();
-        statement.executeUpdate(sql);
-    }
-
-    private void xoaMayTinhChiTiet() throws SQLException {
-        String ma = machitiettt.getText();
-        int maMayTinhChiTiet = Integer.parseInt(ma);
-
-        String sql = "delete from maytinhchitiet where maMayTinhChiTiet = " + maMayTinhChiTiet;
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-        statement = connection.createStatement();
-        statement.executeUpdate(sql);
+        table.setEnabled(false);
     }
 }

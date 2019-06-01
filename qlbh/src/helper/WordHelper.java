@@ -29,6 +29,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -46,26 +48,45 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
  */
 public class WordHelper {
 
-    public static void exportNhaCungCap(File file, ArrayList<NhaCungCap> list, String tittle) throws FileNotFoundException, IOException {
+    public static void exportNhaCungCap(File file, ArrayList<NhaCungCap> list, String tittle) {
         FileOutputStream out;
         try (XWPFDocument document = loadHeader(tittle)) {
             createTableNhaCC(document, list);
             loadFooter(document);
             out = new FileOutputStream(file);
             document.write(out);//ghi lại
+            out.close();
+
+        } catch (IOException ex) {
+            Logger.getLogger(WordHelper.class.getName()).log(Level.SEVERE, null, ex);
         }
-        out.close();
     }
 
-    public static void exportMayTinh(File file, ArrayList<MayTinh> list, String tittle) throws FileNotFoundException, IOException {
+    public static void exportMayTinh(File file, ArrayList<MayTinh> list, String tittle) {
         FileOutputStream out;
         try (XWPFDocument document = loadHeader(tittle)) {
             createTableMayTinh(document, list);
             loadFooter(document);
             out = new FileOutputStream(file);
             document.write(out);//ghi lại
+            out.close();
+        } catch (IOException ex) {
+            Logger.getLogger(WordHelper.class.getName()).log(Level.SEVERE, null, ex);
         }
-        out.close();
+    }
+
+    public static void exportMayTinhChiTiet(File file,
+            ArrayList<MayTinhChiTiet> list, String tittle) {
+        FileOutputStream out;
+        try (XWPFDocument document = loadHeader(tittle)) {
+            createTableMayTinhChiTiet(document, list);
+            loadFooter(document);
+            out = new FileOutputStream(file);
+            document.write(out);//ghi lại
+            out.close();
+        } catch (IOException ex) {
+            Logger.getLogger(WordHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static void exportKhachHang(File file, ArrayList<KhachHang> list, String tittle) throws FileNotFoundException, IOException {
@@ -79,127 +100,126 @@ public class WordHelper {
         out.close();
     }
 
-    public static void writeKhachHangTheoTen(File file, ArrayList<ThongKeKhachHangType> list, String tittle) throws FileNotFoundException, IOException {
-        FileOutputStream out;
-        try (XWPFDocument document = loadHeader(tittle)) {
-            createTableThongKeKhachHang(document, list, "Tên khách hàng");
-            loadFooter(document);
-            out = new FileOutputStream(file);
-            document.write(out);//ghi lại
-        }
-        out.close();
-    }
-
-    public static void writeKhachHangTheoGioiTinh(File file, ArrayList<ThongKeKhachHangType> list, String tittle) throws FileNotFoundException, IOException {
-        FileOutputStream out;
-        try (XWPFDocument document = loadHeader(tittle)) {
-            createTableThongKeKhachHang(document, list, "Giới tính");
-            loadFooter(document);
-            out = new FileOutputStream(file);
-            document.write(out);//ghi lại
-        }
-        out.close();
-    }
-
-    public static void writeKhachHangTheoDiaChi(File file, ArrayList<ThongKeKhachHangType> list, String tittle) throws FileNotFoundException, IOException {
-        FileOutputStream out;
-        try (XWPFDocument document = loadHeader(tittle)) {
-            createTableThongKeKhachHang(document, list, "Địa chỉ");
-            loadFooter(document);
-            out = new FileOutputStream(file);
-            document.write(out);//ghi lại
-        }
-        out.close();
-    }
-
-    public static void writeKhachHangTheoNamSinh(File file, ArrayList<ThongKeKhachHangType> list, String tittle) throws FileNotFoundException, IOException {
-        FileOutputStream out;
-        try (XWPFDocument document = loadHeader(tittle)) {
-            createTableThongKeKhachHang(document, list, "Năm sinh");
-            loadFooter(document);
-            out = new FileOutputStream(file);
-            document.write(out);//ghi lại
-        }
-        out.close();
-    }
-
-    public static void writeMayTinhTheoTen(File file, ArrayList<ThongKeMayTinhType> list, String tittle) throws FileNotFoundException, IOException {
-        FileOutputStream out;
-        try (XWPFDocument document = loadHeader(tittle)) {
-            createTableMayTinhType(document, list, "Tên máy tính");
-            loadFooter(document);
-            out = new FileOutputStream(file);
-            document.write(out);//ghi lại
-        }
-        out.close();
-    }
-
-    public static void writeMayTinhTheoNhaSanXuat(File file, ArrayList<ThongKeMayTinhType> list, String tittle) throws FileNotFoundException, IOException {
-        FileOutputStream out;
-        try (XWPFDocument document = loadHeader(tittle)) {
-            createTableMayTinhType(document, list, "Nhà sản xuất");
-            loadFooter(document);
-            out = new FileOutputStream(file);
-            document.write(out);//ghi lại
-        }
-        out.close();
-    }
-
-    public static void writeMayTinhTheoNamSanXuat(File file, ArrayList<ThongKeMayTinhType> list, String tittle) throws FileNotFoundException, IOException {
-        FileOutputStream out;
-        try (XWPFDocument document = loadHeader(tittle)) {
-            createTableMayTinhType(document, list, "Năm sản xuất");
-            loadFooter(document);
-            out = new FileOutputStream(file);
-            document.write(out);//ghi lại
-        }
-        out.close();
-    }
-
-    public static void writeMayTinhTheoThoiGianBaoHanh(File file, ArrayList<ThongKeMayTinhType> list, String tittle) throws FileNotFoundException, IOException {
-        FileOutputStream out;
-        try (XWPFDocument document = loadHeader(tittle)) {
-            createTableMayTinhType(document, list, "Số tháng bảo hành");
-            loadFooter(document);
-            out = new FileOutputStream(file);
-            document.write(out);//ghi lại
-        }
-        out.close();
-    }
-
-    public static void writeMayTinhTheoGiaNhap(File file, ArrayList<ThongKeMayTinhType> list, String tittle) throws FileNotFoundException, IOException {
-        FileOutputStream out;
-        try (XWPFDocument document = loadHeader(tittle)) {
-            createTableMayTinhType(document, list, "Giá nhập");
-            loadFooter(document);
-            out = new FileOutputStream(file);
-            document.write(out);//ghi lại
-        }
-        out.close();
-    }
-
-    public static void writeMayTinhTheoGiaBan(File file, ArrayList<ThongKeMayTinhType> list, String tittle) throws FileNotFoundException, IOException {
-        FileOutputStream out;
-        try (XWPFDocument document = loadHeader(tittle)) {
-            createTableMayTinhType(document, list, "Giá bán");
-            loadFooter(document);
-            out = new FileOutputStream(file);
-            document.write(out);//ghi lại
-        }
-        out.close();
-    }
-
-    public static void writeMayTinhTheoMauSac(File file, ArrayList<ThongKeMayTinhType> list, String tittle) throws FileNotFoundException, IOException {
-        FileOutputStream out;
-        try (XWPFDocument document = loadHeader(tittle)) {
-            createTableMayTinhType(document, list, "Màu sắc");
-            loadFooter(document);
-            out = new FileOutputStream(file);
-            document.write(out);//ghi lại
-        }
-        out.close();
-    }
-
+//    public static void writeKhachHangTheoTen(File file, ArrayList<ThongKeKhachHangType> list, String tittle) throws FileNotFoundException, IOException {
+//        FileOutputStream out;
+//        try (XWPFDocument document = loadHeader(tittle)) {
+//            createTableThongKeKhachHang(document, list, "Tên khách hàng");
+//            loadFooter(document);
+//            out = new FileOutputStream(file);
+//            document.write(out);//ghi lại
+//        }
+//        out.close();
+//    }
+//
+//    public static void writeKhachHangTheoGioiTinh(File file, ArrayList<ThongKeKhachHangType> list, String tittle) throws FileNotFoundException, IOException {
+//        FileOutputStream out;
+//        try (XWPFDocument document = loadHeader(tittle)) {
+//            createTableThongKeKhachHang(document, list, "Giới tính");
+//            loadFooter(document);
+//            out = new FileOutputStream(file);
+//            document.write(out);//ghi lại
+//        }
+//        out.close();
+//    }
+//
+//    public static void writeKhachHangTheoDiaChi(File file, ArrayList<ThongKeKhachHangType> list, String tittle) throws FileNotFoundException, IOException {
+//        FileOutputStream out;
+//        try (XWPFDocument document = loadHeader(tittle)) {
+//            createTableThongKeKhachHang(document, list, "Địa chỉ");
+//            loadFooter(document);
+//            out = new FileOutputStream(file);
+//            document.write(out);//ghi lại
+//        }
+//        out.close();
+//    }
+//
+//    public static void writeKhachHangTheoNamSinh(File file, ArrayList<ThongKeKhachHangType> list, String tittle) throws FileNotFoundException, IOException {
+//        FileOutputStream out;
+//        try (XWPFDocument document = loadHeader(tittle)) {
+//            createTableThongKeKhachHang(document, list, "Năm sinh");
+//            loadFooter(document);
+//            out = new FileOutputStream(file);
+//            document.write(out);//ghi lại
+//        }
+//        out.close();
+//    }
+//
+//    public static void writeMayTinhTheoTen(File file, ArrayList<ThongKeMayTinhType> list, String tittle) throws FileNotFoundException, IOException {
+//        FileOutputStream out;
+//        try (XWPFDocument document = loadHeader(tittle)) {
+//            createTableMayTinhType(document, list, "Tên máy tính");
+//            loadFooter(document);
+//            out = new FileOutputStream(file);
+//            document.write(out);//ghi lại
+//        }
+//        out.close();
+//    }
+//
+//    public static void writeMayTinhTheoNhaSanXuat(File file, ArrayList<ThongKeMayTinhType> list, String tittle) throws FileNotFoundException, IOException {
+//        FileOutputStream out;
+//        try (XWPFDocument document = loadHeader(tittle)) {
+//            createTableMayTinhType(document, list, "Nhà sản xuất");
+//            loadFooter(document);
+//            out = new FileOutputStream(file);
+//            document.write(out);//ghi lại
+//        }
+//        out.close();
+//    }
+//
+//    public static void writeMayTinhTheoNamSanXuat(File file, ArrayList<ThongKeMayTinhType> list, String tittle) throws FileNotFoundException, IOException {
+//        FileOutputStream out;
+//        try (XWPFDocument document = loadHeader(tittle)) {
+//            createTableMayTinhType(document, list, "Năm sản xuất");
+//            loadFooter(document);
+//            out = new FileOutputStream(file);
+//            document.write(out);//ghi lại
+//        }
+//        out.close();
+//    }
+//
+//    public static void writeMayTinhTheoThoiGianBaoHanh(File file, ArrayList<ThongKeMayTinhType> list, String tittle) throws FileNotFoundException, IOException {
+//        FileOutputStream out;
+//        try (XWPFDocument document = loadHeader(tittle)) {
+//            createTableMayTinhType(document, list, "Số tháng bảo hành");
+//            loadFooter(document);
+//            out = new FileOutputStream(file);
+//            document.write(out);//ghi lại
+//        }
+//        out.close();
+//    }
+//
+//    public static void writeMayTinhTheoGiaNhap(File file, ArrayList<ThongKeMayTinhType> list, String tittle) throws FileNotFoundException, IOException {
+//        FileOutputStream out;
+//        try (XWPFDocument document = loadHeader(tittle)) {
+//            createTableMayTinhType(document, list, "Giá nhập");
+//            loadFooter(document);
+//            out = new FileOutputStream(file);
+//            document.write(out);//ghi lại
+//        }
+//        out.close();
+//    }
+//
+//    public static void writeMayTinhTheoGiaBan(File file, ArrayList<ThongKeMayTinhType> list, String tittle) throws FileNotFoundException, IOException {
+//        FileOutputStream out;
+//        try (XWPFDocument document = loadHeader(tittle)) {
+//            createTableMayTinhType(document, list, "Giá bán");
+//            loadFooter(document);
+//            out = new FileOutputStream(file);
+//            document.write(out);//ghi lại
+//        }
+//        out.close();
+//    }
+//
+//    public static void writeMayTinhTheoMauSac(File file, ArrayList<ThongKeMayTinhType> list, String tittle) throws FileNotFoundException, IOException {
+//        FileOutputStream out;
+//        try (XWPFDocument document = loadHeader(tittle)) {
+//            createTableMayTinhType(document, list, "Màu sắc");
+//            loadFooter(document);
+//            out = new FileOutputStream(file);
+//            document.write(out);//ghi lại
+//        }
+//        out.close();
+//    }
     public static void writeTK(File file, ArrayList<TK> list, String tittle, String thuocTinh) throws FileNotFoundException, IOException {
         FileOutputStream out;
         try (XWPFDocument document = loadHeader(tittle)) {
@@ -619,6 +639,43 @@ public class WordHelper {
             format(row.getCell(4), new SimpleDateFormat("dd-MM-yyyy")
                     .format(o.getThoiGian()), false);
             format(row.getCell(5), new DecimalFormat("###.#").format(o.getTongTien()) + "", false);
+        }
+    }
+
+    private static void createTableMayTinhChiTiet(XWPFDocument document, ArrayList<MayTinhChiTiet> list) {
+        // tạo bảng 
+        XWPFTable table = document.createTable();
+        setTableAlign(table, ParagraphAlignment.CENTER);
+        // khi tạo 1 bảng mới thì bảng chỉ có 1 dòng và 1 cột -> row 0, col 0
+        //get first row - viết tittle
+        XWPFTableRow tittleRow = table.getRow(0);
+        format(tittleRow.getCell(0), "TT", true);
+        tittleRow.getCell(0).getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(500)); // set chiều rộng
+
+        createNewCell(tittleRow, MayTinhChiTiet.TT_MA_MAY_TINH_CHI_TIET, 500, 1);
+        createNewCell(tittleRow, MayTinhChiTiet.TT_MA_MAY_TINH, 500, 2);
+        createNewCell(tittleRow, "Tên MT", 2000, 3);
+        createNewCell(tittleRow, MayTinhChiTiet.TT_MO_TA, 1500, 4);
+        createNewCell(tittleRow, MayTinhChiTiet.TT_GIA_NHAP, 1000, 5);
+        createNewCell(tittleRow, MayTinhChiTiet.TT_GIA_BAN, 1000, 6);
+        createNewCell(tittleRow, MayTinhChiTiet.TT_CAU_HINH, 2000, 7);
+        createNewCell(tittleRow, MayTinhChiTiet.TT_MAU_SAC, 1000, 8);
+        createNewCell(tittleRow, MayTinhChiTiet.TT_SO_LUONG_TON_KHO, 500, 9);
+
+        // đọc dữ liệu
+        for (int i = 0; i < list.size(); i++) {
+            MayTinhChiTiet o = list.get(i);
+            XWPFTableRow row = table.createRow();// tạo dòng mới
+            format(row.getCell(0), (i + 1) + "", false);
+            format(row.getCell(1), o.getMaMayTinhChiTiet() + "", false);
+            format(row.getCell(2), o.getMaMayTinh() + "", false);
+            format(row.getCell(3), MayTinh.get(o.getMaMayTinh()).getTenMayTinh() + "", false);
+            format(row.getCell(4), o.getMoTa() + "", false);
+            format(row.getCell(5), new DecimalFormat("###").format(o.getGiaNhap()) + "", false);
+            format(row.getCell(6), new DecimalFormat("###").format(o.getGiaBan()) + "", false);
+            format(row.getCell(7), o.getCauHinh() + "", false);
+            format(row.getCell(8), o.getMauSac() + "", false);
+            format(row.getCell(9), o.getSoLuongTonKho() + "", false);
         }
     }
 

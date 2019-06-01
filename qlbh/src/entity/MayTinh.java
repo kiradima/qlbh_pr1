@@ -35,20 +35,13 @@ public class MayTinh {
     final static String COL_NHA_SAN_XUAT = "nhaSanXuat";
     final static String COL_NAM_SAN_XUAT = "namSanXuat";
     final static String COL_THOI_GIAN_BAO_HANH = "thoiGianBaoHanh";
-//    final static String COL_NGAY_SINH_KHACH_HANG = "ngaySinh";
-//    final static String COL_GIOI_TINH_KHACH_HANG = "gioiTinh";
-//    final static String COL_EMAIL_KHACH_HANG = "emailMayTinh";
 
     public final static String TT_MA = "Mã";
     public final static String TT_TEN = "Tên";
     public final static String TT_NHA_SAN_XUAT = "Nhà sản xuất";
     public final static String TT_NAM_SAN_XUAT = "Năm sản xuất";
     public final static String TT_THOI_GIAN_BAO_HANH = "Thời gian bảo hành";
-//    public final static String TT_NGAY_SINH = "Ngày sinh";
-//    public final static String TT_GIOI_TINH = "Giới tính";
-//    public final static String TT_EMAIL = "Email";
-
-//    public final static String TT_THANH_PHO = "Thành phố";
+    
     //cac thuoc tinh 
     private int maMayTinh;
     private String tenMayTinh;
