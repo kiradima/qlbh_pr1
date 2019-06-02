@@ -30,7 +30,7 @@ public class LoiNhuanUI extends javax.swing.JFrame {
     public LoiNhuanUI() {
         initComponents();
         loadCbbNam();
-        setLocation(350, 100);
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -235,34 +235,34 @@ public class LoiNhuanUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jLabel1)
                             .addComponent(cbbNgay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(17, 17, 17)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jLabel2)
                             .addComponent(cbbThang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btn))
-                        .addGap(13, 13, 13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jLabel3)
                             .addComponent(cbbNam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnNgay)
-                        .addGap(15, 15, 15)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnThang)
-                        .addGap(15, 15, 15)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnNam)))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jButton1)
                     .addComponent(btnQuayLai))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnNam, btnNgay, btnThang});
@@ -386,24 +386,19 @@ public class LoiNhuanUI extends javax.swing.JFrame {
         try {
             ConnectDatabase connectDatabase = new ConnectDatabase();
 
-            String sql = "select min(YEAR(thoiGian)), max(YEAR(thoiGian)) from qlbh.hoadonnhap";
+            String sql = "select min(YEAR(hoadonxuat.thoiGian)), max(YEAR(hoadonxuat.thoiGian)),min(YEAR(hoadonnhap.thoiGian)), max(YEAR(hoadonnhap.thoiGian))\n"
+                    + " from qlbh.hoadonxuat, qlbh.hoadonnhap";
             ResultSet resultSet = connectDatabase.getConnection().createStatement().executeQuery(sql);
             int maxNamNhap = 0;
             int minNamNhap = 0;
-            while (resultSet.next()) {
-                minNamNhap = resultSet.getInt("min(YEAR(thoiGian))");
-                maxNamNhap = resultSet.getInt("max(YEAR(thoiGian))");
-            }
-
-            String sql2 = "select min(YEAR(thoiGian)), max(YEAR(thoiGian)) from qlbh.hoadonxuat";
-            ResultSet resultSet2 = connectDatabase.getConnection().createStatement().executeQuery(sql2);
             int maxNamXuat = 0;
             int minNamXuat = 0;
-            while (resultSet2.next()) {
-                minNamXuat = resultSet.getInt("min(YEAR(thoiGian))");
-                maxNamXuat = resultSet.getInt("max(YEAR(thoiGian))");
+            while (resultSet.next()) {
+                minNamNhap = resultSet.getInt("min(YEAR(hoadonnhap.thoiGian))");
+                maxNamNhap = resultSet.getInt("max(YEAR(hoadonnhap.thoiGian))");
+                minNamXuat = resultSet.getInt("min(YEAR(hoadonxuat.thoiGian))");
+                maxNamXuat = resultSet.getInt("max(YEAR(hoadonxuat.thoiGian))");
             }
-
             int min = (minNamNhap < minNamXuat) ? minNamNhap : minNamXuat;
             int max = (maxNamNhap > maxNamXuat) ? maxNamNhap : maxNamXuat;
             for (int i = min; i <= max; i++) {

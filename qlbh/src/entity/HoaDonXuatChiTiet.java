@@ -90,12 +90,14 @@ public class HoaDonXuatChiTiet {
         ConnectDatabase connectDatabase = new ConnectDatabase();
         try {
             // nếu trả về 1 là thành công
-            return connectDatabase.getConnection().createStatement().executeUpdate(
+            int re = connectDatabase.getConnection().createStatement().executeUpdate(
                     "insert into hoadonxuatchitiet values("
                     + o.getMaXuat() + ", "
                     + o.getMaMayTinhChiTiet() + ", "
                     + o.getSoLuong() + ", "
-                    + o.getTongTien() + ")");
+                    + o.getSoLuong() * MayTinhChiTiet.get(o.getMaMayTinhChiTiet()).getGiaBan() + ")");
+            updateTongTienHDX();
+            return re;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Lỗi insert CSDL");
             Logger.getLogger(HoaDonXuatChiTiet.class.getName()).log(Level.SEVERE, null, ex);
@@ -107,11 +109,13 @@ public class HoaDonXuatChiTiet {
         ConnectDatabase connectDatabase = new ConnectDatabase();
         try {
             // nếu trả về 1 là thành công
-            return connectDatabase.getConnection().createStatement().executeUpdate(
+            int re = connectDatabase.getConnection().createStatement().executeUpdate(
                     "update hoadonxuatchitiet set soLuong = " + o.getSoLuong()
-                    + ", tongTien = " + o.getTongTien()
+                    + ", tongTien = " + o.getSoLuong() * MayTinhChiTiet.get(o.getMaMayTinhChiTiet()).getGiaBan()
                     + "where maXuat = " + o.getMaXuat()
                     + " and maMayTinhChiTiet = " + o.getMaMayTinhChiTiet());
+            updateTongTienHDX();
+            return re;
         } catch (SQLException ex) {
             Logger.getLogger(HoaDonXuatChiTiet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -122,9 +126,11 @@ public class HoaDonXuatChiTiet {
         ConnectDatabase connectDatabase = new ConnectDatabase();
         try {
             // nếu trả về 1 là thành công
-            return connectDatabase.getConnection().createStatement().executeUpdate(
+            int re = connectDatabase.getConnection().createStatement().executeUpdate(
                     "delete from hoadonxuatchitiet where maXuat = "
                     + maXuat + " and maMayTinhChiTiet = " + maMayTinhChiTiet);
+            updateTongTienHDX();
+            return re;
         } catch (SQLException ex) {
             Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -137,13 +143,13 @@ public class HoaDonXuatChiTiet {
         String sql = "select * from hoadonxuatchitiet where maXuat = " + maHDX;
         switch (type) {
             case "Mã máy tính chi tiết":
-                sql += " and maMayTinhChiTiet = " + Integer.parseInt(search);
+                sql += " and maMayTinhChiTiet like '%" + search + "%'";
                 break;
             case "Số lượng":
-                sql += " and soLuong = " + Integer.parseInt(search);
+                sql += " and soLuong like '%" + search + "%'";
                 break;
             case "Tổng tiền":
-                sql += " and tongTien = " + Double.parseDouble(search);
+                sql += " and tongTien like '%" + search + "%'";
                 break;
         }
         try {
@@ -196,7 +202,7 @@ public class HoaDonXuatChiTiet {
                 re = connectDatabase.getConnection().
                         createStatement().executeQuery(sql);
                 while (re.next()) {
-                    list.add(new TK(new DecimalFormat("###.#").format(re.getDouble("tongTien")) + "",
+                    list.add(new TK(new DecimalFormat("###,###").format(re.getDouble("tongTien")) + "",
                             re.getInt("count(*)")));
                 }
                 connectDatabase.close();
@@ -204,6 +210,19 @@ public class HoaDonXuatChiTiet {
         }
 
         return list;
+    }
+
+    public static void updateTongTienHDX() {
+        ArrayList<HoaDonXuat> hoaDonXuats = HoaDonXuat.getAll();
+        for (HoaDonXuat hoaDonXuat : hoaDonXuats) {
+            double tongTien = 0;
+            ArrayList<HoaDonXuatChiTiet> hoaDonXuatChiTiets = getAll(hoaDonXuat.getMaXuat());
+            for (HoaDonXuatChiTiet hoaDonXuatChiTiet : hoaDonXuatChiTiets) {
+                tongTien += hoaDonXuatChiTiet.getTongTien();
+            }
+            hoaDonXuat.setTongTien(tongTien);
+            HoaDonXuat.update(hoaDonXuat);
+        }
     }
 
 }

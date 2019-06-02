@@ -12,12 +12,12 @@ package entity;
 public class TKR {
 
     private TK tk;
-    private long tongTien;
+    private double tongTien;
 
     public TKR() {
     }
 
-    public TKR(TK tk, long tongTien) {
+    public TKR(TK tk, double tongTien) {
         this.tk = tk;
         this.tongTien = tongTien;
     }
@@ -30,12 +30,14 @@ public class TKR {
         this.tk = tk;
     }
 
-    public long getTongTien() {
+    public double getTongTien() {
         return tongTien;
     }
 
-    public void setTongTien(long tongTien) {
+    public void setTongTien(double tongTien) {
         this.tongTien = tongTien;
     }
+
+    
 
 }

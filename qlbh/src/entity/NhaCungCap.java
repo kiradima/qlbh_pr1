@@ -328,10 +328,11 @@ public class NhaCungCap {
     public static long getTongTienGiaoDich(int ma) {
         ConnectDatabase connectDatabase = new ConnectDatabase();
         try {
+//            SELECT sum(tongTien) FROM qlbh.hoadonnhap where maNhaCungCap = 4001;
             ResultSet re = connectDatabase.getConnection().
                     createStatement().executeQuery("select sum(tongTien) "
                             + "from qlbh." + HOA_DON_NHAP
-                            + " where " + HoaDonNhap.COL_MA_NHAP + " = '" + ma + "'");
+                            + " where " + HoaDonNhap.COL_MA_NHA_CUNG_CAP + " = '" + ma + "'");
             while (re.next()) {
                 return re.getLong("sum(tongTien)");
             }
