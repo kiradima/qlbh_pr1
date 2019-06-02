@@ -72,7 +72,8 @@ public class HoaDonNhapChiTiet {
         ConnectDatabase connectDatabase = new ConnectDatabase();
         try {
             ResultSet re = connectDatabase.getConnection().
-                    createStatement().executeQuery("select * from hoadonnhapchitiet where maNhap = " + maHoaDonNhap);
+                    createStatement().executeQuery("select * from hoadonnhapchitiet where maNhap = "
+                            + maHoaDonNhap);
             while (re.next()) {
                 list.add(new HoaDonNhapChiTiet(re.getInt("maNhap"),
                         re.getInt("maMayTinhChiTiet"),
@@ -90,12 +91,14 @@ public class HoaDonNhapChiTiet {
         ConnectDatabase connectDatabase = new ConnectDatabase();
         try {
             // nếu trả về 1 là thành công
-            return connectDatabase.getConnection().createStatement().executeUpdate(
+            int re = connectDatabase.getConnection().createStatement().executeUpdate(
                     "insert into hoadonnhapchitiet values("
                     + o.getMaNhap() + ", "
                     + o.getMaMayTinhChiTiet() + ", "
                     + o.getSoLuong() + ", "
-                    + o.getTongTien() + ")");
+                    + o.getSoLuong() * MayTinhChiTiet.get(o.getMaMayTinhChiTiet()).getGiaNhap() + ")");
+            updateTongTienHDN();
+            return re;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Lỗi insert CSDL");
             Logger.getLogger(HoaDonNhapChiTiet.class.getName()).log(Level.SEVERE, null, ex);
@@ -107,11 +110,13 @@ public class HoaDonNhapChiTiet {
         ConnectDatabase connectDatabase = new ConnectDatabase();
         try {
             // nếu trả về 1 là thành công
-            return connectDatabase.getConnection().createStatement().executeUpdate(
+            int re = connectDatabase.getConnection().createStatement().executeUpdate(
                     "update hoadonnhapchitiet set soLuong = " + o.getSoLuong()
-                    + ", tongTien = " + o.getTongTien()
+                    + ", tongTien = " + o.getSoLuong() * MayTinhChiTiet.get(o.getMaMayTinhChiTiet()).getGiaNhap()
                     + "where maNhap = " + o.getMaNhap()
                     + " and maMayTinhChiTiet = " + o.getMaMayTinhChiTiet());
+            updateTongTienHDN();
+            return re;
         } catch (SQLException ex) {
             Logger.getLogger(HoaDonNhapChiTiet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -122,9 +127,11 @@ public class HoaDonNhapChiTiet {
         ConnectDatabase connectDatabase = new ConnectDatabase();
         try {
             // nếu trả về 1 là thành công
-            return connectDatabase.getConnection().createStatement().executeUpdate(
+            int re = connectDatabase.getConnection().createStatement().executeUpdate(
                     "delete from hoadonnhapchitiet where maNhap = "
                     + maNhap + " and maMayTinhChiTiet = " + maMayTinhChiTiet);
+            updateTongTienHDN();
+            return re;
         } catch (SQLException ex) {
             Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -137,13 +144,13 @@ public class HoaDonNhapChiTiet {
         String sql = "select * from hoadonnhapchitiet where maNhap = " + maHDN;
         switch (type) {
             case "Mã máy tính chi tiết":
-                sql += " and maMayTinhChiTiet = " + Integer.parseInt(search);
+                sql += " and maMayTinhChiTiet like '%" + search + "%'";
                 break;
             case "Số lượng":
-                sql += " and soLuong = " + Integer.parseInt(search);
+                sql += " and soLuong like '%" + search + "%'";
                 break;
             case "Tổng tiền":
-                sql += " and tongTien = " + Double.parseDouble(search);
+                sql += " and tongTien like '%" + search + "%'";
                 break;
         }
         try {
@@ -196,7 +203,7 @@ public class HoaDonNhapChiTiet {
                 re = connectDatabase.getConnection().
                         createStatement().executeQuery(sql);
                 while (re.next()) {
-                    list.add(new TK(new DecimalFormat("###.#").format(re.getDouble("tongTien")) + "",
+                    list.add(new TK(new DecimalFormat("###,###").format(re.getDouble("tongTien")) + "",
                             re.getInt("count(*)")));
                 }
                 connectDatabase.close();
@@ -204,5 +211,18 @@ public class HoaDonNhapChiTiet {
         }
 
         return list;
+    }
+
+    public static void updateTongTienHDN() {
+        ArrayList<HoaDonNhap> hoaDonNhaps = HoaDonNhap.getAll();
+        for (HoaDonNhap hoaDonNhap : hoaDonNhaps) {
+            double tongTien = 0;
+            ArrayList<HoaDonNhapChiTiet> hoaDonNhapChiTiets = getAll(hoaDonNhap.getMaNhap());
+            for (HoaDonNhapChiTiet hoaDonNhapChiTiet : hoaDonNhapChiTiets) {
+                tongTien += hoaDonNhapChiTiet.getTongTien();
+            }
+            hoaDonNhap.setTongTien(tongTien);
+            HoaDonNhap.update(hoaDonNhap);
+        }
     }
 }

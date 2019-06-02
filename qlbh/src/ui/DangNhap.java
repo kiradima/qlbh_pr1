@@ -5,15 +5,7 @@
  */
 package ui;
 
-import helper.ConnectDatabase;
-import java.awt.Color;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import entity.User;
 import javax.swing.JOptionPane;
 
 /**
@@ -25,12 +17,7 @@ public class DangNhap extends javax.swing.JFrame {
     /**
      * Creates new form DangNhap
      */
-    ConnectDatabase ketNoiQLlBH = null;
-    Connection connection = null;
-
     public DangNhap() {
-        ketNoiQLlBH = new ConnectDatabase();
-        connection = ketNoiQLlBH.getConnection();
         initComponents();
         this.setLocationRelativeTo(null);
 
@@ -55,22 +42,22 @@ public class DangNhap extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        emaildn = new javax.swing.JTextField();
+        txtLGUsername = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
         jRadioButton1 = new javax.swing.JRadioButton();
-        passworddn = new javax.swing.JPasswordField();
+        txtLGPassword = new javax.swing.JPasswordField();
         dangki = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        emaildk = new javax.swing.JTextField();
+        txtDKUsername = new javax.swing.JTextField();
         jButton7 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        passdk = new javax.swing.JPasswordField();
-        passdklai = new javax.swing.JPasswordField();
+        txtDKPassword = new javax.swing.JPasswordField();
+        txtDKRePassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Nhóm 1: Hàn Trung Kiên -  Phan Hà Phương - Đoàn Văn Tiến");
@@ -180,9 +167,9 @@ public class DangNhap extends javax.swing.JFrame {
             }
         });
 
-        passworddn.addActionListener(new java.awt.event.ActionListener() {
+        txtLGPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passworddnActionPerformed(evt);
+                txtLGPasswordActionPerformed(evt);
             }
         });
 
@@ -194,8 +181,8 @@ public class DangNhap extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(passworddn)
-                    .addComponent(emaildn, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtLGPassword)
+                    .addComponent(txtLGUsername, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
@@ -215,11 +202,11 @@ public class DangNhap extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(emaildn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtLGUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(passworddn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtLGPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jRadioButton1)
                 .addGap(18, 18, 18)
@@ -288,9 +275,9 @@ public class DangNhap extends javax.swing.JFrame {
                             .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(dangkiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(emaildk, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                            .addComponent(passdk)
-                            .addComponent(passdklai)))
+                            .addComponent(txtDKUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                            .addComponent(txtDKPassword)
+                            .addComponent(txtDKRePassword)))
                     .addComponent(jLabel6))
                 .addContainerGap(66, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dangkiLayout.createSequentialGroup()
@@ -307,15 +294,15 @@ public class DangNhap extends javax.swing.JFrame {
                 .addGap(9, 9, 9)
                 .addGroup(dangkiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(emaildk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDKUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(dangkiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(passdk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDKPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24)
                 .addGroup(dangkiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(passdklai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDKRePassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton7)
                 .addContainerGap())
@@ -354,42 +341,17 @@ public class DangNhap extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        String a = emaildk.getText();
-        String b = passdk.getText();
-        String c = passdklai.getText();
-        if (a.equals("") || b.equals("") || c.equals("")) {
-            JOptionPane.showMessageDialog(this, "Bạn chưa nhập đầy đủ thông tin đăng kí!");
-        }
-        if (b.equals(c) && !b.equals("")) {
-            String sql = "insert into  user(userName, password ) values ('" + a + "','" + b + "')";
-            Statement statement = null;
-            ResultSet resultSet = null;
-
-            try {
-                statement = connection.createStatement();
-                statement.executeUpdate(sql);
-
-            } catch (SQLException ex) {
-                Logger.getLogger(DangNhap.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            JOptionPane.showMessageDialog(this, "Đăng kí thành công!");
-            emaildk.setText("");
-            passdk.setText("");
-            passdklai.setText("");
-
-        } else if (!b.equals(c)) {
-            JOptionPane.showMessageDialog(this, "Bạn nhập mật khẩu xác minh chưa đúng!");
-        }
+        register();
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
-    private void passworddnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passworddnActionPerformed
+    private void txtLGPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLGPasswordActionPerformed
         // TODO add your handling code here:
         login();
-    }//GEN-LAST:event_passworddnActionPerformed
+    }//GEN-LAST:event_txtLGPasswordActionPerformed
 
     /**
      * @param args the command line arguments
@@ -429,8 +391,6 @@ public class DangNhap extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel dangki;
-    private javax.swing.JTextField emaildk;
-    private javax.swing.JTextField emaildn;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
@@ -451,42 +411,49 @@ public class DangNhap extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JPasswordField passdk;
-    private javax.swing.JPasswordField passdklai;
-    private javax.swing.JPasswordField passworddn;
+    private javax.swing.JPasswordField txtDKPassword;
+    private javax.swing.JPasswordField txtDKRePassword;
+    private javax.swing.JTextField txtDKUsername;
+    private javax.swing.JPasswordField txtLGPassword;
+    private javax.swing.JTextField txtLGUsername;
     // End of variables declaration//GEN-END:variables
 
     private void login() {
-        String sql = "select * from user where userName =? and password =?";
-        PreparedStatement ps = null;
-        try {
-            ps = connection.prepareStatement(sql);
-        } catch (SQLException ex) {
-            Logger.getLogger(DangNhap.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        try {
-            ps.setString(1, emaildn.getText());
-            ps.setString(2, passworddn.getText());
-
-        } catch (SQLException ex) {
-            Logger.getLogger(DangNhap.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        try {
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next() && !emaildn.getText().equals("") && !passworddn.getText().equals("")) {
-//                JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
+        if (!txtLGUsername.getText().equals("") && !txtLGPassword.getText().equals("")) {
+            User user = new User(txtLGUsername.getText(), txtLGPassword.getText());
+            if (User.login(user)) {
                 new TrangChu().setVisible(true);
-                this.setVisible(false);
-
+                this.dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Sai Username hoặc mật khẩu!\nĐăng nhập thất bại!");
-
+                JOptionPane.showMessageDialog(null, "Tên tài khoản hoặc mật khẩu không chính xác");
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(DangNhap.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            JOptionPane.showMessageDialog(null, "Xin điền đầy đủ tài khoản, mật khẩu");
+        }
+
+    }
+
+    private void register() {
+        String username = txtDKUsername.getText();
+        String password = txtDKPassword.getText();
+        String rePassword = txtDKRePassword.getText();
+        if (!password.equals("")
+                && !rePassword.equals("")
+                && !username.equals("")) {
+            if (password.equals(rePassword)) {
+                User user = new User(username, password);
+                if (User.register(user)) {
+                    txtLGUsername.setText(username);
+                    txtLGPassword.setText(password);
+                    login();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Tên đăng nhập tồn tại !");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Mật khẩu xác nhận không khớp !");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Xin điền đầy đủ thông tin đăng ký !");
         }
     }
 }

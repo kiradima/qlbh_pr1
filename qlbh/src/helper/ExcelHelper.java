@@ -16,7 +16,6 @@ import entity.NhaCungCap;
 import entity.NhanVien;
 import java.io.File;
 import java.io.FileInputStream;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -188,7 +187,7 @@ public class ExcelHelper {
                         i++;
                         break;
                     case 3:
-                        o.setTongTien((double) cell.getNumericCellValue());
+                        o.setTongTien(o.getSoLuong() * MayTinhChiTiet.get(o.getMaMayTinhChiTiet()).getGiaNhap());
                         i++;
                         break;
                 }
@@ -286,7 +285,9 @@ public class ExcelHelper {
                         i++;
                         break;
                     case 3:
-                        o.setTongTien((double) cell.getNumericCellValue());
+//                        o.setTongTien(o.getSoLuong() * MayTinhChiTiet.get(o.getMaMayTinhChiTiet()).getGiaBan());
+                        System.out.println(o.getSoLuong());
+                        System.out.println(MayTinhChiTiet.get(o.getMaMayTinhChiTiet()).getGiaBan());
                         i++;
                         break;
                 }
@@ -296,7 +297,7 @@ public class ExcelHelper {
         return list;
     }
 
-    public static ArrayList<MayTinh> readMayTinh(File file) throws Exception {
+    public static ArrayList<MayTinh> importMayTinh(File file) throws Exception {
         ArrayList<MayTinh> list = new ArrayList<>();
         // Đọc một file XSL.
         FileInputStream inputStream = new FileInputStream(file);
@@ -355,7 +356,7 @@ public class ExcelHelper {
         return list;
     }
 
-    public static ArrayList<KhachHang> readKhachHang(File file) throws Exception {
+    public static ArrayList<KhachHang> importKhachHang(File file) throws Exception {
         ArrayList<KhachHang> list = new ArrayList<>();
         // Đọc một file XSL.
         FileInputStream inputStream = new FileInputStream(file);
@@ -427,7 +428,7 @@ public class ExcelHelper {
         return list;
     }
 
-    public static ArrayList<MayTinhChiTiet> readMayTinhChiTiet(File file) throws Exception {
+    public static ArrayList<MayTinhChiTiet> importMayTinhChiTiet(File file) throws Exception {
         ArrayList<MayTinhChiTiet> list = new ArrayList<>();
         // Đọc một file XSL.
         FileInputStream inputStream = new FileInputStream(file);
@@ -498,7 +499,7 @@ public class ExcelHelper {
         return list;
     }
 
-    public static ArrayList<NhaCungCap> readNhaCC(File file) throws Exception {
+    public static ArrayList<NhaCungCap> importNhaCungCap(File file) throws Exception {
         ArrayList<NhaCungCap> list = new ArrayList<>();
         // Đọc một file XSL.
         FileInputStream inputStream = new FileInputStream(file);

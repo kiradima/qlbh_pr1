@@ -6,24 +6,17 @@
 package ui;
 
 import entity.NhaCungCap;
-import helper.ConnectDatabase;
-import helper.ExcelHelper;
-import helper.WordHelper;
+import entity.TK;
+import java.awt.Font;
 import java.io.File;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -34,17 +27,22 @@ public class NhaCungCapUI extends javax.swing.JFrame {
     /**
      * Creates new form NhaCungCapUI
      */
-    ConnectDatabase ketNoiQLlBH = null;
-    Connection connection = null;
-    ArrayList<NhaCungCap> listNhaCC = new ArrayList<>();
+//    ConnectDatabase ketNoiQLlBH = null;
+    ArrayList<NhaCungCap> nhaCungCaps = new ArrayList<>();
+    ArrayList<TK> tks;
+    int export = 1;
+    // @export :
+    //      1 : tất cả
+    //      2 : thống kê
+    //      3 : tìm kiếm
+    String thuocTinh = "";
 
     public NhaCungCapUI() {
-        listNhaCC = NhaCungCap.getAll();
-        ketNoiQLlBH = new ConnectDatabase();
-        connection = ketNoiQLlBH.getConnection();
         initComponents();
-        loadData();
+        refresh();
         this.setLocationRelativeTo(null);
+        JTableHeader header = table.getTableHeader();
+        header.setFont(new Font("Tahoma", Font.BOLD, 14));
     }
 
     /**
@@ -65,22 +63,22 @@ public class NhaCungCapUI extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        machon = new javax.swing.JRadioButton();
-        tenchon = new javax.swing.JRadioButton();
-        dienthoaichon = new javax.swing.JRadioButton();
-        diachichon = new javax.swing.JRadioButton();
-        emailchon = new javax.swing.JRadioButton();
-        timkiem = new javax.swing.JTextField();
+        rbMa = new javax.swing.JRadioButton();
+        rbTen = new javax.swing.JRadioButton();
+        rbSDT = new javax.swing.JRadioButton();
+        rbDC = new javax.swing.JRadioButton();
+        rbEmail = new javax.swing.JRadioButton();
+        txtTimKiem = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        ma = new javax.swing.JTextField();
-        ten = new javax.swing.JTextField();
-        dienthoai = new javax.swing.JTextField();
-        diachi = new javax.swing.JTextField();
-        email = new javax.swing.JTextField();
+        txtMa = new javax.swing.JTextField();
+        txtTen = new javax.swing.JTextField();
+        txtSDT = new javax.swing.JTextField();
+        txtDC = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -89,10 +87,12 @@ public class NhaCungCapUI extends javax.swing.JFrame {
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        bangnhacc = new javax.swing.JTable();
+        table = new javax.swing.JTable();
         jButton11 = new javax.swing.JButton();
         btnQuayLai = new javax.swing.JButton();
         jButton12 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
+        rbTP = new javax.swing.JRadioButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -136,7 +136,7 @@ public class NhaCungCapUI extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(48, 48, 48)
                 .addComponent(jLabel9)
-                .addContainerGap(199, Short.MAX_VALUE))
+                .addContainerGap(139, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,40 +152,45 @@ public class NhaCungCapUI extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setText("NHẬP THÔNG TIN NHÀ CUNG CẤP");
 
-        buttonGroup1.add(machon);
-        machon.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        machon.setText("Mã nhà cung cấp");
+        buttonGroup1.add(rbMa);
+        rbMa.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbMa.setText("Mã nhà cung cấp");
 
-        buttonGroup1.add(tenchon);
-        tenchon.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        tenchon.setText("Tên nhà cung cấp ");
-        tenchon.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup1.add(rbTen);
+        rbTen.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbTen.setText("Tên nhà cung cấp ");
+        rbTen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tenchonActionPerformed(evt);
+                rbTenActionPerformed(evt);
             }
         });
 
-        buttonGroup1.add(dienthoaichon);
-        dienthoaichon.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        dienthoaichon.setText("Số điện thoại");
-
-        buttonGroup1.add(diachichon);
-        diachichon.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        diachichon.setText("Địa chỉ");
-        diachichon.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup1.add(rbSDT);
+        rbSDT.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbSDT.setText("Số điện thoại");
+        rbSDT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                diachichonActionPerformed(evt);
+                rbSDTActionPerformed(evt);
             }
         });
 
-        buttonGroup1.add(emailchon);
-        emailchon.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        emailchon.setText("Email");
-
-        timkiem.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        timkiem.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup1.add(rbDC);
+        rbDC.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbDC.setText("Địa chỉ");
+        rbDC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                timkiemActionPerformed(evt);
+                rbDCActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(rbEmail);
+        rbEmail.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbEmail.setText("Email");
+
+        txtTimKiem.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTimKiemActionPerformed(evt);
             }
         });
 
@@ -204,23 +209,23 @@ public class NhaCungCapUI extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setText("Email:");
 
-        ma.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtMa.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        ten.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtTen.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        dienthoai.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        dienthoai.addActionListener(new java.awt.event.ActionListener() {
+        txtSDT.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtSDT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dienthoaiActionPerformed(evt);
+                txtSDTActionPerformed(evt);
             }
         });
 
-        diachi.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtDC.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        email.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        email.addActionListener(new java.awt.event.ActionListener() {
+        txtEmail.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                emailActionPerformed(evt);
+                txtEmailActionPerformed(evt);
             }
         });
 
@@ -287,8 +292,8 @@ public class NhaCungCapUI extends javax.swing.JFrame {
             }
         });
 
-        bangnhacc.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        bangnhacc.setModel(new javax.swing.table.DefaultTableModel(
+        table.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -296,7 +301,7 @@ public class NhaCungCapUI extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane3.setViewportView(bangnhacc);
+        jScrollPane3.setViewportView(table);
 
         jButton11.setBackground(new java.awt.Color(102, 102, 255));
         jButton11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -326,41 +331,84 @@ public class NhaCungCapUI extends javax.swing.JFrame {
             }
         });
 
+        jButton9.setBackground(new java.awt.Color(102, 102, 255));
+        jButton9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton9.setText("Thống kê");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(rbTP);
+        rbTP.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        rbTP.setText("Tỉnh/Thành phố");
+        rbTP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbTPActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(128, 128, 128))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnQuayLai)
-                .addGap(364, 364, 364)
-                .addComponent(jButton11)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton12)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(57, 57, 57)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(jButton1)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(51, 51, 51)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(76, 76, 76))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(rbMa)
+                                        .addComponent(rbSDT)
+                                        .addComponent(rbEmail))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(rbTP)
+                                        .addComponent(rbDC)
+                                        .addComponent(rbTen))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(16, 16, 16)
+                                .addComponent(jLabel1)
+                                .addGap(184, 184, 184))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(68, 68, 68)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton9))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton8)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(128, 128, 128))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtEmail)
+                            .addComponent(txtDC)
+                            .addComponent(txtSDT)
+                            .addComponent(txtTen)
+                            .addComponent(txtMa, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(116, 116, 116))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton2)
                         .addGap(18, 18, 18)
                         .addComponent(jButton3)
@@ -368,255 +416,271 @@ public class NhaCungCapUI extends javax.swing.JFrame {
                         .addComponent(jButton4)
                         .addGap(35, 35, 35)
                         .addComponent(jButton6)
-                        .addGap(159, 159, 159))))
+                        .addGap(149, 149, 149))))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(machon)
-                            .addComponent(dienthoaichon))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(diachichon)
-                            .addComponent(tenchon)))
-                    .addComponent(emailchon)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(timkiem, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(76, 76, 76)))
-                .addGap(174, 174, 174)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(email, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
-                    .addComponent(diachi)
-                    .addComponent(dienthoai)
-                    .addComponent(ten)
-                    .addComponent(ma))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnQuayLai)
+                        .addGap(364, 364, 364)
+                        .addComponent(jButton11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton12)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jLabel1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(ma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ten, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(dienthoai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(diachi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel3)
+                            .addComponent(txtMa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, 0)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel4)
+                            .addComponent(txtTen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, 0)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel5)
+                            .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, 0)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel6)
+                            .addComponent(txtDC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, 0)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel7)
+                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jButton2)
                             .addComponent(jButton3)
                             .addComponent(jButton4)
-                            .addComponent(jButton6))
-                        .addGap(18, 18, 18))
+                            .addComponent(jButton6)))
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(machon)
-                            .addComponent(tenchon)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(rbMa)
+                            .addComponent(rbTen))
+                        .addGap(0, 0, 0)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(dienthoaichon)
-                            .addComponent(diachichon))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(emailchon)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(timkiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                        .addComponent(jButton1)
+                            .addComponent(rbSDT)
+                            .addComponent(rbDC))
+                        .addGap(0, 0, 0)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(rbEmail)
+                            .addComponent(rbTP))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(jButton9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton7)
-                            .addComponent(jButton8))
-                        .addGap(29, 29, 29)))
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton8))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jButton11)
                     .addComponent(jButton12)
                     .addComponent(btnQuayLai))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-        int chose = JOptionPane.showConfirmDialog(null, "Xác nhận", "Thêm", 0);
-        if (chose == 0) {
-            try {
-                xoaNhaCC();
-            } catch (SQLException ex) {
-                Logger.getLogger(NhaCungCapUI.class.getName()).log(Level.SEVERE, null, ex);
+        // TODO insert your handling code here:
+        if (0 == JOptionPane.showConfirmDialog(null, "Xác nhận", "Xóa", 0)) {
+            if (!txtMa.getText().equals("")) { // xóa chỉ cần nhập mã
+                if (1 == NhaCungCap.delete(Integer.parseInt(txtMa.getText()))) {
+                    JOptionPane.showMessageDialog(null, "Delete thành công");
+                    refresh();
+                    reset();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Delete thất bại");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Điền mã để xóa");
             }
-            loadData();
-            JOptionPane.showMessageDialog(this, "Xóa nhà cung cấp thành công!");
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        try {
-            suaNhaCungCap();
-        } catch (SQLException ex) {
-            Logger.getLogger(NhaCungCapUI.class.getName()).log(Level.SEVERE, null, ex);
+        // TODO insert your handling code here:
+        if (!txtMa.getText().equals("")
+                && !txtTen.getText().equals("")
+                && !txtSDT.getText().equals("")
+                && !txtDC.getText().equals("")
+                && !txtEmail.getText().equals("")) {
+            // nếu đảm bảo điền đầy đủ thông tin
+            if (1 == NhaCungCap.update(getCurrentObject())) {
+                JOptionPane.showMessageDialog(null, "Update thành công");
+                refresh();
+                reset();
+            } else {
+                JOptionPane.showMessageDialog(null, "Update thất bại");
+            }
+        } else {//nếu điền chưa đủ thông tin-> yêu cầu điền thêm
+            JOptionPane.showMessageDialog(null, "Thông tin chưa được điền đầy đủ");
         }
-        loadData();
-        JOptionPane.showMessageDialog(this, "Sửa nhà cung cấp thành công!");
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        try {
-            themNhaCC();
-        } catch (SQLException ex) {
-            Logger.getLogger(NhaCungCapUI.class.getName()).log(Level.SEVERE, null, ex);
+        // TODO insert your handling code here:
+        if (!txtMa.getText().equals("")
+                && !txtTen.getText().equals("")
+                && !txtSDT.getText().equals("")
+                && !txtDC.getText().equals("")
+                && !txtEmail.getText().equals("")) {
+            // nếu đảm bảo điền đầy đủ thông tin
+            if (1 == NhaCungCap.insert(getCurrentObject())) {
+                JOptionPane.showMessageDialog(null, "Insert thành công");
+                refresh();
+                reset();
+            }
+        } else {//nếu điền chưa đủ thông tin-> yêu cầu điền thêm
+            JOptionPane.showMessageDialog(null, "Thông tin chưa được điền đầy đủ");
         }
-        loadData();
-        JOptionPane.showMessageDialog(this, "Thêm nhà cung cấp thành công!");
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void diachichonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_diachichonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_diachichonActionPerformed
+    private void rbDCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbDCActionPerformed
+        // TODO insert your handling code here:
+    }//GEN-LAST:event_rbDCActionPerformed
 
-    private void timkiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timkiemActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_timkiemActionPerformed
+    private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
+        // TODO insert your handling code here:
+    }//GEN-LAST:event_txtTimKiemActionPerformed
 
-    private void dienthoaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dienthoaiActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dienthoaiActionPerformed
+    private void txtSDTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSDTActionPerformed
+        // TODO insert your handling code here:
+    }//GEN-LAST:event_txtSDTActionPerformed
 
-    private void emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_emailActionPerformed
+    private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
+        // TODO insert your handling code here:
+    }//GEN-LAST:event_txtEmailActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        // TODO add your handling code here:
-        loadData();
+        // TODO insert your handling code here:
+        refresh();
     }//GEN-LAST:event_jButton11ActionPerformed
 
-    private void tenchonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tenchonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tenchonActionPerformed
+    private void rbTenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbTenActionPerformed
+        // TODO insert your handling code here:
+    }//GEN-LAST:event_rbTenActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        if (machon.isSelected()) {
-            timKiemTheoMa();
-        } else if (tenchon.isSelected()) {
-            timKiemTheoTen();
-        } else if (dienthoaichon.isSelected()) {
-            timKiemTheoDienThoai();
-        } else if (diachichon.isSelected()) {
-            timKiemTheoDiaChi();
-        } else if (emailchon.isSelected()) {
-            timKiemTheoEmail();
+        // TODO insert your handling code here:
+        export = 3;
+        // @export :
+        //      1 : tất cả
+        //      2 : thống kê
+        //      3 : tìm kiếm
+
+        nhaCungCaps = new ArrayList<>();
+        if (rbMa.isSelected()) {
+            nhaCungCaps = NhaCungCap.search(txtTimKiem.getText(), NhaCungCap.TT_MA);
         }
+        if (rbTen.isSelected()) {
+            nhaCungCaps = NhaCungCap.search(txtTimKiem.getText(), NhaCungCap.TT_TEN);
+        }
+        if (rbSDT.isSelected()) {
+            nhaCungCaps = NhaCungCap.search(txtTimKiem.getText(), NhaCungCap.TT_SDT);
+        }
+        if (rbDC.isSelected()) {
+            nhaCungCaps = NhaCungCap.search(txtTimKiem.getText(), NhaCungCap.TT_DIA_CHI);
+        }
+        if (rbEmail.isSelected()) {
+            nhaCungCaps = NhaCungCap.search(txtTimKiem.getText(), NhaCungCap.TT_EMAIL);
+        }
+        loadTable();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-        ma.setText("");
-        ten.setText("");
-        dienthoai.setText("");
-        diachi.setText("");
-        email.setText("");
+        // TODO insert your handling code here:
+        reset();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
         JFileChooser jFileChooser = new JFileChooser();
         if (jFileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = jFileChooser.getSelectedFile();
-            String type = file.getName().substring(file.getName().lastIndexOf(".") + 1);
-            System.out.println(type);
-
-            if (type.equals("xls") || type.equals("xlsx")) {
-                try {
-                    ArrayList<NhaCungCap> list = ExcelHelper.readNhaCC(file);
-                    int re = -1;
-                    for (NhaCungCap o : list) {
-                        re = NhaCungCap.add(o);
-                        if (re != 1) {
-                            break;
-                        }
-                    }
-                    if (re == 1) {
-                        loadData();
-                        JOptionPane.showMessageDialog(null, "Thêm thành công");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Thêm thất bại");
-                    }
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Thêm thất bại");
-                    Logger.getLogger(NhaCungCap.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            if (NhaCungCap.importExcel(file) == 1) {
+                JOptionPane.showMessageDialog(null, "Thêm thành công");
+                refresh();
+            } else {
+                JOptionPane.showMessageDialog(null, "Thêm thất bại");
             }
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
         JFileChooser jFileChooser = new JFileChooser();
         if (jFileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = jFileChooser.getSelectedFile();
-
-            try {
-                WordHelper.writeNhaCC(file, listNhaCC, "THÔNG TIN NHÀ CUNG CẤP");
+            if (NhaCungCap.exportDoc(file, nhaCungCaps, export, tks, thuocTinh) == 1) {
                 JOptionPane.showMessageDialog(null, "Xuất file thành công");
-
-            } catch (IOException ex) {
-                Logger.getLogger(NhaCungCapUI.class.getName()).log(Level.SEVERE, null, ex);
+            } else {
                 JOptionPane.showMessageDialog(this, "Xuất file thất bại!");
             }
-
         }
+
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void btnQuayLaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuayLaiActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
         TrangChu o = new TrangChu();
         o.setVisible(true);
-        setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_btnQuayLaiActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
-        // TODO add your handling code here:
+        // TODO insert your handling code here:
         new DangNhap().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+        tks = new ArrayList<>();
+        try {
+            if (rbMa.isSelected()) {
+                thuocTinh = NhaCungCap.TT_MA;
+            } else if (rbTen.isSelected()) {
+                thuocTinh = NhaCungCap.TT_TEN;
+            } else if (rbSDT.isSelected()) {
+                thuocTinh = NhaCungCap.TT_SDT;
+            } else if (rbTP.isSelected()) {
+                thuocTinh = NhaCungCap.TT_THANH_PHO;
+            } else if (rbEmail.isSelected()) {
+                thuocTinh = NhaCungCap.TT_EMAIL;
+            }
+            tks = NhaCungCap.thongKe(thuocTinh);
+            loadTableTK(thuocTinh);
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void rbTPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbTPActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbTPActionPerformed
+
+    private void rbSDTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbSDTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbSDTActionPerformed
 
     /**
      * @param args the command line arguments
@@ -634,15 +698,12 @@ public class NhaCungCapUI extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NhaCungCapUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NhaCungCapUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NhaCungCapUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(NhaCungCapUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+
         //</editor-fold>
         //</editor-fold>
 
@@ -655,15 +716,8 @@ public class NhaCungCapUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable bangnhacc;
     private javax.swing.JButton btnQuayLai;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JTextField diachi;
-    private javax.swing.JRadioButton diachichon;
-    private javax.swing.JTextField dienthoai;
-    private javax.swing.JRadioButton dienthoaichon;
-    private javax.swing.JTextField email;
-    private javax.swing.JRadioButton emailchon;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
@@ -673,6 +727,7 @@ public class NhaCungCapUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -687,181 +742,105 @@ public class NhaCungCapUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextField ma;
-    private javax.swing.JRadioButton machon;
-    private javax.swing.JTextField ten;
-    private javax.swing.JRadioButton tenchon;
-    private javax.swing.JTextField timkiem;
+    private javax.swing.JRadioButton rbDC;
+    private javax.swing.JRadioButton rbEmail;
+    private javax.swing.JRadioButton rbMa;
+    private javax.swing.JRadioButton rbSDT;
+    private javax.swing.JRadioButton rbTP;
+    private javax.swing.JRadioButton rbTen;
+    private javax.swing.JTable table;
+    private javax.swing.JTextField txtDC;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtMa;
+    private javax.swing.JTextField txtSDT;
+    private javax.swing.JTextField txtTen;
+    private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
 
-    private void loadData() {
-        bangnhacc.removeAll();
-        String sql = "select * from nhacungcap ; ";
-        String[] columns = {"Mã nhà cung cấp", "Tên nhà cung cấp", "Điện thoại", "Địa chỉ", "Email"};
-        DefaultTableModel model = new DefaultTableModel(columns, 0);
+    private void refresh() {
+        nhaCungCaps = new ArrayList();
+        nhaCungCaps = NhaCungCap.getAll();
+        export = 1;
+        loadTable();
+    }
 
-        Statement statement = null;
-        ResultSet resultSet = null;
-        try {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {
-//                JOptionPane.showMessageDialog(null, resultSet.getDouble("giaTien"));
+    private void loadTable() {
+        table.setEnabled(true);
+        table.removeAll();
+        if (nhaCungCaps != null) {
+//            JScrollPane scrollPane = new JScrollPane(table);
+            String[] columns = new String[]{"TT", NhaCungCap.TT_MA, NhaCungCap.TT_TEN,
+                NhaCungCap.TT_SDT, NhaCungCap.TT_DIA_CHI, NhaCungCap.TT_EMAIL,};
+            DefaultTableModel model = new DefaultTableModel(columns, 0);
+            for (int i = 0; i < nhaCungCaps.size(); i++) {
+                NhaCungCap o = nhaCungCaps.get(i);
                 Vector vector = new Vector();
-                vector.add(resultSet.getInt("maNhaCungCap"));
-                vector.add(resultSet.getString("tenNhaCungCap"));
-                vector.add(resultSet.getString("dienThoai"));
-                vector.add(resultSet.getString("diaChi"));
-                vector.add(resultSet.getString("email"));
-
+                vector.add(i + 1);
+                vector.add(o.getMaNhaCungCap());
+                vector.add(o.getTenNhaCungCap());
+                vector.add(o.getDienThoai());
+                vector.add(o.getDiaChi());
+                vector.add(o.getEmail());
                 model.addRow(vector);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-        bangnhacc.setModel(model);
-        bangnhacc.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (bangnhacc.getSelectedRow() >= 0) {
-                    ma.setText(bangnhacc.getValueAt(bangnhacc.getSelectedRow(), 0).toString());
-                    ten.setText(bangnhacc.getValueAt(bangnhacc.getSelectedRow(), 1).toString());
-                    dienthoai.setText(bangnhacc.getValueAt(bangnhacc.getSelectedRow(), 2).toString());
-                    diachi.setText(bangnhacc.getValueAt(bangnhacc.getSelectedRow(), 3).toString());
-                    email.setText(bangnhacc.getValueAt(bangnhacc.getSelectedRow(), 4).toString());
-
+            table.setModel(model);
+            //setOnClickItem
+            table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                    if (table.getSelectedRow() >= 0) {
+                        NhaCungCap o = nhaCungCaps.get(table.getSelectedRow());// lấy đối tượng được chọn
+                        txtMa.setText(o.getMaNhaCungCap() + "");
+                        txtTen.setText(o.getTenNhaCungCap() + "");
+                        txtSDT.setText(o.getDienThoai() + "");
+                        txtDC.setText(o.getDiaChi() + "");
+                        txtEmail.setText(o.getEmail() + "");
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
-    private void timKiemTheoMa() {
-        int input = Integer.parseInt(timkiem.getText());
-        String sql = "select * from nhacungcap where maNhaCungCap like '%" + input + "%'; ";
-
-        thucThiSqlTimKiem(sql);
+    private void reset() {
+        txtMa.setText("");
+        txtTen.setText("");
+        txtSDT.setText("");
+        txtDC.setText("");
+        txtEmail.setText("");
     }
 
-    private void timKiemTheoTen() {
-        String input = timkiem.getText().toString();
-        String sql = "select * from nhacungcap where lower(tenNhaCungCap) like '%"
-                + input.toLowerCase() + "%'; ";
-        thucThiSqlTimKiem(sql);
+    private NhaCungCap getCurrentObject() {
+        int ma = (txtMa.getText().equals(""))
+                ? (0) : (Integer.parseInt(txtMa.getText()));
+        String ten = txtTen.getText();
+        String sdt = txtSDT.getText();
+        String diaChi = txtDC.getText();
+        String email = txtEmail.getText();
+
+        return new NhaCungCap(ma, ten, sdt, diaChi, email);
     }
 
-    private void timKiemTheoDienThoai() {
-        String input = timkiem.getText().toString();
-        String sql = "select * from nhacungcap where dienThoai='%" + input + "%'; ";
-        thucThiSqlTimKiem(sql);
-    }
-
-    private void timKiemTheoEmail() {
-        String input = timkiem.getText().toString();
-        String sql = "select * from nhacungcap where lower(email) like '%" + input.toLowerCase() + "%'; ";
-        thucThiSqlTimKiem(sql);
-    }
-
-    private void timKiemTheoDiaChi() {
-        String input = timkiem.getText().toString();
-        String sql = "select * from nhacungcap where lower(diaChi) like '%" + input.toLowerCase() + "%'; ";
-        thucThiSqlTimKiem(sql);
-    }
-
-    private void thucThiSqlTimKiem(String sql) {
-        String[] columns = {"Mã nhà cung cấp", "Tên nhà cung cấp", "Điện thoại", "Địa chỉ", "Email"};
-
-        DefaultTableModel model = new DefaultTableModel(columns, 0);
-
-        Statement statement = null;
-        ResultSet resultSet = null;
-        try {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {
-//                JOptionPane.showMessageDialog(null, resultSet.getDouble("giaTien"));
+    private void loadTableTK(String thuocTinh) {
+        export = 2;
+        // @export :
+        //      0 : mặc định
+        //      1 : tất cả
+        //      2 : thống kê
+        //      3 : tìm kiếm
+        table.removeAll();
+        if (tks != null) {
+            String[] columns = new String[]{"TT", thuocTinh, "Số lượng"};
+            DefaultTableModel model = new DefaultTableModel(columns, 0);
+            for (int i = 0; i < tks.size(); i++) {
                 Vector vector = new Vector();
-                vector.add(resultSet.getInt("maNhaCungCap"));
-                vector.add(resultSet.getString("tenNhaCungCap"));
-                vector.add(resultSet.getString("dienThoai"));
-                vector.add(resultSet.getString("diaChi"));
-                vector.add(resultSet.getString("email"));
-
+                vector.add(i + 1);
+                vector.add(tks.get(i).getThuocTinh());
+                vector.add(tks.get(i).getSoLuong());
                 model.addRow(vector);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-
+            table.setModel(model);
         }
-        bangnhacc.setModel(model);
-        bangnhacc.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (bangnhacc.getSelectedRow() >= 0) {
-                    ma.setText(bangnhacc.getValueAt(bangnhacc.getSelectedRow(), 0).toString());
-                    ten.setText(bangnhacc.getValueAt(bangnhacc.getSelectedRow(), 1).toString());
-                    dienthoai.setText(bangnhacc.getValueAt(bangnhacc.getSelectedRow(), 2).toString());
-                    diachi.setText(bangnhacc.getValueAt(bangnhacc.getSelectedRow(), 3).toString());
-                    email.setText(bangnhacc.getValueAt(bangnhacc.getSelectedRow(), 4).toString());
-
-                }
-            }
-        });
-    }
-
-    private void themNhaCC() throws SQLException {
-        String maS = ma.getText();
-        int maNhaCungCap = Integer.parseInt(maS);
-
-        //doc ten 
-        String tenNhaCungCap = ten.getText();
-        //
-        String diaChi = diachi.getText();
-        //
-        String dienThoai = dienthoai.getText();
-        //
-        String emailL = email.getText();
-
-        String sql = "insert into nhacungcap (maNhaCungCap, tenNhaCungCap, dienThoai, diaChi, email) values ('" + maNhaCungCap + "','" + tenNhaCungCap + "', '" + dienThoai + "', '" + diaChi + "', '" + emailL + "');";
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-        statement = connection.createStatement();
-        statement.executeUpdate(sql);
-    }
-
-    private void suaNhaCungCap() throws SQLException {
-        String maS = ma.getText();
-        int maNhaCungCap = Integer.parseInt(maS);
-
-        //doc ten 
-        String tenNhaCungCap = ten.getText();
-        //
-        String diaChi = diachi.getText();
-        //
-        String dienThoai = dienthoai.getText();
-        //
-        String emailL = email.getText();
-        String sql = "update  nhacungcap set   tenNhaCungCap='" + tenNhaCungCap + "', dienThoai='" + dienThoai + "',diaChi='" + diaChi + "',email='" + emailL + "'   where maNhaCungCap='" + maNhaCungCap + "';";
-
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-        statement = connection.createStatement();
-        statement.executeUpdate(sql);
-    }
-
-    private void xoaNhaCC() throws SQLException {
-        String maS = ma.getText();
-        int maNhaCungCap = Integer.parseInt(maS);
-        String sql = "delete from nhacungcap where maNhaCungCap = " + maNhaCungCap;
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-        statement = connection.createStatement();
-        statement.executeUpdate(sql);
+        table.setEnabled(false);
     }
 
 }

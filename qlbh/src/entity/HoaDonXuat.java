@@ -24,6 +24,23 @@ import javax.swing.JOptionPane;
  */
 public class HoaDonXuat {
 
+    final static String HOA_DON_XUAT = "hoadonxuat";
+
+    final static String COL_MA_XUAT = "maXuat";
+    final static String COL_MA_KHACH_HANG = "maKhachHang";
+    final static String COL_MA_NHAN_VIEN = "maNhanVien";
+    final static String COL_THOI_GIAN = "thoiGian";
+    final static String COL_TONG_TIEN = "tongTien";
+
+    public final static String TT_MA_XUAT = "Mã xuất";
+    public final static String TT_MA_KHACH_HANG = "Mã nhân viên";
+    public final static String TT_MA_NHAN_VIEN = "Mã nhà cung cấp";
+    public final static String TT_THOI_GIAN = "Thời gian";
+    public final static String TT_TONG_TIEN = "Tổng tiền";
+
+    public final static String TT_TEN_NHAN_VIEN = "Tên nhân viên";
+    public final static String TT_TEN_KHACH_HANG = "Tên khách hàng";
+
     private int maXuat;
     private int maKhachHang;
     private int maNhanVien;
@@ -150,39 +167,78 @@ public class HoaDonXuat {
         return -1;
     }
 
-    public static ArrayList<HoaDonXuat> search(String search, String type) throws ParseException {
+    public static ArrayList<HoaDonXuat> search(String search, String type) {
         ArrayList<HoaDonXuat> list = new ArrayList<>();
         ConnectDatabase connectDatabase = new ConnectDatabase();
-        String sql = "select * from hoadonxuat where ";
+        String sql = "select * from qlbh." + HOA_DON_XUAT + " where ";
         switch (type) {
-            case "maKhachHang":
-                sql += "maKhachHang like '%" + Integer.parseInt(search) + "%'";
+            case TT_MA_XUAT:
+                sql += COL_MA_XUAT + " like '%" + search + "%'";
                 break;
-            case "maNhanVien":
-                sql += "maNhanVien like '%" + Integer.parseInt(search) + "%'";
+            case TT_MA_KHACH_HANG:
+                sql += COL_MA_KHACH_HANG + " like '%" + search + "%'";
                 break;
-            case "thoiGian":
-                sql += "thoiGian = '" + new SimpleDateFormat("yyyy-MM-dd")
-                        .format(new SimpleDateFormat("dd-MM-yyyy").parse(search)) + "'";
+            case TT_MA_NHAN_VIEN:
+                sql += COL_MA_NHAN_VIEN + " like '%" + search + "%'";
+                System.out.println(sql);
                 break;
-            case "tongTien":
-                sql += "tongTien = " + Double.parseDouble(search);
+            case TT_THOI_GIAN:
+                sql += COL_THOI_GIAN + " like '%" + search + "%'";
                 break;
+            case TT_TONG_TIEN:
+                sql += COL_TONG_TIEN + " like '%" + search + "%'";
+                break;
+            case TT_TEN_NHAN_VIEN:
+                String sql1 = "select * from qlbh." + NhanVien.NHAN_VIEN
+                        + " where lower(" + NhanVien.COL_TEN_NHAN_VIEN
+                        + ") like '%" + search.toLowerCase() + "%'";
+                try {
+                    ResultSet resultSet1 = connectDatabase.getConnection().
+                            createStatement().executeQuery(sql1);
+                    while (resultSet1.next()) {
+                        list.addAll(search(resultSet1.getInt(NhanVien.COL_MA_NHAN_VIEN) + "", TT_MA_NHAN_VIEN));
+                    }
+                } catch (SQLException e) {
+                }
+                break;
+            case TT_TEN_KHACH_HANG:
+                sql1 = "select * from qlbh." + KhachHang.KHACH_HANG
+                        + " where lower(" + KhachHang.COL_TEN_KHACH_HANG
+                        + ") like '%" + search.toLowerCase() + "%'";
+                try {
+                    ResultSet resultSet1 = connectDatabase.getConnection().
+                            createStatement().executeQuery(sql1);
+                    while (resultSet1.next()) {
+                        list.addAll(search(resultSet1
+                                .getInt(KhachHang.COL_MA_KHACH_HANG) + "", TT_MA_KHACH_HANG));
+                    }
+                } catch (SQLException e) {
+                }
+                break;
+
         }
-        try {
-            ResultSet re = connectDatabase.getConnection().
-                    createStatement().executeQuery(sql);
-            while (re.next()) {
-                list.add(new HoaDonXuat(re.getInt("maXuat"),
-                        re.getInt("maKhachHang"),
-                        re.getInt("maNhanVien"),
-                        re.getDate("thoiGian"),
-                        re.getDouble("tongTien")));
+
+        if (!type.equals(TT_TEN_NHAN_VIEN) && !type.equals(TT_TEN_KHACH_HANG)) {
+            System.out.println("vào");
+            try {
+                ResultSet resultSet = connectDatabase.getConnection().
+                        createStatement().executeQuery(sql);
+                while (resultSet.next()) {
+                    list.add(new HoaDonXuat(
+                            resultSet.getInt(COL_MA_XUAT),
+                            resultSet.getInt(COL_MA_KHACH_HANG),
+                            resultSet.getInt(COL_MA_NHAN_VIEN),
+                            new SimpleDateFormat("yyyy-MM-dd").parse(resultSet.getString(COL_THOI_GIAN)),
+                            resultSet.getDouble(COL_TONG_TIEN)
+                    ));
+                }
+                connectDatabase.close();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Lỗi truy vấn CSDL");
+                Logger.getLogger(HoaDonXuat.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(HoaDonXuat.class.getName()).log(Level.SEVERE, null, ex);
             }
-            connectDatabase.close();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Lỗi truy vấn CSDL");
-            Logger.getLogger(HoaDonXuat.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
@@ -253,7 +309,7 @@ public class HoaDonXuat {
                         createStatement().executeQuery(sql);
                 while (re.next()) {
                     TK tk = new TK(re.getInt("maKhachHang") + "", re.getInt("count(*)"));
-                    long tongTien = KhachHang.getTongTienXuat(re.getInt("maKhachHang"));
+                    long tongTien = KhachHang.getTongTienGiaoDich(re.getInt("maKhachHang"));
                     list.add(new TKR(tk, tongTien));
                 }
                 connectDatabase.getConnection().close();
