@@ -261,7 +261,6 @@ public class HoaDonNhap {
                 break;
 
         }
-//        System.out.println(sql);
 
         if (!type.equals(TT_TEN_NHAN_VIEN) && !type.equals(TT_TEN_NHA_CUNG_CAP)) {
             System.out.println("vào");
@@ -342,7 +341,7 @@ public class HoaDonNhap {
                     re = connectDatabase.getConnection().
                             createStatement().executeQuery(sql);
                     while (re.next()) {
-                        TK tk = new TK(re.getInt(COL_MA_NHA_CUNG_CAP) + "", re.getInt("count(*)"));
+                        TK tk = new TK(re.getString(COL_MA_NHA_CUNG_CAP) + "", re.getInt("count(*)"));
                         long tongTien = NhaCungCap.getTongTienGiaoDich(re.getInt(COL_MA_NHA_CUNG_CAP));
                         list.add(new TKR(tk, tongTien));
                     }
@@ -354,8 +353,8 @@ public class HoaDonNhap {
                     re = connectDatabase.getConnection().
                             createStatement().executeQuery(sql);
                     while (re.next()) {
-                        TK tk = new TK(re.getInt(COL_MA_NHAN_VIEN) + "", re.getInt("count(*)"));
-                        long tongTien = NhanVien.getTongTienXuat(re.getInt(COL_MA_NHAN_VIEN));
+                        TK tk = new TK(re.getString(COL_MA_NHAN_VIEN) + "", re.getInt("count(*)"));
+                        long tongTien = NhanVien.getTongTienNhap(re.getInt(COL_MA_NHAN_VIEN));
                         list.add(new TKR(tk, tongTien));
                     }
                     connectDatabase.getConnection().close();
@@ -438,37 +437,6 @@ public class HoaDonNhap {
         return list;
     }
 
-//    public static long getTongNCC(String mncc) {
-//        ConnectDatabase connectDatabase = new ConnectDatabase();
-//        try {
-//            ResultSet re = connectDatabase.getConnection().
-//                    createStatement().executeQuery("select sum(tongTien) "
-//                            + "from qlbh.hoadonnhap where maNhaCungCap = '" + mncc + "'");
-//            while (re.next()) {
-//                return re.getLong("sum(tongTien)");
-//            }
-//            connectDatabase.close();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(NhanVien.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return -1;
-//    }
-//    public static long getTongTienGiaoDich(int ma) {
-//        ConnectDatabase connectDatabase = new ConnectDatabase();
-//        try {
-//            ResultSet re = connectDatabase.getConnection().
-//                    createStatement().executeQuery("select sum(tongTien) "
-//                            + "from qlbh." + HOA_DON_NHAP
-//                            + " where " + HoaDonNhap.COL_MA_NHAP + " = '" + ma + "'");
-//            while (re.next()) {
-//                return re.getLong("sum(tongTien)");
-//            }
-//            connectDatabase.close();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return -1;
-//    }
     public static int importExcel(File file) {
         int re = -1;
         String type = file.getName().substring(file.getName().lastIndexOf(".") + 1);

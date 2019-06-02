@@ -187,7 +187,7 @@ public class ExcelHelper {
                         i++;
                         break;
                     case 3:
-                        o.setTongTien((double) cell.getNumericCellValue());
+                        o.setTongTien(o.getSoLuong() * MayTinhChiTiet.get(o.getMaMayTinhChiTiet()).getGiaNhap());
                         i++;
                         break;
                 }
@@ -285,7 +285,9 @@ public class ExcelHelper {
                         i++;
                         break;
                     case 3:
-                        o.setTongTien((double) cell.getNumericCellValue());
+//                        o.setTongTien(o.getSoLuong() * MayTinhChiTiet.get(o.getMaMayTinhChiTiet()).getGiaBan());
+                        System.out.println(o.getSoLuong());
+                        System.out.println(MayTinhChiTiet.get(o.getMaMayTinhChiTiet()).getGiaBan());
                         i++;
                         break;
                 }

@@ -423,7 +423,7 @@ public class NhanVien {
             ResultSet re = connectDatabase.getConnection().
                     createStatement().executeQuery("select sum(tongTien) "
                             + "from qlbh." + HOA_DON_XUAT
-                            + " where " + HoaDonXuat.COL_MA_NHAN_VIEN + " = '" + ma + "'");
+                            + " where " + HoaDonXuat.COL_MA_KHACH_HANG + " = '" + ma + "'");
             while (re.next()) {
                 return re.getLong("sum(tongTien)");
             }

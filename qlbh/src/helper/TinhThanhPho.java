@@ -8,13 +8,9 @@ package helper;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -63,28 +59,5 @@ public class TinhThanhPho {
     public static String getTenTinh(int position) {
         return getListTinh().get(position);
     }
-
-//    public static void main(String[] args) {
-//        ArrayList<String> diaChis = new ArrayList<>();
-//
-//        diaChis.add("22 Lê Thanh Nghị, Hai Bà Trưng, Hà Nội");
-//        diaChis.add("23 Hoàn Kiếm, Hoàn Kiếm, Hà Nội");
-//        diaChis.add("256 Lê Thanh Nghị, Hai Bà Trưng, Quảng Ninh");
-//        diaChis.add("122 Trương Định, Hoàng Mai, Hà NAm");
-//
-//        String[][] matrixClassify = new String[63][diaChis.size()];
-//        matrixClassify = classifyDiaChis(diaChis);
-//
-//        for (int i = 0; i < 63; i++) {
-//            String[] strings = matrixClassify[i];
-//            System.out.println(i);
-//            for (String string : strings) {
-//                if (string != null) {
-//                    System.out.println(string);
-//                }
-//            }
-//
-//        }
-//    }
 
 }

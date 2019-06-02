@@ -487,13 +487,13 @@ public class WordHelper {
         //get first row - viết tittle
         XWPFTableRow tittleRow = table.getRow(0);
         format(tittleRow.getCell(0), "TT", true);
-        tittleRow.getCell(0).getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(1000)); // set chiều rộng
+        tittleRow.getCell(0).getCTTc().addNewTcPr().addNewTcW().setW(BigInteger.valueOf(500)); // set chiều rộng
 
         createNewCell(tittleRow, "Mã HĐN", 1000, 1);
-        createNewCell(tittleRow, "Nhân viên", 2000, 2);
+        createNewCell(tittleRow, "Nhân viên", 2500, 2);
         createNewCell(tittleRow, "Nhà cung cấp", 2500, 3);
         createNewCell(tittleRow, "Thời gian", 2500, 4);
-        createNewCell(tittleRow, "Tổng tiền", 2000, 5);
+        createNewCell(tittleRow, "Tổng tiền", 2500, 5);
 
         // đọc dữ liệu
         for (int i = 0; i < list.size(); i++) {
@@ -505,7 +505,7 @@ public class WordHelper {
             format(row.getCell(3), NhaCungCap.get(o.getMaNhaCungCap()).getTenNhaCungCap(), false);
             format(row.getCell(4), new SimpleDateFormat("dd-MM-yyyy")
                     .format(o.getThoiGian()), false);
-            format(row.getCell(5), new DecimalFormat("###.#").format(o.getTongTien()) + "", false);
+            format(row.getCell(5), new DecimalFormat("###,###").format(o.getTongTien()) + "", false);
         }
     }
 
@@ -698,7 +698,10 @@ public class WordHelper {
     }
 
     private static XWPFDocument loadHeader(String tittle) throws FileNotFoundException, IOException {
-        FileInputStream fis = new FileInputStream(new File("C:\\Users\\Kira\\Documents\\tittle_qlbh.docx"));
+        File file = new File("");
+        File in = new File(file.getAbsolutePath()
+                + "\\src\\files" + "\\tittle_qlbh.docx");
+        FileInputStream fis = new FileInputStream(in);
         // load header
         Calendar calendar = Calendar.getInstance();
         XWPFDocument document = new XWPFDocument(fis);
@@ -822,15 +825,15 @@ public class WordHelper {
                 format(row.getCell(2), NhanVien.get(Integer.parseInt(o.getTk().getThuocTinh()))
                         .getTenNhanVien() + "", false);
                 format(row.getCell(3), o.getTk().getSoLuong() + "", false);
-                format(row.getCell(4), o.getTongTien() + "", false);
+                format(row.getCell(4), new DecimalFormat("###,###").format(o.getTongTien()) + "", false);
             } else if (thuocTinh.equals(HoaDonNhap.TT_MA_NHA_CUNG_CAP)) {
                 format(row.getCell(2), NhaCungCap.get(Integer.parseInt(o.getTk().getThuocTinh()))
                         .getTenNhaCungCap() + "", false);
                 format(row.getCell(3), o.getTk().getSoLuong() + "", false);
-                format(row.getCell(4), o.getTongTien() + "", false);
+                format(row.getCell(4), new DecimalFormat("###,###").format(o.getTongTien()) + "", false);
             } else {
                 format(row.getCell(2), o.getTk().getSoLuong() + "", false);
-                format(row.getCell(3), o.getTongTien() + "", false);
+                format(row.getCell(3), new DecimalFormat("###,###").format(o.getTongTien()) + "", false);
             }
 
         }

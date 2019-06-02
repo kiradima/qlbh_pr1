@@ -172,8 +172,8 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="passworddn" alignment="1" max="32767" attributes="0"/>
-                      <Component id="emaildn" alignment="0" max="32767" attributes="0"/>
+                      <Component id="txtLGPassword" alignment="1" max="32767" attributes="0"/>
+                      <Component id="txtLGUsername" alignment="0" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -199,11 +199,11 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="emaildn" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtLGUsername" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="passworddn" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtLGPassword" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jRadioButton1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -260,7 +260,7 @@
             <Property name="text" type="java.lang.String" value="Username: "/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="emaildn">
+        <Component class="javax.swing.JTextField" name="txtLGUsername">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
@@ -298,9 +298,9 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadioButton1ActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JPasswordField" name="passworddn">
+        <Component class="javax.swing.JPasswordField" name="txtLGPassword">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="passworddnActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtLGPasswordActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
@@ -327,9 +327,9 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="emaildk" alignment="0" pref="235" max="32767" attributes="0"/>
-                              <Component id="passdk" alignment="0" max="32767" attributes="0"/>
-                              <Component id="passdklai" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtDKUsername" alignment="0" pref="235" max="32767" attributes="0"/>
+                              <Component id="txtDKPassword" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtDKRePassword" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -352,17 +352,17 @@
                   <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="emaildk" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtDKUsername" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="passdk" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtDKPassword" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="passdklai" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtDKRePassword" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="jButton7" min="-2" max="-2" attributes="0"/>
@@ -434,7 +434,7 @@
             <Property name="text" type="java.lang.String" value="Nh&#x1ead;p l&#x1ea1;i m&#x1ead;t kh&#x1ea9;u: "/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="emaildk">
+        <Component class="javax.swing.JTextField" name="txtDKUsername">
         </Component>
         <Component class="javax.swing.JButton" name="jButton7">
           <Properties>
@@ -461,9 +461,9 @@
             <Property name="text" type="java.lang.String" value="&#x110;&#x103;ng k&#xfd; t&#xe0;i kho&#x1ea3;n t&#x1ea1;i &#x111;&#xe2;y n&#x1ebf;u b&#x1ea1;n ch&#x1b0;a c&#xf3; t&#xe0;i kho&#x1ea3;n!"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JPasswordField" name="passdk">
+        <Component class="javax.swing.JPasswordField" name="txtDKPassword">
         </Component>
-        <Component class="javax.swing.JPasswordField" name="passdklai">
+        <Component class="javax.swing.JPasswordField" name="txtDKRePassword">
         </Component>
       </SubComponents>
     </Container>
