@@ -941,7 +941,7 @@ public class HoaDonNhapUI extends javax.swing.JFrame {
                             }
                         }
                         dateTG.setDate(o.getThoiGian());
-                        txtTT.setText(new DecimalFormat("###.#").format(o.getTongTien()) + "");
+                        txtTT.setText(new DecimalFormat("#").format(o.getTongTien()) + "");
                     }
                 }
             });

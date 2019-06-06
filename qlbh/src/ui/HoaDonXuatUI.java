@@ -1032,7 +1032,7 @@ public class HoaDonXuatUI extends javax.swing.JFrame {
                         //set thời gian
                         dateTG.setDate(o.getThoiGian());
                         //set tổng tiền
-                        txtTT.setText(new DecimalFormat("###,###").format(o.getTongTien()) + "");
+                        txtTT.setText(new DecimalFormat("#").format(o.getTongTien()) + "");
                     }
                 }
             });
