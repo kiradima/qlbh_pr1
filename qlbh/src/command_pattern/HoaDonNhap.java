@@ -3,8 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity;
+package command_pattern;
 
+import ui.HoaDonNhapUI;
+import entity.HoaDonNhapChiTiet;
+import entity.KhachHang;
+import entity.NhaCungCap;
+import entity.NhanVien;
+import entity.TK;
+import entity.TKR;
+import entity.ThangNam;
 import java.sql.ResultSet;
 import helper.ConnectDatabase;
 import helper.ExcelHelper;
@@ -22,7 +30,6 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import ui.HoaDonNhapUI;
 
 /**
  *
@@ -31,29 +38,38 @@ import ui.HoaDonNhapUI;
 public class HoaDonNhap {
 
 //    maNhap, maNhanVien, maNhaCungCap, thoiGian, tongTien
-    final static String HOA_DON_NHAP = "hoadonnhap";
+    public final static String HOA_DON_NHAP = "hoadonnhap";
 
-    final static String COL_MA_NHAP = "maNhap";
-    final static String COL_MA_NHAN_VIEN = "maNhanVien";
-    final static String COL_MA_NHA_CUNG_CAP = "maNhaCungCap";
-    final static String COL_THOI_GIAN = "thoiGian";
-    final static String COL_TONG_TIEN = "tongTien";
+    public final static String COL_MA_NHAP = "maNhap";
+    public final static String COL_MA_NHAN_VIEN = "maNhanVien";
+    public final static String COL_MA_NHA_CUNG_CAP = "maNhaCungCap";
+    public final static String COL_THOI_GIAN = "thoiGian";
+    public final static String COL_TONG_TIEN = "tongTien";
 
-    public final static String TT_MA_NHAP = "Mã nhập";
+    public final static String TT_MA_NHAP = "Mã nh?p";
     public final static String TT_MA_NHAN_VIEN = "Mã nhân viên";
-    public final static String TT_MA_NHA_CUNG_CAP = "Mã nhà cung cấp";
-    public final static String TT_THOI_GIAN = "Thời gian";
-    public final static String TT_TONG_TIEN = "Tổng tiền";
+    public final static String TT_MA_NHA_CUNG_CAP = "Mã nhà cung c?p";
+    public final static String TT_THOI_GIAN = "Th?i gian";
+    public final static String TT_TONG_TIEN = "T?ng ti?n";
 
     public final static String TT_TEN_NHAN_VIEN = "Tên nhân viên";
-    public final static String TT_TEN_NHA_CUNG_CAP = "Tên nhà cung cấp";
+    public final static String TT_TEN_NHA_CUNG_CAP = "Tên nhà cung c?p";
 
-//    public final static String TT_THANH_PHO = "Thành phố";
+//    public final static String TT_THANH_PHO = "Thành ph?";
     private int maNhap;
     private int maNhanVien;
     private int maNhaCungCap;
     private Date thoiGian;
     private double tongTien;
+    private ArrayList<HoaDonNhapChiTiet> hoaDonNhapChiTiets;
+
+    public ArrayList<HoaDonNhapChiTiet> getHoaDonNhapChiTiets() {
+        return hoaDonNhapChiTiets;
+    }
+
+    public void setHoaDonNhapChiTiets(ArrayList<HoaDonNhapChiTiet> hoaDonNhapChiTiets) {
+        this.hoaDonNhapChiTiets = hoaDonNhapChiTiets;
+    }
 
     public HoaDonNhap() {
     }
@@ -64,22 +80,6 @@ public class HoaDonNhap {
         this.maNhaCungCap = maNhaCungCap;
         this.thoiGian = thoiGian;
         this.tongTien = tongTien;
-    }
-
-    public int getMaNhap() {
-        return maNhap;
-    }
-
-    public void setMaNhap(int maNhap) {
-        this.maNhap = maNhap;
-    }
-
-    public int getMaNhanVien() {
-        return maNhanVien;
-    }
-
-    public void setMaNhanVien(int maNhanVien) {
-        this.maNhanVien = maNhanVien;
     }
 
     public int getMaNhaCungCap() {
@@ -152,18 +152,32 @@ public class HoaDonNhap {
                 );
             }
             connectDatabase.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
+        } catch (SQLException | ParseException ex) {
             Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
         }
         return o;
     }
 
+    public int getMaNhap() {
+        return maNhap;
+    }
+
+    public void setMaNhap(int maNhap) {
+        this.maNhap = maNhap;
+    }
+
+    public int getMaNhanVien() {
+        return maNhanVien;
+    }
+
+    public void setMaNhanVien(int maNhanVien) {
+        this.maNhanVien = maNhanVien;
+    }
+
     public static int insert(HoaDonNhap o) {
         ConnectDatabase connectDatabase = new ConnectDatabase();
         try {
-            // nếu trả về 1 là thành công
+            // n?u tr? v? 1 là thành công
             return connectDatabase.getConnection().createStatement().executeUpdate("insert into "
                     + HOA_DON_NHAP + " values('"
                     + o.getMaNhap() + "','"
@@ -173,7 +187,7 @@ public class HoaDonNhap {
                     + o.getTongTien() + "')"
             );
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Lỗi insert CSDL");
+            JOptionPane.showMessageDialog(null, "L?i insert CSDL");
             Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
@@ -182,7 +196,7 @@ public class HoaDonNhap {
     public static int update(HoaDonNhap o) {
         ConnectDatabase connectDatabase = new ConnectDatabase();
         try {
-            // nếu trả về 1 là thành công
+            // n?u tr? v? 1 là thành công
             return connectDatabase.getConnection().createStatement().executeUpdate("update "
                     + HOA_DON_NHAP + " set " + COL_MA_NHAN_VIEN + " = '"
                     + o.getMaNhanVien() + "'," + COL_MA_NHA_CUNG_CAP + " = '"
@@ -192,7 +206,7 @@ public class HoaDonNhap {
                     + o.getMaNhap() + "'"
             );
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Lỗi update CSDL");
+            JOptionPane.showMessageDialog(null, "L?i update CSDL");
             Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
@@ -201,12 +215,12 @@ public class HoaDonNhap {
     public static int delete(int ma) {
         ConnectDatabase connectDatabase = new ConnectDatabase();
         try {
-            // nếu trả về 1 là thành công
+            // n?u tr? v? 1 là thành công
             return connectDatabase.getConnection().createStatement().executeUpdate("delete from "
                     + HOA_DON_NHAP + " where "
                     + COL_MA_NHAP + " = " + ma);
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Lỗi delete CSDL");
+            JOptionPane.showMessageDialog(null, "L?i delete CSDL");
             Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
@@ -278,7 +292,7 @@ public class HoaDonNhap {
                 }
                 connectDatabase.close();
             } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Lỗi truy vấn CSDL");
+                JOptionPane.showMessageDialog(null, "L?i truy v?n CSDL");
                 Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ParseException ex) {
                 Logger.getLogger(HoaDonNhap.class.getName()).log(Level.SEVERE, null, ex);
@@ -377,8 +391,8 @@ public class HoaDonNhap {
                     connectDatabase.getConnection().close();
                     break;
                 case "Tháng":
-                    // phương án là : lấy ra các tháng(cả năm) có trong csdl,
-                    //sau đó trả về các ngày trong mỗi tháng cùng với thống kê của nó
+                    // ph??ng án là : l?y ra các tháng(c? n?m) có trong csdl,
+                    //sau ?ó tr? v? các ngày trong m?i tháng cùng v?i th?ng kê c?a nó
                     ArrayList<ThangNam> thangNams = new ArrayList<>();
                     sql = "select distinct month(" + COL_THOI_GIAN
                             + "),year(" + COL_THOI_GIAN + ") from qlbh." + HOA_DON_NHAP;
@@ -389,7 +403,7 @@ public class HoaDonNhap {
                                 re.getInt("year(" + COL_THOI_GIAN + ")")));
                     }
                     for (ThangNam thangNam : thangNams) {
-                        //liệt kê tất cả thuộc tính cần thiết tháng xx, năm xxxx
+                        //li?t kê t?t c? thu?c tính c?n thi?t tháng xx, n?m xxxx
                         sql = "select count(*), sum(" + COL_TONG_TIEN + ") from qlbh." + HOA_DON_NHAP + " \n"
                                 + "where month(" + COL_THOI_GIAN + ") = '" + thangNam.getThang() + "' \n"
                                 + "and year(" + COL_THOI_GIAN + ") = '" + thangNam.getNam() + "'";
@@ -405,11 +419,11 @@ public class HoaDonNhap {
 
                     connectDatabase.getConnection().close();
                     break;
-                case "Năm":
+                case "N?m":
 
                     ArrayList<Integer> nams = new ArrayList<>();
-                    // phương án là : lấy ra các năm có trong csdl,
-                    //sau đó trả về các ngày trong mỗi năm cùng với thống kê của nó
+                    // ph??ng án là : l?y ra các n?m có trong csdl,
+                    //sau ?ó tr? v? các ngày trong m?i n?m cùng v?i th?ng kê c?a nó
                     sql = "select distinct year(" + COL_THOI_GIAN + ") from qlbh." + HOA_DON_NHAP;
                     re = connectDatabase.getConnection().
                             createStatement().executeQuery(sql);
@@ -417,7 +431,7 @@ public class HoaDonNhap {
                         nams.add(re.getInt("year(" + COL_THOI_GIAN + ")"));
                     }
                     for (Integer nam : nams) {
-                        //liệt kê tất cả thuộc tính cần thiết tháng xx, năm xxxx
+                        //li?t kê t?t c? thu?c tính c?n thi?t tháng xx, n?m xxxx
                         sql = "select count(*), sum(" + COL_TONG_TIEN + ") from qlbh." + HOA_DON_NHAP
                                 + " where year(" + COL_THOI_GIAN + ") = '" + nam + "'";
                         re = connectDatabase.getConnection().
@@ -462,17 +476,17 @@ public class HoaDonNhap {
         try {
             switch (export) {
                 // @export :
-                //      1 : tất cả
-                //      2 : thống kê
-                //      3 : tìm kiếm
+                //      1 : t?t c?
+                //      2 : th?ng kê
+                //      3 : tìm ki?m
                 case 1:
-                    WordHelper.exportHoaDonNhap(file, hoaDonNhaps, "THÔNG TIN HÓA ĐƠN NHẬP");
+                    WordHelper.exportHoaDonNhap(file, hoaDonNhaps, "THÔNG TIN HÓA ?ON NH?P");
                     break;
                 case 2:
-                    WordHelper.writeTKR(file, tkrs, "THỐNG KÊ HÓA ĐƠN NHẬP", thuocTinh);
+                    WordHelper.writeTKR(file, tkrs, "TH?NG KÊ HÓA ??N NH?P", thuocTinh);
                     break;
                 case 3:
-                    WordHelper.exportHoaDonNhap(file, hoaDonNhaps, "TÌM KIẾM HÓA ĐƠN NHẬP");
+                    WordHelper.exportHoaDonNhap(file, hoaDonNhaps, "TÌM KI?M HÓA ??N NH?P");
                     break;
                 case 0:
             }
@@ -481,5 +495,18 @@ public class HoaDonNhap {
             Logger.getLogger(HoaDonNhapUI.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
         }
+    }
+
+    public void getListHoaDonNhapChiTiet(int maHoaDonNhap) {
+        setHoaDonNhapChiTiets(HoaDonNhapChiTiet.getAll(maHoaDonNhap));
+    }
+
+    public void getInfoFromDatabase(int maHoaDonNhap) {
+        HoaDonNhap hoaDonNhap = get(maHoaDonNhap);
+        setMaNhap(hoaDonNhap.getMaNhap());
+        setMaNhanVien(hoaDonNhap.getMaNhanVien());
+        setMaNhaCungCap(hoaDonNhap.getMaNhaCungCap());
+        setThoiGian(hoaDonNhap.getThoiGian());
+        setTongTien(hoaDonNhap.getTongTien());
     }
 }

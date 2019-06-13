@@ -5,8 +5,7 @@
  */
 package ui;
 
-import entity.HoaDonNhap;
-import entity.HoaDonNhapChiTiet;
+import command_pattern.HoaDonNhap;
 import entity.NhaCungCap;
 import entity.NhanVien;
 import entity.TK;

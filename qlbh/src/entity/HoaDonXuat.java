@@ -26,11 +26,11 @@ public class HoaDonXuat {
 
     final static String HOA_DON_XUAT = "hoadonxuat";
 
-    final static String COL_MA_XUAT = "maXuat";
-    final static String COL_MA_KHACH_HANG = "maKhachHang";
-    final static String COL_MA_NHAN_VIEN = "maNhanVien";
-    final static String COL_THOI_GIAN = "thoiGian";
-    final static String COL_TONG_TIEN = "tongTien";
+    public final static String COL_MA_XUAT = "maXuat";
+    public final static String COL_MA_KHACH_HANG = "maKhachHang";
+    public final static String COL_MA_NHAN_VIEN = "maNhanVien";
+    public final static String COL_THOI_GIAN = "thoiGian";
+    public final static String COL_TONG_TIEN = "tongTien";
 
     public final static String TT_MA_XUAT = "Mã xuất";
     public final static String TT_MA_KHACH_HANG = "Mã nhân viên";

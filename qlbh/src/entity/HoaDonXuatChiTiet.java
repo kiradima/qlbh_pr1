@@ -5,6 +5,7 @@
  */
 package entity;
 
+import command_pattern.HoaDonNhap;
 import helper.ConnectDatabase;
 import java.sql.ResultSet;
 import java.sql.SQLException;

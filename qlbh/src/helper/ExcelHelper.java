@@ -5,7 +5,7 @@
  */
 package helper;
 
-import entity.HoaDonNhap;
+import command_pattern.HoaDonNhap;
 import entity.HoaDonNhapChiTiet;
 import entity.HoaDonXuat;
 import entity.HoaDonXuatChiTiet;

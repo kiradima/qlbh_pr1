@@ -5,6 +5,7 @@
  */
 package entity;
 
+import command_pattern.HoaDonNhap;
 import helper.ConnectDatabase;
 import helper.ExcelHelper;
 import helper.TinhThanhPho;
@@ -30,19 +31,19 @@ import ui.NhanVienUI;
  */
 public class NhanVien {
 
-    final static String NHAN_VIEN = "nhanvien";
-    final static String HOA_DON_XUAT = "hoadonxuat";
-    final static String HOA_DON_NHAP = "hoadonnhap";
+    public final static String NHAN_VIEN = "nhanvien";
+    public final static String HOA_DON_XUAT = "hoadonxuat";
+    public final static String HOA_DON_NHAP = "hoadonnhap";
 
-    final static String COL_MA_NHAN_VIEN = "maNhanVien";
-    final static String COL_TEN_NHAN_VIEN = "tenNhanVien";
-    final static String COL_DIEN_THOAI_NHAN_VIEN = "sdtNhanVien";
-    final static String COL_DIA_CHI_NHAN_VIEN = "diaChiNhanVien";
-    final static String COL_CMT_NHAN_VIEN = "soCMT";
-    final static String COL_NGAY_SINH_NHAN_VIEN = "ngaySinh";
-    final static String COL_GIOI_TINH_NHAN_VIEN = "gioiTinh";
-    final static String COL_EMAIL_NHAN_VIEN = "emailNhanVien";
-    final static String COL_CHUC_VU_NHAN_VIEN = "chucVu";
+    public final static String COL_MA_NHAN_VIEN = "maNhanVien";
+    public final static String COL_TEN_NHAN_VIEN = "tenNhanVien";
+    public final static String COL_DIEN_THOAI_NHAN_VIEN = "sdtNhanVien";
+    public final static String COL_DIA_CHI_NHAN_VIEN = "diaChiNhanVien";
+    public final static String COL_CMT_NHAN_VIEN = "soCMT";
+    public final static String COL_NGAY_SINH_NHAN_VIEN = "ngaySinh";
+    public final static String COL_GIOI_TINH_NHAN_VIEN = "gioiTinh";
+    public final static String COL_EMAIL_NHAN_VIEN = "emailNhanVien";
+    public final static String COL_CHUC_VU_NHAN_VIEN = "chucVu";
 
     public final static String TT_MA = "Mã";
     public final static String TT_TEN = "Tên";

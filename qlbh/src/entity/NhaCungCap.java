@@ -5,6 +5,7 @@
  */
 package entity;
 
+import command_pattern.HoaDonNhap;
 import helper.ConnectDatabase;
 import helper.ExcelHelper;
 import helper.TinhThanhPho;
@@ -27,14 +28,14 @@ import ui.NhaCungCapUI;
  */
 public class NhaCungCap {
 
-    final static String NHA_CUNG_CAP = "nhacungcap";
-    final static String HOA_DON_NHAP = "hoadonnhap";
+    public final static String NHA_CUNG_CAP = "nhacungcap";
+    public final static String HOA_DON_NHAP = "hoadonnhap";
 
-    final static String COL_MA_NHA_CUNG_CAP = "maNhaCungCap";
-    final static String COL_TEN_NHA_CUNG_CAP = "tenNhaCungCap";
-    final static String COL_DIEN_THOAI_NHA_CUNG_CAP = "dienThoai";
-    final static String COL_DIA_CHI_NHA_CUNG_CAP = "diaChi";
-    final static String COL_EMAIL_NHA_CUNG_CAP = "email";
+    public final static String COL_MA_NHA_CUNG_CAP = "maNhaCungCap";
+    public final static String COL_TEN_NHA_CUNG_CAP = "tenNhaCungCap";
+    public final static String COL_DIEN_THOAI_NHA_CUNG_CAP = "dienThoai";
+    public final static String COL_DIA_CHI_NHA_CUNG_CAP = "diaChi";
+    public final static String COL_EMAIL_NHA_CUNG_CAP = "email";
 
     public final static String TT_MA = "Mã";
     public final static String TT_TEN = "Tên";

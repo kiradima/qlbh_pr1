@@ -6,6 +6,7 @@
 package ui;
 
 import entity.KhachHang;
+import entity.KhachHang;
 import entity.TK;
 import java.awt.Font;
 import java.io.File;
@@ -23,6 +24,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import ui.DangNhap;
+import ui.TrangChu;
 
 /**
  *

@@ -5,6 +5,9 @@
  */
 package entity;
 
+import ui.KhachHangUI;
+import entity.HoaDonXuat;
+import entity.TK;
 import helper.ConnectDatabase;
 import helper.ExcelHelper;
 import helper.TinhThanhPho;
@@ -22,7 +25,6 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import ui.KhachHangUI;
 
 /**
  *
@@ -30,17 +32,17 @@ import ui.KhachHangUI;
  */
 public class KhachHang {
 
-    final static String KHACH_HANG = "khachhang";
-    final static String HOA_DON_XUAT = "hoadonxuat";
+    public final static String KHACH_HANG = "khachhang";
+    public final static String HOA_DON_XUAT = "hoadonxuat";
 
-    final static String COL_MA_KHACH_HANG = "maKhachHang";
-    final static String COL_TEN_KHACH_HANG = "tenKhachHang";
-    final static String COL_DIEN_THOAI_KHACH_HANG = "sdtKhachHang";
-    final static String COL_DIA_CHI_KHACH_HANG = "diaChi";
-    final static String COL_CMT_KHACH_HANG = "soCMT";
-    final static String COL_NGAY_SINH_KHACH_HANG = "ngaySinh";
-    final static String COL_GIOI_TINH_KHACH_HANG = "gioiTinh";
-    final static String COL_EMAIL_KHACH_HANG = "emailKhachHang";
+    public final static String COL_MA_KHACH_HANG = "maKhachHang";
+    public final static String COL_TEN_KHACH_HANG = "tenKhachHang";
+    public final static String COL_DIEN_THOAI_KHACH_HANG = "sdtKhachHang";
+    public final static String COL_DIA_CHI_KHACH_HANG = "diaChi";
+    public final static String COL_CMT_KHACH_HANG = "soCMT";
+    public final static String COL_NGAY_SINH_KHACH_HANG = "ngaySinh";
+    public final static String COL_GIOI_TINH_KHACH_HANG = "gioiTinh";
+    public final static String COL_EMAIL_KHACH_HANG = "emailKhachHang";
 
     public final static String TT_MA = "Mã";
     public final static String TT_TEN = "Tên";
@@ -456,15 +458,4 @@ public class KhachHang {
             return 0;
         }
     }
-
-//    public static void main(String[] args) {
-//
-//        @test thongKe
-//        ArrayList<TK> tks = thongKe(TT_THANH_PHO);
-//        for (TK tk : tks) {
-//            System.out.println(tk.getThuocTinh() + " - " + tk.getSoLuong());
-//        }
-//        @test getTongTienGiaoDich
-//        System.out.println(getTongTienGiaoDich(4001));
-//    }
 }
